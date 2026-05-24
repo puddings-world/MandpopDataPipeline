@@ -1,0 +1,7 @@
+client_secret.json
+token.json
+downloads/
+*.mp4
+*.mkv
+*.webm
+*.m4a
