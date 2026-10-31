@@ -65,8 +65,23 @@ def _cjk(s: str) -> str:
 # Live / talent-show / fan-video uploads: right song, wrong recording.
 _LIVE = re.compile(r"live|現場|现场|演唱會|演唱会|純享|纯享|好聲音|好声音|我們的歌|我们的歌|"
                    r"天賜的聲音|天赐的声音|夢想的聲音|梦想的声音|聲林之王|公演|獻唱|献唱|"
-                   r"花絮|精華|精华|vietsub|fmv|\bep\.?\s?\d", re.I)
+                   r"花絮|精華|精华|vietsub|fmv|\bep\.?\s?\d|episode|singer\s?20\d\d|歌手\s?20\d\d", re.I)
 _OFFICIAL = re.compile(r"official|官方|\bmv\b", re.I)
+
+
+def title_names_song(title: str, video_title: str) -> bool:
+    """True when some name slot of `video_title` is exactly this song.
+
+    Slots: 《X》/【X】/「X」/"X", an ` - `/`|` segment, or the whole title;
+    simplified/traditional and punctuation insensitive, and a CJK title may
+    carry an English subtitle in the slot.
+    """
+    t, tc = _norm(title), _cjk(title)
+    if not t:
+        return False
+    yt = video_title or ""
+    slots = [yt] + _BRACKETED.findall(yt) + re.split(r"\s[-–|/｜]\s|[-–|/｜]", yt)
+    return any(_norm(s) == t or (tc and _cjk(s) == tc) for s in slots)
 
 
 def pick_by_title(title: str, candidates: list[dict],
@@ -82,15 +97,13 @@ def pick_by_title(title: str, candidates: list[dict],
     official before fan uploads, artist hit before miss. YouTube's top hit
     by views is often another song by the same artist, hence no fallback.
     """
-    t, tc = _norm(title), _cjk(title)
     a = _norm(artist) if artist else ""
-    if not t:
+    if not _norm(title):
         return None
     ranked = []
     for i, c in enumerate(candidates):
         yt = c.get("title") or ""
-        slots = [yt] + _BRACKETED.findall(yt) + re.split(r"\s[-–|/｜]\s|[-–|/｜]", yt)
-        if not any(_norm(s) == t or (tc and _cjk(s) == tc) for s in slots):
+        if not title_names_song(title, yt):
             continue
         has_artist = bool(a) and a in _norm(yt + " " + (c.get("channel") or c.get("uploader") or ""))
         ranked.append((bool(_LIVE.search(yt)), not _OFFICIAL.search(yt), not has_artist, i, c))

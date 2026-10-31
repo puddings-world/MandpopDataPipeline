@@ -413,8 +413,13 @@ def add_song(title: str, youtube_url: str | None = None,
         from processors.alignment import audit_song
         report = audit_song(song_dir, run_layer2=False, auto_fix=True)
         alignment_status = report.overall
-        if report.auto_fixed_offset_sec is not None:
-            print(f"shifted LRC by {report.auto_fixed_offset_sec:+.2f}s → {alignment_status}")
+        if report.auto_fixed_offset_sec is not None or report.retime_max_shift_sec is not None:
+            done = []
+            if report.auto_fixed_offset_sec is not None:
+                done.append(f"shifted LRC by {report.auto_fixed_offset_sec:+.2f}s")
+            if report.retime_max_shift_sec is not None:
+                done.append(f"re-timed lines (max {report.retime_max_shift_sec:.1f}s)")
+            print(f"{', '.join(done)} → {alignment_status}")
         else:
             l1 = report.layer1
             off = f"{l1.offset_sec:+.2f}s" if l1.offset_sec is not None else "?"
@@ -1758,6 +1763,34 @@ def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
                 print(f"      top hit: {s}")
 
 
+def refresh_setlist() -> int:
+    """Rewrite setlist.jsonl / setlist_blocked.jsonl from notes + raw, nothing else.
+
+    Read-only on raw_dataset.jsonl, so it is safe while an ingest runs — that
+    is how songs reach the phone one by one instead of when the whole batch
+    ends. raw is read twice and must agree, so a read that races a rewrite
+    of the file is retried instead of publishing a truncated setlist.
+    """
+    from processors.notes_ingest import merge_inbox, parse_notes
+
+    entries, _ = (parse_notes(NOTES_TXT.read_text(encoding="utf-8"), listed=True)
+                  if NOTES_TXT.exists() else ([], []))
+    if NOTES_INBOX_TXT.exists():
+        inbox, _ = parse_notes(NOTES_INBOX_TXT.read_text(encoding="utf-8"))
+        entries, _ = merge_inbox(entries, inbox)
+    for _ in range(5):
+        records = load_raw()
+        time.sleep(0.5)
+        if load_raw() == records:
+            break
+    else:
+        print("raw_dataset.jsonl keeps changing — setlist not refreshed")
+        return 1
+    n_ready, blocked = write_setlist(entries, records)
+    print(f"setlist.jsonl: {n_ready} ready, {len(blocked)} not yet")
+    return 0
+
+
 def sync_doc(url: str | None = None, device: str = "cuda", no_add: bool = False,
              dry_run: bool = False, run_then: bool = True) -> int:
     """Fetch the tracked Google Doc → notes.txt → ingest → post-ingest hook.
@@ -1801,6 +1834,65 @@ def sync_doc(url: str | None = None, device: str = "cuda", no_add: bool = False,
         env = dict(os.environ, DATASET_PATH=str(DATASET_PATH))
         return subprocess.run(then_cmd, shell=True, env=env).returncode
     return 0
+
+
+def audit_videos(titles: list[str] | None = None, max_age_days: float = 7.0,
+                 dry_run: bool = False, reclassify_only: bool = False) -> dict[str, list[str]]:
+    """Check which YouTube video each done song was built from.
+
+    Clearly wrong videos with a safe replacement (`auto`) are pinned in
+    notes_inbox.txt — the next `ingest` refetches them. Judgement calls
+    (`suggest`) wait in the inbox page's library editor. See
+    processors/video_audit.py for the rules.
+    """
+    from processors.inbox_http import pin_video, pinned_titles
+    from processors.video_audit import (audit_song, is_fresh, load_audit, reclassify,
+                                        sleep_between, write_audit)
+
+    path = DATASET_PATH / "video_audit.jsonl"
+    rows = load_audit(path)
+    records = load_raw()
+    pins = pinned_titles()
+    todo = titles or sorted(t for t, r in records.items() if r.get("status") == "done")
+    if reclassify_only:                   # rules changed: re-judge stored rows
+        for title in todo:
+            if title in rows:
+                rows[title] = reclassify(rows[title], pinned=title in pins)
+        write_audit(path, rows)
+        todo = []
+    for i, title in enumerate(todo, 1):
+        rec = records.get(title)
+        if not rec or not rec.get("youtube_url"):
+            print(f"[{i}/{len(todo)}] {title}: not in the library, skipped")
+            continue
+        if not titles and title in rows and is_fresh(rows[title], max_age_days) \
+                and (rows[title]["verdict"] == "pinned") == (title in pins):
+            continue
+        rows[title] = audit_song(title, rec, pinned=title in pins)
+        r = rows[title]
+        print(f"[{i}/{len(todo)}] {title}: {r['verdict']}"
+              + (f" — {'; '.join(r['reasons'])}" if r["reasons"] else ""), flush=True)
+        write_audit(path, rows)           # resumable if interrupted
+        sleep_between()
+
+    by: dict[str, list[str]] = {}
+    for r in rows.values():
+        by.setdefault(r["verdict"], []).append(r["title"])
+    if not dry_run:
+        for title in by.get("auto", []):
+            if title not in pins:
+                pin_video(title, rows[title]["best"]["url"])
+    print(f"\n{path.name}: " + ", ".join(f"{k} {len(v)}" for k, v in sorted(by.items())))
+    for title in by.get("auto", []):
+        b, c = rows[title]["best"], rows[title]["current"] or {}
+        print(f"  ↻ {title}: {c.get('title', '(unavailable)')}  →  {b['title']}")
+    if by.get("auto"):
+        print(("[dry-run] would pin " if dry_run else "Pinned ") +
+              f"{len(by['auto'])} videos in {NOTES_INBOX_TXT.name}"
+              + ("" if dry_run else " — run `pipeline.py ingest` to refetch them"))
+    if by.get("suggest"):
+        print(f"{len(by['suggest'])} songs to review: `pipeline.py inbox` → ④ 歌庫影片")
+    return by
 
 
 # ─────────────────────────────────────────────
@@ -2161,6 +2253,23 @@ def main():
     p_ing.add_argument("--no-then", action="store_true",
                        help="With --from-doc: skip INBOX_POST_INGEST_CMD")
 
+    # setlist
+    sub.add_parser(
+        "setlist",
+        help="Rewrite setlist.jsonl from notes + current raw only (safe during an ingest)")
+
+    # videos
+    p_vid = sub.add_parser(
+        "videos",
+        help="Audit the YouTube source video of every library song; pin clear fixes")
+    p_vid.add_argument("titles", nargs="*", help="Only these songs (default: all done songs)")
+    p_vid.add_argument("--max-age", type=float, default=7.0,
+                       help="Reuse audit rows newer than this many days (default 7)")
+    p_vid.add_argument("--dry-run", action="store_true",
+                       help="Report only; don't pin anything in notes_inbox.txt")
+    p_vid.add_argument("--reclassify", action="store_true",
+                       help="Re-judge stored audit rows with the current rules (no network)")
+
     # serve
     p_serve = sub.add_parser(
         "serve",
@@ -2194,6 +2303,9 @@ def main():
     p_inb.add_argument("--then", default=None, metavar="CMD",
                        help="Shell command to run after each successful ingest "
                             "(default: $INBOX_POST_INGEST_CMD), e.g. a phone sync")
+    p_inb.add_argument("--edit-only", action="store_true",
+                       help="Save edits (inbox lines, video pins) but never start ingest — "
+                            "for a second page while another inbox/ingest is busy")
 
     # metrics
     p_met = sub.add_parser(
@@ -2404,6 +2516,11 @@ def main():
                               run_then=not args.no_then))
         ingest_notes(notes_path=args.file, device=args.device,
                      no_add=args.no_add, dry_run=args.dry_run)
+    elif args.command == "setlist":
+        sys.exit(refresh_setlist())
+    elif args.command == "videos":
+        audit_videos(args.titles or None, max_age_days=args.max_age, dry_run=args.dry_run,
+                     reclassify_only=args.reclassify)
     elif args.command == "serve":
         from processors.serve_http import serve_dataset
         serve_dataset(DATASET_PATH, host=args.host, port=args.port)
@@ -2433,7 +2550,8 @@ def main():
         serve_review(host=args.host, port=args.port)
     elif args.command == "inbox":
         from processors.inbox_http import serve_inbox
-        serve_inbox(host=args.host, port=args.port, then_cmd=args.then)
+        serve_inbox(host=args.host, port=args.port, then_cmd=args.then,
+                    edit_only=args.edit_only)
     elif args.command == "metrics":
         metrics_dataset(only_titles=args.only,
                         processed_only=args.processed_only)

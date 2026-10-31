@@ -8,6 +8,54 @@ This repo is the **data factory** — it produces data; consumer projects (a kar
 
 Code is MIT-licensed and the package is structured so any other Python project can install it (`pip install -e .` today; PyPI release is the obvious next step). Audio files are kept local-only by design — see the **Distribution & sharing** section for the AudioSet-style "recipes public, audio reproduced locally" plan.
 
+### System overview
+
+```mermaid
+flowchart LR
+  subgraph IN["Inputs"]
+    DOC["Google Doc<br/>song list + presets<br/>(! = pinned, ±key, 女版/男版)"]
+    EXT["YouTube extension<br/>＋收歌"]
+    DISC["discover → review<br/>(charts, swipe triage)"]
+  end
+
+  subgraph INBOX["pipeline.py inbox  :8767"]
+    P1["① Doc 抓最新 / 套用"]
+    P2["② 收件匣"]
+    P4["④ 歌庫影片 editor<br/>用這支 / 保留這支"]
+  end
+
+  subgraph FACTORY["Producer — this repo"]
+    NOTES[("notes.txt<br/>notes_inbox.txt")]
+    ING["pipeline.py ingest<br/>(--from-doc: fetch the Doc first)"]
+    ADD["add / refetch per song<br/>search → yt-dlp → Demucs →<br/>lyrics → alignment L1 + L1.5 →<br/>encode m4a"]
+    VID["pipeline.py videos<br/>source-video audit"]
+    DATA[("$DATASET_PATH<br/>raw / processed_dataset.jsonl<br/>setlist.jsonl · setlist_blocked.jsonl<br/>songs/{title}/ m4a · lrc · stems")]
+  end
+
+  subgraph SPM["Consumer — StreetPerformerMaster"]
+    SYNC["sync_to_android.py<br/>reconcile sublist.json with the Doc<br/>push changed files (USB preferred)"]
+    APP["Android app<br/>歌單 (★ pinned → by artist, search)<br/>KTV (lyrics, lead-in dots, queue)"]
+    WEB["audience web<br/>(server catalog)"]
+  end
+
+  DOC --> P1 --> NOTES
+  DOC -. "ingest --from-doc" .-> NOTES
+  EXT --> P2 --> NOTES
+  P4 -- "pin video" --> NOTES
+  DISC --> ADD
+  NOTES --> ING --> ADD --> DATA
+  VID -- "clear fixes pinned" --> NOTES
+  VID -. "video_audit.jsonl" .-> P4
+  DATA -- "per-song watcher /<br/>post-ingest hook" --> SYNC
+  SYNC -- "adb" --> APP
+  SYNC --> WEB
+  DATA -. "serve (LAN) · mandpop_dataset module · export" .-> OTHER["other consumers"]
+```
+
+- **The Google Doc owns the performer's song list.** Every Doc line enters the research corpus and the setlist; `!` pins a song, `±N` / `女版`/`男版` are presets. Songs removed from the Doc leave the phone (manual picks stay).
+- **Songs reach the phone one by one**: whenever a song finishes, `pipeline.py setlist` (read-only on raw) refreshes the setlist and `sync_to_android.py` pushes only changed files; the app polls its songs folder every 5 s and reloads without stopping playback.
+- **Quality loops**: `pipeline.py videos` replaces clearly wrong source videos (live / cover / another singer) and lists judgement calls in the ④ editor; alignment Layer 1.5 re-times every lyric line so lyrics don't drift behind the singing.
+
 ---
 
 ## Part 1 — Building the dataset
@@ -30,8 +78,9 @@ From one song title, `python pipeline.py add "歌名"` runs the full 6-step flow
 │                             │  → lyrics.lrc + lyrics.txt
 │                             │  + artist / lyricist / composer / album
 │                             │
-├─[5] Alignment gate ─────────┤  Layer 1 VAD onset  + Layer 2 WhisperX drift
-│                             │  (auto-shift LRC on Layer 1, second-pass shift on Layer 2)
+├─[5] Alignment gate ─────────┤  Layer 1 VAD onset → Layer 1.5 per-line re-timing
+│                             │  (+ Layer 2 WhisperX drift with `audit --layer2`)
+│                             │  (auto-shift / re-time LRC, original kept as lyrics.lrc.orig)
 │                             │
 ├─[6] Encode AAC 192k ────────┤  → instrumental.m4a
 │                             │
@@ -101,6 +150,7 @@ Paths are relative to `$DATASET_PATH`. Internal audit metrics are deliberately s
 | Layer | Method | Cost | Catches |
 |-------|--------|------|---------|
 | **Layer 1** | RMS-based voice activity detection on `vocals.wav` ↔ first non-metadata LRC line. Auto-shifts the LRC by the measured offset. | seconds | YouTube intros, MV pre-rolls, voice-overs that aren't in the LRC's reference release |
+| **Layer 1.5** | Per-line re-timing (`processors/lrc_align.py`): every LRC line start is assigned to a vocal onset of `vocals.wav` by dynamic programming — onset strength rewarded, gap ratios vs. the LRC penalized (relaxed across long breaks; an inserted/cut passage costs a flat penalty), a global `a·t + b` fit as a soft prior. Applied only when lines then land on onsets clearly more often. | ~1 s per song, CPU | Lyrics drifting further behind as the song goes: sped-up re-uploads (1–4 % tempo), MVs with a longer intro or an extra interlude |
 | **Layer 2** | WhisperX ASR on `vocals.wav` → flat per-character time stream → substring-match each LRC line within a ±20 s window → median ± MAD drift | 3–5 s per song on GPU | Wrong YouTube version, wrong LRC release (e.g. 粵語 LRC vs 國語 MV), cover by another artist, sustained drift Layer 1 missed |
 
 Layer 2 has a **second-pass auto-shift**: if it detects a tight large drift (median > 5 s, MAD < 4 s), the LRC is shifted by the signed median and re-verified. This rescues songs where Demucs left enough instrumental hum in `vocals.wav` to fool Layer 1 about where vocals actually start.
@@ -110,13 +160,16 @@ Verdicts (stored in each raw record's `alignment` field):
 | Verdict | Meaning | Promotes? |
 |---------|---------|-----------|
 | `ok` | offset ≤ 0.5 s, no shift needed | ✅ |
-| `fixed` | offset shifted (Layer 1 and/or Layer 2) and re-verified | ✅ |
+| `fixed` | offset shifted (Layer 1 and/or Layer 2) and/or lines re-timed (Layer 1.5), then re-verified | ✅ |
 | `fixable` | offset measured but auto-fix wasn't applied (`--no-fix` run) | ❌ |
 | `drift` | Layer 2 found inconsistent drift even after auto-shift | ❌ |
 | `misaligned` | Layer 1 offset > 30 s, or Layer 2 match rate < 6% | ❌ |
 | `no_data` | missing files, or VAD couldn't find an onset | ❌ |
 
-`lyrics.lrc.orig` is written before any auto-shift, so every modification is reversible.
+`lyrics.lrc.orig` is written before any auto-shift or re-timing, so every modification is reversible.
+Layer 1 and 1.5 run in `add` (step 5/6), `refetch` and `pipeline.py audit`; on the 2026-10 library
+a dry run re-timed 154 / 176 songs and raised the share of line starts followed by singing
+(first second, vocals VAD) from 0.76 to 0.91, with no song getting worse.
 
 ### CLI reference
 
@@ -263,7 +316,14 @@ python pipeline.py ingest --from-doc            # fetch the tracked Google Doc �
 python pipeline.py ingest --from-doc URL        # same, and make URL the tracked doc
 python pipeline.py ingest --from-doc --dry-run  # show the Doc diff only
 python pipeline.py ingest --from-doc --no-then  # skip INBOX_POST_INGEST_CMD (no phone sync)
+python pipeline.py setlist                      # rewrite setlist.jsonl from notes + current raw only
 ```
+
+`setlist` touches nothing but `setlist.jsonl` / `setlist_blocked.jsonl` and only
+reads `raw_dataset.jsonl` (twice, retrying until both reads agree), so it is
+safe while an ingest is running. Run it with the phone sync after each song
+finishes to publish songs one by one instead of when the whole batch ends
+(prints `setlist.jsonl: 158 ready, 78 not yet`).
 
 `--from-doc` is the unattended version of the inbox page's 「抓最新」+「套用」:
 it prints the Doc diff (`Google Doc: 236 songs — +13 −7 ~20 vs notes.txt`),
@@ -304,6 +364,7 @@ installed yt-dlp: `pip install -U yt-dlp`.
 ```bash
 python pipeline.py inbox                        # http://127.0.0.1:8767
 python pipeline.py inbox --then "CMD"           # run CMD after each successful ingest
+python pipeline.py inbox --port 8769 --edit-only  # second page that saves edits but never starts ingest
 ```
 
 One local page for both intake paths; every change runs `ingest` in the
@@ -333,6 +394,45 @@ to make it permanent.
 `--then` (or `INBOX_POST_INGEST_CMD` in `.env`) is how a consumer gets
 refreshed without the producer importing it — e.g. StreetPerformerMaster's
 phone sync. The child process gets an absolute `DATASET_PATH`.
+
+#### Fix source videos (audit + library editor)
+
+```bash
+python pipeline.py videos                    # audit every done song; pin clear fixes
+python pipeline.py videos 故事 楓            # only these songs (always re-checked)
+python pipeline.py videos --dry-run          # report only, pin nothing
+python pipeline.py videos --max-age 0        # re-check everything (default reuses rows < 7 days old)
+python pipeline.py videos --reclassify       # re-judge stored rows with the current rules (no network)
+python pipeline.py ingest                    # refetch the pinned songs
+```
+
+Many early songs were built from a live, talent-show, cover or lyric-video
+upload. `videos` compares each song's current video with a fresh search
+(`title artist` and `title 官方 MV`) and writes `video_audit.jsonl`:
+
+| Verdict | Meaning | Action |
+|---|---|---|
+| `ok` | current video is the best candidate, or about as popular | none |
+| `auto` | current upload is live / cover / KTV / another singer's version / unavailable, and the best candidate is an official studio upload by the credited artist (with ≥ 3× the views, or ours is another singer's) | pinned in `notes_inbox.txt` |
+| `suggest` | a better upload probably exists but it's a judgement call (unknown artist, same-name songs, a clean upload with fewer views) | review in the editor |
+| `pinned` | the Doc or the inbox already pins a URL | never touched |
+
+"Best candidate" = an upload whose title names the song, studio before live,
+official before fan, then most views. "Official" = the title says so
+(`Official`/`官方`/`MV`) or the channel is a YouTube Music `Artist - Topic`
+channel (the album master — the cleanest separation source). Output ends with
+`video_audit.jsonl: auto 12, ok 120, suggest 40` and the auto replacements.
+
+**Library editor** — `pipeline.py inbox` → ④ 歌庫影片 lists every done song
+with its current video (thumbnail, channel, views) and up to five
+candidates. 「用這支」 (or a pasted URL) pins the video in `notes_inbox.txt`
+and starts `ingest`, which re-downloads, re-separates and re-aligns the song,
+then runs the post-ingest hook (phone sync). 「保留這支」 on the current video
+confirms it (pins the same URL: no refetch, never flagged again).
+「重新搜尋」 re-audits one song. The server never runs two ingests at once:
+it waits while another `pipeline.py ingest` process is running.
+Filters: 待確認 (`suggest`) / 已自動換 / 已指定 / 沒問題 / 全部. A Doc line
+with its own URL still wins over a pin made here.
 
 #### Review discovered songs (swipe triage)
 

@@ -133,6 +133,7 @@ python pipeline.py add --accepted                    # 批次處理快篩接受�
 python pipeline.py ingest                            # notes.txt（Google Doc 鏡像）→ corpus + setlist
 python pipeline.py ingest --dry-run                  # 只解析報告，不寫任何東西
 python pipeline.py ingest --from-doc                 # 抓追蹤中的 Google Doc → ingest → 手機同步 hook
+python pipeline.py videos                            # 稽核每首歌的來源 YouTube 影片；明顯錯的（現場/翻唱/別人唱的）自動指定，其餘在 inbox ④ 歌庫影片 手動換
 python pipeline.py serve                             # 唯讀 LAN server（Mac 瀏覽器按需拉歌，零安裝）
 python pipeline.py metrics                           # 全 corpus 各 append 一筆 YT 熱度快照（每週跑）
 python pipeline.py features                          # 算 BPM/調性/LUFS/段落 → features.json
@@ -189,6 +190,7 @@ python pipeline.py features                          # 算 BPM/調性/LUFS/段�
 每首歌進來都要通過 alignment 檢查才能升上 labeled。流程在 `processors/alignment.py`：
 
 - **Layer 1（每首幾秒，預設開）**：vocals.wav 上 RMS-VAD 找第一句人聲時間點，跟 LRC 第一行歌詞時間做差（並過濾掉 `作词/作曲/编曲/制作人/吉他/Production Coordination/Recorded` 等 Chinese + English 製作信用 metadata）。`|offset| ≤ 0.5s` → `ok`（直接 labeled）；`0.5–30s` → 自動把整個 LRC 平移修正（原檔備份成 `lyrics.lrc.orig`），重新驗證後標 `fixed`（labeled）；`> 30s` → `misaligned`（留在 raw，不進 labeled）。
+- **Layer 1.5（逐句重新對時，預設開）**：`processors/lrc_align.py` 用 DP 把每句 LRC 對到 vocals 的起唱點（間隔比例懲罰＋全域 a·t+b 先驗），修「越唱字幕越落後」（加速版上傳、MV 多前奏/間奏）。只在明顯更好時才改寫（`lyrics.lrc.orig` 備份），標 `fixed`。手機同步的歌詞以 md5 比對（重新對時常常不改檔案大小）。
 - **Layer 2（每首幾分鐘，要 `--layer2`）**：WhisperX（Whisper transcription + wav2vec2 word-level forced alignment，~100ms 精度）跑 vocals.wav，逐行 fuzzy match 比對 LRC 並算累積 drift。`mean |drift| > 1s` 或 `std > 1.5s` → `drift`；match rate < 20% → `wrong_version`（→ `misaligned`）。沒裝 whisperx 就 fallback 到 faster-whisper segment-level，再沒裝就 skip。
 - **`pipeline.py add` 第 5/6 步自動跑 Layer 1**（第 6/6 步是 encode m4a）。新歌沒通過 Layer 1 就不會被 export。
 - **`pipeline.py audit`** 對全部資料集重跑檢查並產出 `audit_report.jsonl`。

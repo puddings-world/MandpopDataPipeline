@@ -1,5 +1,6 @@
 """Google Doc → setlist: membership, ordering, and the --from-doc sync."""
 
+import json
 import sys
 
 import pytest
@@ -191,3 +192,19 @@ def test_sync_doc_no_then_skips_hook(dataset, monkeypatch):
                        f'"{sys.executable}" -c "open(r\'{marker}\', \'w\').close()"')
     assert pipeline.sync_doc(DOC, run_then=False) == 0
     assert not marker.exists()
+
+
+def test_refresh_setlist_only_rewrites_setlist_files(dataset, monkeypatch):
+    (dataset / "notes.txt").write_text("稻香 !\n夜曲\n", encoding="utf-8")
+    (dataset / "notes_inbox.txt").write_text("晴天 -2\n", encoding="utf-8")
+    monkeypatch.setattr(pipeline, "SETLIST_JSONL", dataset / "setlist.jsonl")
+    monkeypatch.setattr(pipeline, "SETLIST_BLOCKED_JSONL", dataset / "setlist_blocked.jsonl")
+    monkeypatch.setattr(pipeline, "songs_dir", lambda: dataset)
+    monkeypatch.setattr(pipeline, "load_raw", lambda: {"稻香": {"processed": True},
+                                                       "晴天": {"processed": True}})
+    monkeypatch.setattr(pipeline.time, "sleep", lambda s: None)
+    assert pipeline.refresh_setlist() == 0
+    titles = [json.loads(l)["title"] for l in
+              (dataset / "setlist.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert titles == ["稻香", "晴天"]                       # favorite first; inbox pick with a marker
+    assert "夜曲" in (dataset / "setlist_blocked.jsonl").read_text(encoding="utf-8")

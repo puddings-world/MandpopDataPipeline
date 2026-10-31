@@ -40,6 +40,7 @@ import shlex
 import subprocess
 import sys
 import threading
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime
@@ -229,6 +230,71 @@ def upsert_inbox(body: dict) -> dict:
     return {"line": format_line(entry), "doc_conflict": note}
 
 
+def pin_video(title: str, url: str) -> str:
+    """Pin the source video of a library song via notes_inbox.txt.
+
+    Keeps any markers an existing inbox line has; a new line carries none,
+    so pinning never adds the song to the setlist. A Doc line without a URL
+    takes this pin; a Doc line with its own URL still wins.
+    """
+    vid = video_id(url)
+    if not title.strip():
+        raise ValueError("歌名必填")
+    if vid is None:
+        raise ValueError("不是 YouTube 影片網址")
+    entries = _inbox_entries()
+    old = next((e for e in entries if e.title == title), None)
+    entry = old or NoteEntry(title=title)
+    entry.youtube_url = f"https://youtu.be/{vid}"
+    back = parse_notes(format_line(entry))[0]
+    if len(back) != 1 or back[0].title != title:
+        raise ValueError(f"歌名含有會被當成標記的字：{format_line(entry)}")
+    _write_inbox([e for e in entries if e.title != title] + [entry])
+    return format_line(entry)
+
+
+def pinned_titles() -> set[str]:
+    """Titles whose video is pinned by a URL in the Doc or the inbox."""
+    notes, inbox, _ = _paths()
+    return {e.title for path in (notes, inbox)
+            for e in parse_notes(_read(path))[0] if e.youtube_url}
+
+
+def library_rows() -> list[dict]:
+    """Every done song with its current video and the latest audit row."""
+    import pipeline
+    from processors.video_audit import load_audit
+    audit = load_audit(pipeline.DATASET_PATH / "video_audit.jsonl")
+    pins = pinned_titles()
+    rows = []
+    for title, rec in sorted(pipeline.load_raw().items()):
+        if rec.get("status") != "done":
+            continue
+        a = audit.get(title) or {}
+        rows.append({
+            "title": title, "artist": a.get("artist") or rec.get("artist") or "",
+            "youtube_url": rec.get("youtube_url"), "pinned": title in pins,
+            "verdict": a.get("verdict"), "reasons": a.get("reasons", []),
+            "current": a.get("current"), "candidates": a.get("candidates", []),
+            "checked_at": a.get("checked_at"),
+        })
+    return rows
+
+
+def recheck_song(title: str) -> dict:
+    """Run the video audit for one song now and store the row."""
+    import pipeline
+    from processors.video_audit import audit_song, load_audit, write_audit
+    rec = pipeline.load_raw().get(title)
+    if not rec:
+        raise ValueError(f"歌庫沒有這首：{title}")
+    path = pipeline.DATASET_PATH / "video_audit.jsonl"
+    rows = load_audit(path)
+    rows[title] = audit_song(title, rec, pinned=title in pinned_titles())
+    write_audit(path, rows)
+    return rows[title]
+
+
 _TITLES: tuple[float, list[str]] | None = None
 
 
@@ -261,11 +327,35 @@ def remove_inbox(title: str) -> bool:
 
 # ─── background ingest job ──────────────────────────────────────────────
 
+def other_ingest_running() -> bool:
+    """Is a `pipeline.py ingest` process running outside this server?
+
+    Two ingests writing raw_dataset.jsonl at once would lose updates; a CLI
+    run or a second inbox server may already be busy.
+    """
+    try:
+        import psutil
+    except ImportError:
+        return False
+    me = os.getpid()
+    for proc in psutil.process_iter(["pid", "cmdline"]):
+        try:
+            cmd = proc.info["cmdline"] or []
+            if proc.info["pid"] == me or not any(c.endswith("pipeline.py") for c in cmd):
+                continue
+            if "ingest" in cmd and me not in [p.pid for p in proc.parents()]:
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+    return False
+
+
 class _Job:
     """Single-flight ingest runner; requests during a run coalesce."""
 
-    def __init__(self, then_cmd: str | None):
+    def __init__(self, then_cmd: str | None, edit_only: bool = False):
         self.then_cmd = then_cmd
+        self.edit_only = edit_only
         self.lock = threading.Lock()
         self.running = False
         self.pending = False
@@ -281,6 +371,9 @@ class _Job:
                 del self.log[:1000]
 
     def request(self, reason: str) -> None:
+        if self.edit_only:
+            self._emit(f"── 已存（{reason}）；--edit-only：由另一個 inbox 或下次 ingest 處理")
+            return
         with self.lock:
             if self.running:
                 self.pending = True
@@ -305,6 +398,12 @@ class _Job:
 
     def _loop(self, reason: str) -> None:
         while True:
+            waited = False
+            while other_ingest_running():          # never two ingests at once
+                if not waited:
+                    self._emit("── 另一個 ingest 正在跑，等它結束…")
+                    waited = True
+                time.sleep(10)
             self.started_at = datetime.now().isoformat(timespec="seconds")
             self._emit(f"══ {self.started_at} ingest 開始（{reason}）")
             rc = self._stream([sys.executable, "-u", str(REPO_DIR / "pipeline.py"), "ingest"])
@@ -368,6 +467,8 @@ class _Handler(BaseHTTPRequestHandler):
         elif u.path == "/api/job":
             since = int(parse_qs(u.query).get("since", ["0"])[0] or 0)
             self._json(JOB.status(since))
+        elif u.path == "/api/library":
+            self._json({"songs": library_rows()})
         else:
             self._json({"error": "not_found"}, 404)
 
@@ -403,6 +504,21 @@ class _Handler(BaseHTTPRequestHandler):
                 self._json({"ok": True, **res})
             elif path == "/api/inbox/remove":
                 self._json({"ok": remove_inbox(body.get("title") or "")})
+            elif path == "/api/library/pin":
+                title = (body.get("title") or "").strip()
+                line = pin_video(title, (body.get("url") or "").strip())
+                JOB.request(f"換影片：{title}")
+                self._json({"ok": True, "line": line})
+            elif path == "/api/library/keep":
+                # Confirm the current video: pin it as-is (same video → no refetch).
+                title = (body.get("title") or "").strip()
+                import pipeline
+                url = (pipeline.load_raw().get(title) or {}).get("youtube_url")
+                if not url:
+                    raise ValueError(f"歌庫沒有這首：{title}")
+                self._json({"ok": True, "line": pin_video(title, url)})
+            elif path == "/api/library/recheck":
+                self._json({"ok": True, "row": recheck_song((body.get("title") or "").strip())})
             elif path == "/api/job/run":
                 JOB.request("手動執行")
                 self._json({"ok": True})
@@ -418,11 +534,11 @@ class _Handler(BaseHTTPRequestHandler):
 
 
 def serve_inbox(host: str = "127.0.0.1", port: int = 8767,
-                then_cmd: str | None = None) -> None:
+                then_cmd: str | None = None, edit_only: bool = False) -> None:
     """Run the inbox server until Ctrl-C."""
     global JOB
     then_cmd = then_cmd or os.environ.get("INBOX_POST_INGEST_CMD") or None
-    JOB = _Job(then_cmd)
+    JOB = _Job(then_cmd, edit_only=edit_only)
     httpd = ThreadingHTTPServer((host, port), _Handler)
     print("MandpopDataset inbox — Google Doc + YouTube → ingest")
     print(f"  open  : http://127.0.0.1:{port}/")
@@ -457,6 +573,14 @@ button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disab
 ul{margin:4px 0;padding-left:20px}#inbox li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line)}
 #inbox code{word-break:break-all}pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;height:280px;overflow:auto;font-size:12px;white-space:pre-wrap;margin:10px 0 0}
 .status{font-weight:600}
+#libfilter button.pri{color:#fff}#lib{margin-top:10px}
+.song{border-top:1px solid var(--line);padding:12px 0}.song h3{font-size:15px;margin:0 0 6px}
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.vid{border:1px solid var(--line);border-radius:8px;padding:6px;font-size:12px;display:flex;flex-direction:column;gap:4px}
+.vid.cur{border-color:var(--acc)}.vid img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;background:var(--line)}
+.vid a{color:inherit;text-decoration:none}.vid .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.verdict{font-size:12px;border-radius:4px;padding:1px 6px;margin-left:6px;background:var(--bg);border:1px solid var(--line)}
+.v-suggest{color:var(--acc)}.v-auto{color:var(--ok)}.v-pinned{color:var(--mute)}
 </style></head><body><main>
 <h1>收歌站</h1><p class="sub">Google Doc 或 YouTube 擴充功能 → 下載、分離、歌詞對齊 → 進歌單</p>
 
@@ -469,8 +593,17 @@ ul{margin:4px 0;padding-left:20px}#inbox li{display:flex;justify-content:space-b
 <div id="docmsg" class="msg"></div><div id="diff" class="diff"></div></section>
 
 <section><h2>② YouTube 收件匣</h2>
-<p class="msg" style="margin-top:0">擴充功能存的歌在這裡。Doc 有寫到同一首時以 Doc 為準；想永久保留就把這行貼進 Doc。</p>
+<p class="msg" style="margin-top:0">擴充功能收的歌、和 ④ 指定／確認的影片都存在這裡（電腦上的 notes_inbox.txt，會一直保留，不用貼進 Doc）。Doc 有寫到同一首的標記或網址時，以 Doc 為準。</p>
 <ul id="inbox"></ul></section>
+
+<section><h2>④ 歌庫影片 <span id="libcount" class="msg"></span></h2>
+<p class="msg" style="margin-top:0">每首歌是從哪支 YouTube 影片做的。按「用這支」會把影片指定進收件匣並重新下載、分離、對齊（Doc 那行有寫網址時以 Doc 為準）。
+目前這支沒問題就按「保留這支」（記成已確認，不會重新下載，以後也不再列出）。清單來自 <code>pipeline.py videos</code> 的稽核；單首可按「重新搜尋」。</p>
+<div class="row" id="libfilter">
+<button data-f="suggest" class="pri">待確認</button><button data-f="auto">已自動換</button>
+<button data-f="pinned">已指定</button><button data-f="ok">沒問題</button><button data-f="">全部</button>
+<input type="text" id="libq" placeholder="搜尋歌名 / 歌手"></div>
+<div id="lib"></div></section>
 
 <section><h2>③ 處理進度 <span id="jobstat" class="status"></span></h2>
 <div class="row"><button id="run">重新執行 ingest</button><span id="postcmd" class="msg"></span></div>
@@ -507,5 +640,41 @@ async function poll(){try{const j=await fetch('/api/job?since='+since).then(r=>r
  if(!j.running&&j.lines.length)fetch('/api/state').then(r=>r.json()).then(s=>renderInbox(s.inbox))}catch(e){}
  setTimeout(poll,1500)}
 state().then(poll);
+// ── ④ library editor ──
+let lib=[],libF='suggest';
+const VERDICT={suggest:'待確認',auto:'已自動換',pinned:'已指定',ok:'沒問題'};
+const vidOf=u=>((u||'').match(/(?:v=|youtu\.be\/|shorts\/)([\w-]{11})/)||[])[1];
+const views=n=>n>=1e8?(n/1e8).toFixed(1)+' 億':n>=1e4?Math.round(n/1e4)+' 萬':String(n||0);
+function card(v,title,isCur){const id=v.id||vidOf(v.url);
+ return `<div class="vid${isCur?' cur':''}"><a href="https://youtu.be/${id}" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt=""><span class="t">${esc(v.title||id)}</span></a>
+ <span class="msg" style="margin:0">${esc(v.channel||'')} · ${views(v.views)} 次</span>
+ ${isCur?`<b>目前使用</b><button data-keep="${esc(title)}">保留這支</button>`:`<button data-pin="${esc(title)}" data-url="https://youtu.be/${id}">用這支</button>`}</div>`}
+function renderLib(){const q=$('#libq').value.trim();
+ const rows=lib.filter(s=>(!libF||(libF==='pinned'?s.pinned:(s.verdict===libF&&!s.pinned)))&&(!q||(s.title+s.artist).includes(q)));
+ $('#libcount').textContent=`${rows.length} / ${lib.length} 首`;
+ $('#lib').innerHTML=rows.map(s=>{const curId=(s.current&&s.current.id)||vidOf(s.youtube_url);
+  const cur=s.current||{id:curId,title:'（還沒稽核）',channel:'',views:0};
+  const others=(s.candidates||[]).filter(c=>c.id!==curId).slice(0,5);
+  const v=s.pinned?'pinned':s.verdict;
+  return `<div class="song"><h3>${esc(s.title)} <span class="msg">${esc(s.artist)}</span>${v?`<span class="verdict v-${v}">${VERDICT[v]||v}</span>`:''}</h3>
+  ${s.reasons&&s.reasons.length?`<div class="msg" style="margin:0 0 6px">${esc(s.reasons.join('；'))}</div>`:''}
+  <div class="vids">${curId?card(cur,s.title,true):''}${others.map(c=>card(c,s.title,false)).join('')}</div>
+  <div class="row" style="margin-top:8px"><input type="text" placeholder="或貼上 YouTube 網址" data-urlfor="${esc(s.title)}">
+  <button data-pinurl="${esc(s.title)}">用這支</button><button data-recheck="${esc(s.title)}">重新搜尋</button></div></div>`}).join('')||'<p class="msg">（沒有符合的歌）</p>'}
+async function loadLib(){lib=(await fetch('/api/library').then(r=>r.json())).songs;renderLib()}
+$('#libfilter').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;libF=b.dataset.f;
+ document.querySelectorAll('#libfilter button').forEach(x=>x.classList.toggle('pri',x===b));renderLib()});
+$('#libq').addEventListener('input',renderLib);
+async function pin(title,url){try{const r=await post('/api/library/pin',{title,url});
+ const s=lib.find(x=>x.title===title);if(s){s.pinned=true;s.youtube_url=url;s.current={id:vidOf(url),title:'（重新處理中）',channel:'',views:0}}
+ renderLib();alert(`已指定：${r.line}\n開始重新下載、分離、對齊，進度看 ③`)}catch(e){alert(e.message)}}
+$('#lib').addEventListener('click',async e=>{const b=e.target;
+ if(b.dataset.keep){try{await post('/api/library/keep',{title:b.dataset.keep});const s=lib.find(x=>x.title===b.dataset.keep);if(s)s.pinned=true;renderLib()}catch(err){alert(err.message)}}
+ else if(b.dataset.pin)pin(b.dataset.pin,b.dataset.url);
+ else if(b.dataset.pinurl){const i=document.querySelector(`[data-urlfor="${CSS.escape(b.dataset.pinurl)}"]`);if(i.value.trim())pin(b.dataset.pinurl,i.value.trim())}
+ else if(b.dataset.recheck){b.disabled=true;b.textContent='搜尋中…';try{const r=await post('/api/library/recheck',{title:b.dataset.recheck});
+  const s=lib.find(x=>x.title===b.dataset.recheck);Object.assign(s,{verdict:r.row.verdict,reasons:r.row.reasons,current:r.row.current,candidates:r.row.candidates});renderLib()}
+  catch(err){alert(err.message);b.disabled=false;b.textContent='重新搜尋'}}});
+loadLib();
 </script></body></html>
 """

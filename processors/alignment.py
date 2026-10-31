@@ -709,6 +709,7 @@ class AuditReport:
     layer2: Layer2Result | None
     auto_fixed_offset_sec: float | None = None
     overall: str = "unknown"        # "ok" | "fixed" | "drift" | "misaligned" | "no_data"
+    retime_max_shift_sec: float | None = None   # per-line re-timing applied (Layer 1.5)
 
     def to_dict(self) -> dict:
         return {
@@ -716,6 +717,7 @@ class AuditReport:
             "layer1": self.layer1.to_dict(),
             "layer2": self.layer2.to_dict() if self.layer2 else None,
             "auto_fixed_offset_sec": self.auto_fixed_offset_sec,
+            "retime_max_shift_sec": self.retime_max_shift_sec,
             "overall": self.overall,
         }
 
@@ -746,6 +748,14 @@ def audit_song(song_dir: Path, run_layer2: bool = False,
         fixed = l1.offset_sec
         l1 = layer1_check(vocals, lrc)
 
+    # Layer 1.5: per-line re-timing for tempo / structure drift that a
+    # single shift can't fix (lyrics falling further behind as the song goes).
+    retimed = None
+    if auto_fix and l1.verdict in ("ok", "fixable") and vocals.exists():
+        retimed = apply_line_retime(vocals, lrc)
+        if retimed is not None:
+            l1 = layer1_check(vocals, lrc)
+
     l2 = None
     if run_layer2 and l1.verdict in ("ok", "fixable"):
         l2 = layer2_check(vocals, lrc, device=whisper_device, ctx=whisper_ctx)
@@ -773,9 +783,37 @@ def audit_song(song_dir: Path, run_layer2: bool = False,
                 l2 = layer2_check(vocals, lrc, device=whisper_device,
                                   ctx=whisper_ctx)
 
-    overall = _overall_verdict(l1, l2, fixed)
+    overall = _overall_verdict(l1, l2, fixed if fixed is not None or retimed is None else 0.0)
     return AuditReport(title=title, layer1=l1, layer2=l2,
-                       auto_fixed_offset_sec=fixed, overall=overall)
+                       auto_fixed_offset_sec=fixed, overall=overall,
+                       retime_max_shift_sec=retimed)
+
+
+def apply_line_retime(vocals: Path, lrc: Path) -> float | None:
+    """Re-time each LRC line onto the vocals (processors/lrc_align.py).
+
+    Writes lyrics.lrc (original kept once as lyrics.lrc.orig) only when the
+    alignment is clearly better; returns the largest line shift, else None.
+    """
+    from processors.lrc_align import (align, envelope_from_samples, parse_starts, retime_lrc,
+                                      should_apply, voiced_after, voiced_mask)
+    text = lrc.read_text(encoding="utf-8")
+    starts = parse_starts(text)
+    if len(starts) < 8:
+        return None
+    y, sr = sf.read(str(vocals), always_2d=True, dtype="float32")
+    y = y.mean(axis=1)
+    r = align(starts, envelope_from_samples(y, sr))
+    if not should_apply(r):
+        return None
+    mask = voiced_mask(y, sr)
+    if voiced_after(mask, r.new) < voiced_after(mask, r.old) - 0.02:
+        return None                 # lines would land less often on singing: keep the LRC
+    backup = lrc.with_suffix(lrc.suffix + ".orig")
+    if not backup.exists():
+        backup.write_bytes(lrc.read_bytes())
+    lrc.write_text(retime_lrc(text, r.old, r.new), encoding="utf-8")
+    return round(r.max_shift, 2)
 
 
 def _overall_verdict(l1: Layer1Result, l2: Layer2Result | None,
