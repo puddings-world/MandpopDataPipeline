@@ -20,3 +20,18 @@ exports/
 # OS
 .DS_Store
 Thumbs.db
+
+# Others
+downloads/
+*.log
+
+# Isolated tool envs + downloaded model weights (setup_env.py recreates)
+tools/venvs/
+tools/models/
+
+# Inbox server local config (saved Google Doc link)
+inbox_config.json
+notes.txt.bak
+
+# Local package build metadata
+*.egg-info/

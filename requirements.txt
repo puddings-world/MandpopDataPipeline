@@ -5,3 +5,7 @@ numpy
 requests
 beautifulsoup4
 python-dotenv
+whisperx
+zhconv
+pypinyin
+librosa

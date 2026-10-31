@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mandpop-dataset"
+version = "0.1.0"
+description = "Reader for the MandpopDataset — alignment-verified Mandarin pop instrumentals + LRC."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "GeniusPudding" }]
+keywords = ["mandarin-pop", "karaoke", "dataset", "lrc", "music-information-retrieval"]
+
+# Reader-only deps. Other projects that just want to iterate the dataset
+# install only these.
+dependencies = [
+    "python-dotenv>=1.0",
+]
+
+# Full pipeline (Demucs / WhisperX / etc.) lives behind this extra so a
+# consumer who only needs the reader doesn't pull in 5 GB of ML deps.
+# Install with:   pip install -e ".[pipeline]"
+[project.optional-dependencies]
+pipeline = [
+    "yt-dlp",
+    "demucs",
+    "soundfile",
+    "numpy<2",
+    "requests",
+    "beautifulsoup4",
+    "whisperx",
+    "zhconv",
+]
+
+[tool.setuptools]
+# Only the reader module is exposed as importable. pipeline.py, ytgrab.py,
+# crawlers/, processors/ remain script-callable (`python pipeline.py …`)
+# but aren't part of the public API for external consumers.
+py-modules = ["mandpop_dataset"]

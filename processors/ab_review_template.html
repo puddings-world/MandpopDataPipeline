@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hotspot Review</title>
+<style>
+:root{--bg:#f6f6f4;--fg:#1d1d1f;--card:#fff;--line:#d9d9d6;--acc:#2563eb;--mut:#6b6b6b;--ok:#15803d;--warn:#b45309}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#ececec;--card:#1c1c1c;--line:#333;--acc:#60a5fa;--mut:#9a9a9a;--ok:#4ade80;--warn:#fbbf24}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,"Noto Sans TC",sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+h1{font-size:20px;margin:0 0 4px}
+.meta{color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line);margin-right:6px}
+.tag.harmony{color:var(--acc);border-color:var(--acc)}
+.tag.detail{color:var(--warn);border-color:var(--warn)}
+.hint{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent);border-radius:4px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;align-items:center}
+button{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+button.vote{border-style:dashed}
+button.voted{background:var(--ok);border-color:var(--ok);color:#fff}
+.bar{height:6px;background:var(--line);border-radius:3px;margin-top:12px;overflow:hidden}
+.bar>div{height:100%;background:var(--acc);width:0}
+kbd{font:12px ui-monospace,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left}
+.reveal{color:var(--ok);font-weight:600}
+.small{font-size:13px;color:var(--mut)}
+label{cursor:pointer}
+</style></head><body><main>
+
+<div class="card">
+  <div class="row" style="margin:0;justify-content:space-between">
+    <div><b>關鍵片段盲測</b> <span class="meta" id="progress"></span></div>
+    <label class="small"><input type="checkbox" id="blind" checked> 盲測</label>
+  </div>
+  <div class="bar"><div id="pbar"></div></div>
+  <p class="small" style="margin:10px 0 0">
+    <kbd>1</kbd>–<kbd>9</kbd> 切換選項（同步播放、無縫切換）·
+    <kbd>0</kbd> 原曲 · <kbd>V</kbd> 伴奏 ⇄ 人聲軌 · <kbd>Space</kbd> 播放/暫停 ·
+    <kbd>A</kbd>/<kbd>B</kbd>/<kbd>C</kbd>… 投票「這個最好」· <kbd>S</kbd> 差不多 ·
+    <kbd>←</kbd><kbd>→</kbd> 上/下一段。片段自動循環。
+  </p>
+</div>
+
+<div class="card" id="seg">
+  <div><span class="tag" id="kind"></span><span class="meta" id="pos"></span></div>
+  <h1 id="title"></h1>
+  <div class="meta" id="time"></div>
+  <div class="hint" id="hint"></div>
+  <div class="row" id="opts"></div>
+  <div class="row" id="votes"></div>
+  <div class="row small" id="status"></div>
+</div>
+
+<div class="card">
+  <b>目前統計</b>
+  <table id="tally"></table>
+  <div class="row">
+    <button id="export">下載投票結果 JSON</button>
+    <button id="copy">複製結果</button>
+    <button id="reset">清除全部投票</button>
+  </div>
+</div>
+
+</main>
+<script>
+const DATA = __DATA__;
+const SEGS = DATA.segments, KEY = 'ab_review_votes';
+let votes = {};
+try { votes = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(votes)); } catch (e) {} };
+const segKey = s => s.song + '|' + s.start;
+const fmt = t => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+function orderFor(i) {
+  const ms = Object.keys(SEGS[i].opts), r = rng(DATA.seed + i * 7919);
+  for (let k = ms.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [ms[k], ms[j]] = [ms[j], ms[k]]; }
+  return ms;
+}
+
+let idx = 0, players = {}, current = null, useVoc = false, loopTimer = null;
+const blindEl = document.getElementById('blind');
+const firstOpen = SEGS.findIndex(s => !votes[segKey(s)]);
+idx = firstOpen < 0 ? 0 : firstOpen;
+
+function stopAll() {
+  clearInterval(loopTimer);
+  Object.values(players).forEach(a => { a.pause(); a.removeAttribute('src'); a.load(); });
+  players = {};
+}
+
+function load(i) {
+  stopAll();
+  idx = (i + SEGS.length) % SEGS.length;
+  const s = SEGS[idx], order = orderFor(idx), blind = blindEl.checked, v = votes[segKey(s)];
+  const labelOf = m => blind && !v ? '選項 ' + String.fromCharCode(65 + order.indexOf(m)) : m;
+
+  document.getElementById('title').textContent = s.song;
+  document.getElementById('time').textContent = fmt(s.start) + ' – ' + fmt(s.end) + '（循環）';
+  document.getElementById('pos').textContent = '第 ' + (idx + 1) + ' / ' + SEGS.length + ' 段 · 差異強度 ×' + s.score;
+  const kindEl = document.getElementById('kind');
+  kindEl.textContent = s.kind === 'harmony' ? '和聲/主唱判斷' : '高頻細節';
+  kindEl.className = 'tag ' + s.kind;
+  const who = labelOf(s.odd), more = s.offset_db > 0, db = Math.abs(s.offset_db).toFixed(1);
+  document.getElementById('hint').textContent = s.kind === 'harmony'
+    ? (more ? `${who} 在人聲頻段比其他多留了 ${db} dB：多出來的是和聲（好）還是主唱殘影（壞）？按 V 聽人聲軌對照。`
+            : `${who} 在人聲頻段比其他少了 ${db} dB：是主唱去得更乾淨（好），還是把和聲也吃掉了（壞）？`)
+    : (more ? `${who} 的 5–16 kHz 比其他多 ${db} dB：是鈸、空氣感保留較好，還是齒音/主唱高頻殘留？`
+            : `${who} 的 5–16 kHz 比其他少 ${db} dB：是比較乾淨，還是細節被削掉、聲音變悶？`);
+
+  const optBox = document.getElementById('opts'); optBox.innerHTML = '';
+  const voteBox = document.getElementById('votes'); voteBox.innerHTML = '';
+  order.forEach((m, n) => {
+    const b = document.createElement('button');
+    b.textContent = (n + 1) + ' · ' + labelOf(m); b.dataset.m = m;
+    b.onclick = () => select(m); optBox.appendChild(b);
+    const vb = document.createElement('button');
+    vb.className = 'vote' + (v && v.winner === m ? ' voted' : '');
+    vb.textContent = '投 ' + String.fromCharCode(65 + n) + (v ? ' = ' + m : '');
+    vb.onclick = () => vote(m); voteBox.appendChild(vb);
+  });
+  if (s.orig) {
+    const b = document.createElement('button'); b.textContent = '0 · 原曲'; b.dataset.m = '__orig';
+    b.onclick = () => select('__orig'); optBox.appendChild(b);
+  }
+  const tb = document.createElement('button');
+  tb.className = 'vote' + (v && v.winner === 'tie' ? ' voted' : '');
+  tb.textContent = 'S · 差不多'; tb.onclick = () => vote('tie'); voteBox.appendChild(tb);
+
+  // One <audio> per source, all playing in lockstep; switching only flips muting.
+  const make = (key, src, vol) => {
+    if (!src) return;
+    const a = new Audio(); a.preload = 'auto'; a.src = src; a.volume = vol; a.muted = true;
+    a.addEventListener('loadedmetadata', () => { a.currentTime = s.start; }, {once: true});
+    players[key] = a;
+  };
+  Object.entries(s.opts).forEach(([m, o]) => { make(m + ':inst', o.inst, o.iv); make(m + ':voc', o.voc, o.vv); });
+  make('__orig:inst', s.orig, 1);
+  select(current && (current === '__orig' || s.opts[current]) ? current : order[0], true);
+  render();
+  loopTimer = setInterval(tick, 40);
+}
+
+function activeKey() { return current + ':' + (useVoc && current !== '__orig' ? 'voc' : 'inst'); }
+function select(m, silent) {
+  current = m;
+  const k = activeKey();
+  Object.entries(players).forEach(([key, a]) => { a.muted = key !== k; });
+  document.querySelectorAll('#opts button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+  document.getElementById('status').textContent = '正在聽：' + (useVoc && m !== '__orig' ? '人聲軌' : '伴奏軌');
+}
+function tick() {
+  const s = SEGS[idx], master = players[activeKey()];
+  if (!master || master.readyState < 1) return;
+  if (master.currentTime >= s.end || master.currentTime < s.start - 0.3) {
+    Object.values(players).forEach(a => { a.currentTime = s.start; });
+    return;
+  }
+  Object.values(players).forEach(a => {
+    if (a !== master && Math.abs(a.currentTime - master.currentTime) > 0.06) a.currentTime = master.currentTime;
+  });
+}
+function playing() { const a = players[activeKey()]; return a && !a.paused; }
+function togglePlay() {
+  const all = Object.values(players);
+  if (playing()) all.forEach(a => a.pause()); else all.forEach(a => a.play().catch(() => {}));
+}
+
+function vote(winner) {
+  const s = SEGS[idx];
+  votes[segKey(s)] = {song: s.song, start: s.start, kind: s.kind, odd: s.odd,
+                      offset_db: s.offset_db, winner, at: new Date().toISOString()};
+  save();
+  const wasPlaying = playing();
+  load(idx);  // re-render with names revealed
+  if (wasPlaying) togglePlay();
+  setTimeout(() => {
+    const next = SEGS.findIndex((x, j) => j > idx && !votes[segKey(x)]);
+    if (next >= 0) { const p = playing(); load(next); if (p) togglePlay(); }
+  }, 1300);
+}
+
+function render() {
+  const done = SEGS.filter(s => votes[segKey(s)]).length;
+  document.getElementById('progress').textContent = `已投 ${done} / ${SEGS.length} 段`;
+  document.getElementById('pbar').style.width = (100 * done / SEGS.length) + '%';
+  const rows = DATA.methods.concat(['tie']).map(m => {
+    const vs = Object.values(votes).filter(v => v.winner === m);
+    return [m, vs.length, vs.filter(v => v.kind === 'harmony').length, vs.filter(v => v.kind === 'detail').length];
+  });
+  document.getElementById('tally').innerHTML = '<tr><th>方法</th><th>勝場</th><th>和聲段</th><th>細節段</th></tr>' +
+    rows.map(r => `<tr><td>${r[0] === 'tie' ? '差不多' : r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+}
+
+const exportJson = () => JSON.stringify({methods: DATA.methods, votes: Object.values(votes)}, null, 2);
+document.getElementById('export').onclick = () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([exportJson()], {type: 'application/json'}));
+  a.download = 'ab_review_votes.json'; a.click();
+};
+document.getElementById('copy').onclick = () => navigator.clipboard.writeText(exportJson())
+  .then(() => document.getElementById('copy').textContent = '已複製 ✓');
+document.getElementById('reset').onclick = () => { votes = {}; save(); load(0); };
+blindEl.onchange = () => load(idx);
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey) return;
+  const k = e.key.toLowerCase(), order = orderFor(idx);
+  if (k === ' ') { e.preventDefault(); togglePlay(); }
+  else if (k === 'arrowright') { const p = playing(); load(idx + 1); if (p) togglePlay(); }
+  else if (k === 'arrowleft') { const p = playing(); load(idx - 1); if (p) togglePlay(); }
+  else if (k === 'v') { useVoc = !useVoc; select(current); }
+  else if (k === '0' && SEGS[idx].orig) select('__orig');
+  else if (/^[1-9]$/.test(k) && order[+k - 1]) select(order[+k - 1]);
+  else if (k === 's') vote('tie');
+  else if (/^[a-i]$/.test(k) && order[k.charCodeAt(0) - 97]) vote(order[k.charCodeAt(0) - 97]);
+});
+load(idx);
+</script></body></html>

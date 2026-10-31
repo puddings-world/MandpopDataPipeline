@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "收歌 — MandpopDataset inbox",
+  "version": "1.0.0",
+  "description": "Save the YouTube video you're watching (version + key preset) into the MandpopDataset inbox.",
+  "permissions": [],
+  "host_permissions": ["http://127.0.0.1:8767/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "收歌" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["parse.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

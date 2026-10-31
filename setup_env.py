@@ -176,6 +176,34 @@ def print_next_steps():
 """)
 
 
+SEPARATOR_VENV = PROJECT_DIR / "tools" / "venvs" / "separator"
+
+
+def create_separator_venv():
+    """Isolated venv for audio-separator (`pipeline.py separate`).
+
+    audio-separator needs numpy 2.x, which breaks transformers/WhisperX in
+    the main env. The venv inherits the main env's site-packages (so torch
+    is shared, not re-downloaded) and overrides numpy locally.
+    """
+    sub = "Scripts/python.exe" if sys.platform == "win32" else "bin/python"
+    sep_python = SEPARATOR_VENV / sub
+    if sep_python.exists():
+        print("  ✓ separator venv already exists")
+    else:
+        base = venv_python() if Path(venv_python()).exists() else sys.executable
+        run([base, "-m", "venv", "--system-site-packages", str(SEPARATOR_VENV)],
+            "create tools/venvs/separator", fatal=False)
+    if sep_python.exists():
+        run([str(sep_python), "-m", "pip", "install", "audio-separator[gpu]"],
+            "pip install audio-separator[gpu] (separator venv)", fatal=False)
+        # Inherited numba/llvmlite may be built against numpy 1.x and crash
+        # librosa under numpy 2 — shadow them with numpy-2 builds locally.
+        run([str(sep_python), "-m", "pip", "install", "--ignore-installed",
+             "numba>=0.61", "llvmlite>=0.44", "numpy==2.0.2"],
+            "pip install numpy-2 numba (separator venv)", fatal=False)
+
+
 def main() -> int:
     print("=" * 54)
     print("  MandpopDataPipeline — Environment Setup")
@@ -188,6 +216,7 @@ def main() -> int:
     install_requirements()
     check_ffmpeg()
     check_ytdlp()
+    create_separator_venv()
     setup_env_file()
     print_next_steps()
     return 0
