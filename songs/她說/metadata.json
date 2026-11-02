@@ -1,6 +1,6 @@
 {
   "title": "她說",
-  "artist": "太合音樂 Taihe Music-精選",
+  "artist": "林俊傑 JJ Lin",
   "category": "mandarin_pop",
   "duration_sec": 339.0,
   "key_offset": 0,
@@ -18,5 +18,15 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:01.607132"
+  "built_at": "2026-04-23T01:54:01.607132",
+  "lyricist": "孙燕姿",
+  "composer": "林俊杰",
+  "album": "她说 概念自选辑",
+  "favorite": true,
+  "version_artist": "林俊傑",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/BocMPQv9brE",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:46:37"
 }

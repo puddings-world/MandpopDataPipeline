@@ -1,0 +1,35 @@
+{
+  "title": "除了愛你還能愛誰",
+  "youtube_url": "https://youtu.be/MmB89uh_pnU",
+  "youtube_title": "動力火車 Power Station [ 除了愛你還能愛誰 ] Official Music Video",
+  "duration_sec": 276,
+  "view_count": 4036362,
+  "uploader": "華研國際",
+  "artist": "動力火車",
+  "album": "无情的情书",
+  "lyricist": "许常德",
+  "composer": "张雨生",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:31:19.834041",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "動力火車",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/MmB89uh_pnU",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:34:23"
+}

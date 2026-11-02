@@ -1,0 +1,33 @@
+{
+  "title": "少年",
+  "youtube_url": "https://youtu.be/efKva-XmV48",
+  "youtube_title": "【官方正式版MV】夢然《少年》『我還是從前那個少年 Miya 』",
+  "duration_sec": 261,
+  "view_count": 5923946,
+  "uploader": "HEAT MUSIC",
+  "artist": "夢然",
+  "album": null,
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": null,
+    "has_timestamps": false
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:30:44.574136",
+  "key_offset": -2,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "夢然",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/efKva-XmV48",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T09:43:28"
+}

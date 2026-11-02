@@ -1,22 +1,35 @@
 {
   "title": "慢冷",
-  "artist": "浙江卫视音乐频道 ZJSTV Music Channel - 欢迎订阅 -",
-  "category": "mandarin_pop",
-  "duration_sec": 308.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=YtkgUVGm_n8",
-  "youtube_title": "【纯享版】两大实力唱将神仙合作！张碧晨&希林娜依高《慢冷》 情绪层层递进将人缓缓带入歌曲的情境中！ #天赐的声音4 EP1 20230428",
-  "view_count": 17283575,
+  "youtube_url": "https://youtu.be/MpsJEL5Wd_k",
+  "youtube_title": "蕭煌奇 Ricky Hsiao〈慢冷〉Official Music Video",
+  "duration_sec": 305,
+  "view_count": 12143081,
+  "uploader": "蕭煌奇 Ricky Hsiao",
+  "artist": "蕭煌奇",
+  "album": "2022中国好声音 第1期",
+  "lyricist": "姚若龙",
+  "composer": "萧煌奇",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:27.792739"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:49:33.142064",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "蕭煌奇",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/MpsJEL5Wd_k",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:13:34"
 }

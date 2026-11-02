@@ -1,0 +1,33 @@
+{
+  "title": "沒那麼簡單",
+  "youtube_url": "https://www.youtube.com/watch?v=1gIVP6qpZLw",
+  "youtube_title": "黃小琥 Tiger Huang - 沒那麼簡單 4K (Official 4K UltraHD Video)",
+  "duration_sec": 305,
+  "view_count": 60169,
+  "uploader": "Timeless Music",
+  "artist": "黄小琥",
+  "album": "简单/不简单",
+  "lyricist": "姚若龙",
+  "composer": "萧煌奇",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:29:25.407305",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "黃小琥",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:35:03"
+}

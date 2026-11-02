@@ -1,0 +1,35 @@
+{
+  "title": "城裡的月光",
+  "youtube_url": "https://youtu.be/ult4DF_9G0U",
+  "youtube_title": "許美靜 - 城裡的月光「高音質 x 動態歌詞 Lyrics」♪ SDPMusic ♪",
+  "duration_sec": 317,
+  "view_count": 1715610,
+  "uploader": "SDP MusicChannel",
+  "artist": "许美静",
+  "album": "在月光下唱情歌",
+  "lyricist": "陈佳明",
+  "composer": "陈佳明",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T19:51:27.130669",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "許美靜",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/ult4DF_9G0U",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:57:04"
+}

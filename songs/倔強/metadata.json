@@ -1,6 +1,6 @@
 {
   "title": "倔強",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "五月天 Mayday",
   "category": "mandarin_pop",
   "duration_sec": 264.0,
   "key_offset": 0,
@@ -18,5 +18,11 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:23.440807"
+  "built_at": "2026-04-23T01:53:23.440807",
+  "lyricist": "五月天 阿信",
+  "composer": "五月天 阿信",
+  "album": "神的孩子都在跳舞",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T03:32:55"
 }

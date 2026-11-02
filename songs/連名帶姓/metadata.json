@@ -1,0 +1,34 @@
+{
+  "title": "連名帶姓",
+  "youtube_url": "https://www.youtube.com/watch?v=qf09H2xFq2s",
+  "youtube_title": "aMEI張惠妹 [ Full Name 連名帶姓 ] Official Music Video",
+  "duration_sec": 359,
+  "view_count": 107182794,
+  "uploader": "聲動娛樂 Mei Entertainment",
+  "artist": "en",
+  "album": "连名带姓",
+  "lyricist": "葛大为",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:08:46.487343",
+  "key_offset": -5,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "en",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:53:53"
+}

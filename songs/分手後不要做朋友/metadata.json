@@ -1,0 +1,36 @@
+{
+  "title": "分手後不要做朋友",
+  "youtube_url": "https://youtu.be/PMsV6D5HJWs",
+  "youtube_title": "梁文音Wen Yin Liang – 分手後不要做朋友 (Lyric Video)",
+  "duration_sec": 262,
+  "view_count": 81905711,
+  "uploader": "UNIVERSAL MUSIC TAIWAN 環球音樂",
+  "artist": "梁文音",
+  "album": "分手后不要做朋友",
+  "lyricist": "黄婷",
+  "composer": "木兰号AKA陈韦伶",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T10:31:02.508156",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "梁文音",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/PMsV6D5HJWs",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:25:54"
+}

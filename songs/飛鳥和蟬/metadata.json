@@ -1,0 +1,34 @@
+{
+  "title": "飛鳥和蟬",
+  "youtube_url": "https://www.youtube.com/watch?v=V0XUd8f2pz8",
+  "youtube_title": "任然 - 飛鳥和蟬【動態歌詞】「你驕傲的飛遠 我棲息的夏天」♪",
+  "duration_sec": 297,
+  "view_count": 84471030,
+  "uploader": "Angelic Music World",
+  "artist": "任然",
+  "album": "天赐的声音第六季 第6期",
+  "lyricist": "耕耕",
+  "composer": "Kent王健",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T01:59:56.753429",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "任然",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T20:01:14"
+}

@@ -1,6 +1,6 @@
 {
   "title": "剛剛好",
-  "artist": "薛之謙 JokerXue",
+  "artist": "薛之謙 Joker Xue",
   "category": "mandarin_pop",
   "duration_sec": 275.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:31.741273"
+  "built_at": "2026-04-23T01:53:31.741273",
+  "lyricist": "薛之谦",
+  "composer": "薛之谦",
+  "album": "初学者",
+  "favorite": false,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T06:25:00"
 }

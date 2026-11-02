@@ -1,22 +1,35 @@
 {
   "title": "你不知道的事",
-  "artist": "湖南卫视芒果TV官方频道  China HunanTV Official Channel",
-  "category": "mandarin_pop",
-  "duration_sec": 283.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=hfugNPTrfAM",
-  "youtube_title": "【纯享】张信哲＆周兴哲《你不知道的事》两人歌声交织出新的情感，将诉不尽又道不明的苦情思揉尽歌曲中｜声生不息宝岛季 EP8 Infinity and Beyond 2023 | MangoTV",
-  "view_count": 12515064,
+  "youtube_url": "https://youtu.be/zvUsOXNPVxo",
+  "youtube_title": "王力宏「你不知道的事」《戀愛通告》主題曲完整版MV 全球網路大首播",
+  "duration_sec": 274,
+  "view_count": 18913695,
+  "uploader": "王力宏 Wang Leehom",
+  "artist": "en",
+  "album": "你不知道的事",
+  "lyricist": "瑞业",
+  "composer": "王力宏",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:17.879719"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:40:06.828112",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "en",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/zvUsOXNPVxo",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T00:27:56"
 }

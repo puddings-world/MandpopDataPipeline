@@ -1,0 +1,33 @@
+{
+  "title": "痛快的哀艷",
+  "youtube_url": "https://youtu.be/A6g0ncregRc",
+  "youtube_title": "蘇打綠 sodagreen -【痛快的哀艷】痛快版 Official Music Video",
+  "duration_sec": 399,
+  "view_count": 8111037,
+  "uploader": "蘇打綠 sodagreen",
+  "artist": "蘇打綠",
+  "album": null,
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": null,
+    "has_timestamps": false
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:41:19.127512",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "蘇打綠",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/A6g0ncregRc",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T15:39:34"
+}

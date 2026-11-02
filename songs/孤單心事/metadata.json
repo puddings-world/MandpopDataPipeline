@@ -1,0 +1,33 @@
+{
+  "title": "孤單心事",
+  "youtube_url": "https://www.youtube.com/watch?v=QdsvAKKTfjA",
+  "youtube_title": "藍又時 - 孤單心事",
+  "duration_sec": 269,
+  "view_count": 24613736,
+  "uploader": "W Invisible",
+  "artist": "藍又時",
+  "album": "孤单心事 (爱你是孤单的心事)",
+  "lyricist": "徐世珍",
+  "composer": "杨子朴Venk",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T01:58:47.120229",
+  "key_offset": -4,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "藍又時",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T09:12:31"
+}

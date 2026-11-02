@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:17.987831"
+  "built_at": "2026-04-23T01:56:17.987831",
+  "lyricist": "邱建豪",
+  "composer": "卢可沛",
+  "album": "半熟理想",
+  "favorite": true,
+  "version_artist": "理想混蛋",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:44:28"
 }

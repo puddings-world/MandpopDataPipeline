@@ -1,6 +1,6 @@
 {
   "title": "在這座城市遺失了你",
-  "artist": "相信音樂BinMusic",
+  "artist": "告五人 Accusefive",
   "category": "mandarin_pop",
   "duration_sec": 398.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:50.395671"
+  "built_at": "2026-04-23T01:53:50.395671",
+  "lyricist": "潘云安",
+  "composer": "潘云安",
+  "album": "运气来得若有似无",
+  "favorite": false,
+  "version_artist": "告五人",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:50:16"
 }

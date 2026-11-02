@@ -1,6 +1,6 @@
 {
   "title": "我相信",
-  "artist": "Depuislejour86",
+  "artist": "楊培安",
   "category": "mandarin_pop",
   "duration_sec": 245.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:44.894835"
+  "built_at": "2026-04-23T01:54:44.894835",
+  "lyricist": "刘虞瑞",
+  "composer": "陈国华",
+  "album": "為你轉身電影原聲帶 (Original Motion Picture Soundtrack)",
+  "favorite": false,
+  "version_artist": "楊培安",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:56:55"
 }

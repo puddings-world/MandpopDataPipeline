@@ -1,6 +1,6 @@
 {
   "title": "天外來物",
-  "artist": "MWS Music World",
+  "artist": "薛之谦",
   "category": "mandarin_pop",
   "duration_sec": 251.0,
   "key_offset": 0,
@@ -18,5 +18,15 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:52.564065"
+  "built_at": "2026-04-23T01:53:52.564065",
+  "lyricist": "薛之谦",
+  "composer": "罗小黑",
+  "album": "天外来物",
+  "favorite": false,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/T4eqDMRnWfc",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:20:40"
 }

@@ -1,0 +1,35 @@
+{
+  "title": "月牙灣",
+  "youtube_url": "https://youtu.be/BvDSuXBE-yY",
+  "youtube_title": "F.I.R. 飛兒樂團 - 月牙灣 Crescent Bay 4K MV (Official 4K UltraHD Video)",
+  "duration_sec": 308,
+  "view_count": 557840,
+  "uploader": "Timeless Music",
+  "artist": "飛兒樂團",
+  "album": "爱·歌姬",
+  "lyricist": "谢宥慧",
+  "composer": "阿沁",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:32:35.245762",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "飛兒樂團",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/BvDSuXBE-yY",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:06:04"
+}

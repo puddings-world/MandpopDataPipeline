@@ -1,6 +1,6 @@
 {
   "title": "會呼吸的痛",
-  "artist": "梁靜茹  Fish Leong ",
+  "artist": "梁静茹",
   "category": "mandarin_pop",
   "duration_sec": 273.0,
   "key_offset": -5,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:01.399847"
+  "built_at": "2026-04-23T01:55:01.399847",
+  "lyricist": "姚若龙",
+  "composer": "宇珩",
+  "album": "崇拜",
+  "favorite": true,
+  "version_artist": "梁靜茹",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:02:22"
 }

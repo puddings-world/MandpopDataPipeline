@@ -1,6 +1,6 @@
 {
   "title": "寫給明天的情書",
-  "artist": "華研國際",
+  "artist": "TANK",
   "category": "mandarin_pop",
   "duration_sec": 266.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:12.264798"
+  "built_at": "2026-04-23T01:54:12.264798",
+  "lyricist": "无",
+  "composer": "无",
+  "album": "chandreayee",
+  "favorite": false,
+  "version_artist": "TANK",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T09:22:28"
 }

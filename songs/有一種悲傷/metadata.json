@@ -1,9 +1,9 @@
 {
   "title": "有一種悲傷",
-  "artist": "A-Lin官方專屬頻道",
+  "artist": "A-Lin",
   "category": "mandarin_pop",
   "duration_sec": 241.0,
-  "key_offset": -3,
+  "key_offset": -5,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=BRcudpJzy1I",
   "youtube_title": "A-Lin《有一種悲傷 A Kind of Sorrow》Official Music Video - 電影『比悲傷更悲傷的故事 More Than Blue 』主題曲",
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:02.565263"
+  "built_at": "2026-04-23T01:55:02.565263",
+  "lyricist": "林孝谦",
+  "composer": "张简君伟",
+  "album": "比悲伤更悲伤的故事 电影原声带",
+  "favorite": false,
+  "version_artist": "A-Lin",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:08:58"
 }

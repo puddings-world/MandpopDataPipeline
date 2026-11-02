@@ -1,22 +1,35 @@
 {
   "title": "苦瓜",
-  "artist": "GM Lyric",
-  "category": "mandarin_pop",
-  "duration_sec": 279.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=cQ_86CAgb6s",
-  "youtube_title": "苦瓜 陈奕迅 (歌词版)",
-  "view_count": 1226055,
+  "youtube_url": "https://youtu.be/UdWlBBqiC7I",
+  "youtube_title": "陳奕迅 Eason Chan - 苦瓜 (Official Music Video)",
+  "duration_sec": 278,
+  "view_count": 17987281,
+  "uploader": "universalmusichk",
+  "artist": "陈奕迅",
+  "album": "Stranger Under My Skin",
+  "lyricist": "黄伟文",
+  "composer": "Kenix Cheang",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:52.698942"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:46:40.063702",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "陳奕迅",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/UdWlBBqiC7I",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T17:18:45"
 }

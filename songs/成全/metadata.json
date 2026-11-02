@@ -1,6 +1,6 @@
 {
   "title": "成全",
-  "artist": "華研國際",
+  "artist": "林宥嘉Yoga Lin",
   "category": "mandarin_pop",
   "duration_sec": 311.0,
   "key_offset": 0,
@@ -18,5 +18,15 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:35.674979"
+  "built_at": "2026-04-23T01:54:35.674979",
+  "lyricist": "施立",
+  "composer": "陈小霞",
+  "album": "蒙面唱将猜猜猜 第一期",
+  "favorite": false,
+  "version_artist": "林宥嘉",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/JfnQ8qtcDyQ",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:21:48"
 }

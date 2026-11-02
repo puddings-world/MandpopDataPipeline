@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:41.763697"
+  "built_at": "2026-04-23T01:54:41.763697",
+  "lyricist": "吴青峰",
+  "composer": "吴青峰",
+  "album": "秋：故事 (苏打绿版)",
+  "favorite": false,
+  "version_artist": "蘇打綠",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:36:13"
 }

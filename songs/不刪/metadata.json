@@ -1,0 +1,35 @@
+{
+  "title": "不刪",
+  "youtube_url": "https://youtu.be/iHtrql23K70",
+  "youtube_title": "井朧 Jing Long《不刪 Bu Shan》Official Lyric Video",
+  "duration_sec": 265,
+  "view_count": 12962872,
+  "uploader": "YOYOROCK 滾石移動",
+  "artist": "井朧",
+  "album": "不删",
+  "lyricist": "闫骁男",
+  "composer": "闫骁男",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:34:27.490146",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "井朧",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/iHtrql23K70",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T10:58:29"
+}

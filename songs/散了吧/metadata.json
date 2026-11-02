@@ -1,22 +1,35 @@
 {
   "title": "散了吧",
-  "artist": "Dreamer Music",
-  "category": "mandarin_pop",
-  "duration_sec": 213.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=Kt-zQIJTHy0",
-  "youtube_title": "刪了吧 - 煙(許佳豪)『要不你還是把我刪了吧，我咬緊牙關命令我發出這句話』【動態歌詞】",
-  "view_count": 29769800,
+  "youtube_url": "https://youtu.be/_CP77DeFAB8",
+  "youtube_title": "林志炫 Terry Lin - 散了吧",
+  "duration_sec": 276,
+  "view_count": 1276980,
+  "uploader": "TerryLinVEVO",
+  "artist": "林志炫",
+  "album": "单身情歌 超炫精选",
+  "lyricist": "姚若龙",
+  "composer": "Jean-Jacques Goldman",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:50.856584"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:02:22.211033",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林志炫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/_CP77DeFAB8",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:27:43"
 }

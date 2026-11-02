@@ -1,0 +1,34 @@
+{
+  "title": "是什麼讓我遇見這樣的你",
+  "youtube_url": "https://www.youtube.com/watch?v=aVmZpcrQBU4",
+  "youtube_title": "Ann白安【是什麼讓我遇見這樣的你What brings me to you】 MV官方完整版",
+  "duration_sec": 272,
+  "view_count": 127109664,
+  "uploader": "相信音樂BinMusic",
+  "artist": "白安",
+  "album": "麦田捕手",
+  "lyricist": "白安",
+  "composer": "白安",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:48:26.043583",
+  "key_offset": -4,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "白安",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:42:34"
+}

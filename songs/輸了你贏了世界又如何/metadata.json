@@ -1,22 +1,35 @@
 {
   "title": "輸了你贏了世界又如何",
-  "artist": "浙江卫视音乐频道 ZJSTV Music Channel - 欢迎订阅 -",
-  "category": "mandarin_pop",
-  "duration_sec": 282.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=NiHF-cwto_A",
-  "youtube_title": "林俊杰《输了你赢了世界又如何》 轻轻松松飙高音 绝对不可错过的神级live现场！《梦想的声音2》EP4 | 纯享 ZJSTV",
-  "view_count": 133559448,
+  "youtube_url": "https://youtu.be/nfOxL7aRUjI",
+  "youtube_title": "優客李林 UKULELE -  輸了你贏了世界又如何 (官方完整版MV)",
+  "duration_sec": 269,
+  "view_count": 2908450,
+  "uploader": "Timeless Music",
+  "artist": "優客李林",
+  "album": "梦想的声音第二季 第4期",
+  "lyricist": "詹兆源",
+  "composer": "詹兆源",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:07.546999"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:03:52.178494",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "優客李林",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/nfOxL7aRUjI",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:30:33"
 }

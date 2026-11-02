@@ -1,9 +1,9 @@
 {
   "title": "路過人間",
-  "artist": "華研國際",
+  "artist": "郁可唯 Yisa Yu",
   "category": "mandarin_pop",
   "duration_sec": 244.0,
-  "key_offset": -3,
+  "key_offset": -5,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=FMl7GEaYwAE",
   "youtube_title": "郁可唯 Yisa Yu [ 路過人間 Walking by the world ] Official Music Video（電視劇《我們與惡的距離》插曲）",
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:07.069262"
+  "built_at": "2026-04-23T01:56:07.069262",
+  "lyricist": "施人诚",
+  "composer": "张简君伟",
+  "album": "时光音乐会 第1期",
+  "favorite": false,
+  "version_artist": "郁可唯",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:22:31"
 }

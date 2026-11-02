@@ -1,0 +1,34 @@
+{
+  "title": "心牆",
+  "youtube_url": "https://www.youtube.com/watch?v=VhCRokYVF1I",
+  "youtube_title": "郭靜 Claire Kuo - 心牆 (官方版MV)",
+  "duration_sec": 232,
+  "view_count": 31053752,
+  "uploader": "福茂唱片",
+  "artist": "郭静",
+  "album": "致纯静",
+  "lyricist": "姚若龙",
+  "composer": "林俊杰",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:01:59.805725",
+  "key_offset": -5,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "郭靜",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:39:51"
+}

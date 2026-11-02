@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:57.666605"
+  "built_at": "2026-04-23T01:54:57.666605",
+  "lyricist": "符式龙",
+  "composer": "丁芙妮",
+  "album": "不靠谱组合",
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:45:54"
 }

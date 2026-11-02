@@ -1,22 +1,34 @@
 {
   "title": "聖誕結",
-  "artist": "周杰倫 Jay Chou",
-  "category": "mandarin_pop",
-  "duration_sec": 183.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=IXuhdnB2dAY",
-  "youtube_title": "周杰倫 JAY CHOU (feat. 楊瑞代) 【聖誕星 Christmas Star】Official MV",
-  "view_count": 8647808,
+  "youtube_url": "https://www.youtube.com/watch?v=kDbdvD4jsTk",
+  "youtube_title": "陳奕迅 Eason Chan《聖誕結(國)[OT:Lonely Christmas]》[Official MV]",
+  "duration_sec": 289,
+  "view_count": 4872519,
+  "uploader": "英皇娛樂 eeg music",
+  "artist": "陈奕迅",
+  "album": "你的陈奕迅 国语精选",
+  "lyricist": "何启弘",
+  "composer": "李峻一",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:44.000068"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T01:38:26.548411",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "陳奕迅",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:57:41"
 }

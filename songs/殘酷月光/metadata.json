@@ -1,6 +1,6 @@
 {
   "title": "殘酷月光",
-  "artist": "華研國際",
+  "artist": "林宥嘉",
   "category": "mandarin_pop",
   "duration_sec": 270.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:13.607833"
+  "built_at": "2026-04-23T01:55:13.607833",
+  "lyricist": "向月娥",
+  "composer": "陈小霞",
+  "album": "残酷月光",
+  "favorite": true,
+  "version_artist": "林宥嘉",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:28:16"
 }

@@ -1,6 +1,6 @@
 {
   "title": "不能說的秘密",
-  "artist": "周杰倫 Jay Chou",
+  "artist": "周杰伦",
   "category": "mandarin_pop",
   "duration_sec": 336.0,
   "key_offset": 0,
@@ -15,5 +15,14 @@
     "original": "original.mp3"
   },
   "lyrics": {},
-  "built_at": "2026-04-23T01:53:06.865257"
+  "built_at": "2026-04-23T01:53:06.865257",
+  "album": "不能说的秘密 电影原声带",
+  "lyricist": "方文山",
+  "composer": "周杰伦",
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T23:33:46"
 }

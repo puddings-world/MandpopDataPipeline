@@ -1,0 +1,34 @@
+{
+  "title": "夢裡花",
+  "youtube_url": "https://www.youtube.com/watch?v=ZrXRIZ2yBBQ",
+  "youtube_title": "張韶涵-夢裡花",
+  "duration_sec": 218,
+  "view_count": 65953,
+  "uploader": "Variety Angel",
+  "artist": "张韶涵",
+  "album": "梦里花",
+  "lyricist": "吴易纬",
+  "composer": "花輪",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:29:16.323318",
+  "key_offset": -4,
+  "gender_variant": "female",
+  "favorite": false,
+  "version_artist": "張韶涵",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:06:51"
+}

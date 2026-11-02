@@ -1,6 +1,6 @@
 {
   "title": "平凡的一天",
-  "artist": "Dreamer Music",
+  "artist": "毛不易Mao Buyi",
   "category": "mandarin_pop",
   "duration_sec": 299.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:19.040726"
+  "built_at": "2026-04-23T01:54:19.040726",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
+  "album": "平凡的一天",
+  "favorite": true,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T10:06:20"
 }

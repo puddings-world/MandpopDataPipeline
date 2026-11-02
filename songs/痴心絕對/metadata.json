@@ -1,22 +1,35 @@
 {
   "title": "痴心絕對",
-  "artist": "HISMUSICS",
-  "category": "mandarin_pop",
-  "duration_sec": 261.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=DdMRXHzdd-E",
-  "youtube_title": "李聖傑 Sam Lee / 痴心絕對【歌詞】",
-  "view_count": 12889313,
+  "youtube_url": "https://youtu.be/7NIsBeVRAgk",
+  "youtube_title": "李聖傑 Sam Lee【痴心絕對 Devotion Love】Official Music Video",
+  "duration_sec": 257,
+  "view_count": 56303091,
+  "uploader": "滾石唱片 ROCK RECORDS",
+  "artist": "李圣杰",
+  "album": "痴心绝对",
+  "lyricist": "蔡伯南",
+  "composer": "蔡伯南",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:28.800843"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:14:53.965560",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "李聖傑",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/7NIsBeVRAgk",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T15:48:01"
 }

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "computed_at": "2026-10-31T10:58:01.808953+00:00",
+  "source": {
+    "vocals": "vocals.wav",
+    "instrumental": "instrumental.wav"
+  },
+  "duration_sec": 61.24,
+  "bpm": 83.4,
+  "key": "A#",
+  "mode": "major",
+  "key_confidence": 1.0,
+  "loudness_lufs": -11.4,
+  "energy": 0.59,
+  "dynamic_range_db": 12.3,
+  "vocal_ratio": 0.46,
+  "sections": [
+    {
+      "label": "verse",
+      "start_sec": 0.0
+    },
+    {
+      "label": "verse",
+      "start_sec": 7.85
+    },
+    {
+      "label": "bridge",
+      "start_sec": 52.48
+    },
+    {
+      "label": "bridge",
+      "start_sec": 53.96
+    }
+  ]
+}

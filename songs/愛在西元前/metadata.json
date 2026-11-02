@@ -1,0 +1,33 @@
+{
+  "title": "愛在西元前",
+  "youtube_url": "https://www.youtube.com/watch?v=5XK2C9w6oVk",
+  "youtube_title": "周杰倫 Jay Chou【愛在西元前 Love before AD】Official MV",
+  "duration_sec": 238,
+  "view_count": 25208020,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰伦",
+  "album": "范特西",
+  "lyricist": "方文山",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:11:10.623779",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:03:38"
+}

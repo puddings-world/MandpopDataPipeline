@@ -1,0 +1,34 @@
+{
+  "title": "人生沒有標準答案",
+  "youtube_url": "https://youtu.be/YyXYW2Q1gzA",
+  "youtube_title": "毛不易【人生沒有標準答案】HD 高清官方歌詞版 MV",
+  "duration_sec": 277,
+  "view_count": 259579,
+  "uploader": "太合音樂 Taihe Music-精選",
+  "artist": "毛不易",
+  "album": "人生没有标准答案",
+  "lyricist": "王梦瑶",
+  "composer": "王梦瑶",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:38:24.442768",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/YyXYW2Q1gzA",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:08:08"
+}

@@ -1,22 +1,35 @@
 {
   "title": "像我這樣的人",
-  "artist": "浙江卫视音乐频道 ZJSTV Music Channel - 欢迎订阅 -",
-  "category": "mandarin_pop",
-  "duration_sec": 320.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=_SUwUaP14Gs",
-  "youtube_title": "[ CLIP ] JJ林俊杰飙高音改编毛不易名曲《像我这样的人》满满的霸气帝王感！《梦想的声音3》EP9 20181221 /浙江卫视官方音乐HD/",
-  "view_count": 6754663,
+  "youtube_url": "https://youtu.be/cOeXmL-ZA1I",
+  "youtube_title": "毛不易《像我这样的人》| 这首歌是真搭王宝强的树先生",
+  "duration_sec": 208,
+  "view_count": 1299,
+  "uploader": "Human World",
+  "artist": "毛不易",
+  "album": "平凡的一天",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:24.051900"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:51:13.200931",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/cOeXmL-ZA1I",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T04:09:34"
 }

@@ -1,0 +1,33 @@
+{
+  "title": "山丘",
+  "youtube_url": "https://www.youtube.com/watch?v=rVEMTxg_LrU",
+  "youtube_title": "Jonathan Lee李宗盛 [ 山丘 ] Official Music Video",
+  "duration_sec": 406,
+  "view_count": 41053020,
+  "uploader": "相信音樂BinMusic",
+  "artist": "李宗盛",
+  "album": "山丘",
+  "lyricist": "李宗盛",
+  "composer": "李宗盛",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:52:42.915301",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "李宗盛",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T09:57:16"
+}

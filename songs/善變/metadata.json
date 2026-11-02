@@ -1,9 +1,9 @@
 {
   "title": "善變",
-  "artist": "Angelic Music World",
+  "artist": "王靖雯不胖",
   "category": "mandarin_pop",
   "duration_sec": 257.0,
-  "key_offset": 0,
+  "key_offset": -2,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=KWRwlTyV-qU",
   "youtube_title": "王靖雯不胖 - 善變【動態歌詞】「從前你穿越風雨都會倉促見一面 後來連傘的邊緣你都懶得分一點」♪",
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:45.110877"
+  "built_at": "2026-04-23T01:53:45.110877",
+  "lyricist": "米嘉郁",
+  "composer": "孙大雄",
+  "album": "善变",
+  "favorite": false,
+  "version_artist": "王靖雯不胖",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:28:40"
 }

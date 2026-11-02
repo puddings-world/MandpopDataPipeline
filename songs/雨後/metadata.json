@@ -1,22 +1,36 @@
 {
   "title": "雨後",
-  "artist": "泥土音樂Clay Music",
-  "category": "mandarin_pop",
-  "duration_sec": 312.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=ksANigSjZ-4",
-  "youtube_title": "雨後的天空 After the rain 盛曉玫 Amy Sand 泥土音樂專輯 8：不變的愛",
-  "view_count": 4403745,
+  "youtube_url": "https://youtu.be/5pjx1W1nK9o",
+  "youtube_title": "張韶涵 Angela Zhang - 雨後 (官方版MV)",
+  "duration_sec": 245,
+  "view_count": 469763,
+  "uploader": "福茂唱片",
+  "artist": "張韶涵",
+  "album": "Over The Rainbow",
+  "lyricist": "姚若龙",
+  "composer": "宋新妮",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:18.114859"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:09:07.368342",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "張韶涵",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/5pjx1W1nK9o",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:47:37"
 }

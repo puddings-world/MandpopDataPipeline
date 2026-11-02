@@ -1,0 +1,35 @@
+{
+  "title": "當你在最需要的時候",
+  "youtube_url": "https://youtu.be/EXM3c3Ie4io",
+  "youtube_title": "怕胖團PAPUN BAND 《 當你在最需要的時候 》Lyrics Video",
+  "duration_sec": 250,
+  "view_count": 2347706,
+  "uploader": "怕胖團PAPUN BAND Youtube 官方頻道",
+  "artist": "怕胖團",
+  "album": "2049",
+  "lyricist": "闪亮 (谢侃均 Hsieh Kan-Chun",
+  "composer": "闪亮 (谢侃均 Hsieh Kan-Chun",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:39:38.744099",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "怕胖團",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/EXM3c3Ie4io",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T15:30:50"
+}

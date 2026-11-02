@@ -1,0 +1,35 @@
+{
+  "title": "因為愛",
+  "youtube_url": "https://youtu.be/d7YJ_fOcOks",
+  "youtube_title": "韋禮安 Weibird Wei - 因為愛 (官方版MV) - 民視偶像劇「星座愛情」水瓶女插曲",
+  "duration_sec": 243,
+  "view_count": 10646285,
+  "uploader": "福茂唱片",
+  "artist": "韋禮安",
+  "album": "首张同名全创作专辑",
+  "lyricist": "韦礼安",
+  "composer": "韦礼安",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:42:31.064764",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "韋禮安",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/d7YJ_fOcOks",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:29:14"
+}

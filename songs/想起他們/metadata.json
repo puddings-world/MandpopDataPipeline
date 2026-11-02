@@ -1,22 +1,35 @@
 {
   "title": "想起他們",
-  "artist": "RD 阿東",
-  "category": "mandarin_pop",
-  "duration_sec": 588.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=IVOvN1XMwGI",
-  "youtube_title": "我要來當個魔王了！讓他們想起被支配的恐懼！？【 Rivals 競爭者】",
-  "view_count": 567364,
+  "youtube_url": "https://youtu.be/CyZ2ld5PBbA",
+  "youtube_title": "想起他們 (Echos of Reverie ) - 毛不易『留下一部分他們 帶走一部分我，也想過下次要 更用力緊握』【動態歌詞】",
+  "duration_sec": 329,
+  "view_count": 82298,
+  "uploader": "Dreamer Music",
+  "artist": "毛不易",
+  "album": "冒险精神",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:27.392451"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:55:48.251697",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/CyZ2ld5PBbA",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:57:08"
 }

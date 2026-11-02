@@ -1,22 +1,35 @@
 {
   "title": "一葷一素",
-  "artist": "芒果TV季风频道 MangoTV Monsoon",
-  "category": "mandarin_pop",
-  "duration_sec": 315.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=8DQYzIb2cX4",
-  "youtube_title": "【纯享】毛不易《一荤一素》诉不完的生活 道不尽的温暖《歌手》单曲纯享版|芒果TV会员频道",
-  "view_count": 2618578,
+  "youtube_url": "https://youtu.be/IA9xb6x-blY",
+  "youtube_title": "一荤一素 - 毛不易『月儿明 风儿轻，可是你在敲打我的窗棂』【动态歌词】#新歌更新 #音樂 #流行歌曲",
+  "duration_sec": 289,
+  "view_count": 4462,
+  "uploader": "樹洞音乐",
+  "artist": "毛不易",
+  "album": "平凡的一天",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:05.371200"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:53:49.894194",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/IA9xb6x-blY",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T21:42:34"
 }

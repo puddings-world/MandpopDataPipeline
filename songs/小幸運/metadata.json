@@ -1,9 +1,9 @@
 {
   "title": "小幸運",
-  "artist": "Liang Rainner",
+  "artist": "田馥甄  Hebe Tien",
   "category": "mandarin_pop",
   "duration_sec": 266.0,
-  "key_offset": 0,
+  "key_offset": -2,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=GCgvpwLNvtY",
   "youtube_title": "田馥甄  Hebe Tien 《小幸運》",
@@ -18,5 +18,13 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:12.937687"
+  "built_at": "2026-04-23T01:54:12.937687",
+  "album": "小幸运",
+  "favorite": true,
+  "version_artist": "田馥甄",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/GCgvpwLNvtY",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T21:16:33"
 }

@@ -1,0 +1,34 @@
+{
+  "title": "夜空中最亮的星",
+  "youtube_url": "https://www.youtube.com/watch?v=j22AIr5KlTc",
+  "youtube_title": "G.E.M.【夜空中最亮的星】Official Audio [HD] 鄧紫棋",
+  "duration_sec": 236,
+  "view_count": 46691993,
+  "uploader": "GEM鄧紫棋",
+  "artist": "鄧紫棋",
+  "album": "世界",
+  "lyricist": "毛川",
+  "composer": "毛川",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:07:14.993520",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "鄧紫棋",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:04:13"
+}

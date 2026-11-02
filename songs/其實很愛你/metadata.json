@@ -1,22 +1,35 @@
 {
   "title": "其實很愛你",
-  "artist": "Timeless Music",
-  "category": "mandarin_pop",
-  "duration_sec": 286.0,
-  "key_offset": -4,
-  "gender_variant": "female",
-  "youtube_url": "https://www.youtube.com/watch?v=8GHPf1loWTk",
-  "youtube_title": "F.I.R. 飛兒樂團 - 你很愛他 (official 官方完整版MV)",
-  "view_count": 2268187,
+  "youtube_url": "https://youtu.be/r2WPaMPwPC8",
+  "youtube_title": "張韶涵 Angela Zhang - 其實很愛你 (官方版MV)",
+  "duration_sec": 246,
+  "view_count": 1755944,
+  "uploader": "福茂唱片",
+  "artist": "张韶涵",
+  "album": "梦里花",
+  "lyricist": "桃子",
+  "composer": "阿沁",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:30.303765"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:09:59.240574",
+  "key_offset": -4,
+  "gender_variant": "female",
+  "favorite": false,
+  "version_artist": "張韶涵",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/r2WPaMPwPC8",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T05:05:52"
 }

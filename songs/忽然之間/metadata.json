@@ -1,6 +1,6 @@
 {
   "title": "忽然之間",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "莫文蔚 Karen Mok",
   "category": "mandarin_pop",
   "duration_sec": 205.0,
   "key_offset": -5,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:22.079849"
+  "built_at": "2026-04-23T01:54:22.079849",
+  "lyricist": "周耀辉",
+  "composer": "林健华",
+  "album": "就是 莫文蔚",
+  "favorite": true,
+  "version_artist": "莫文蔚",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:46:20"
 }

@@ -1,6 +1,6 @@
 {
   "title": "眼底星空",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "李聖傑 Sam Lee",
   "category": "mandarin_pop",
   "duration_sec": 266.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:38.734366"
+  "built_at": "2026-04-23T01:55:38.734366",
+  "lyricist": "十方",
+  "composer": "蔡伯南",
+  "album": "音乐十年李圣杰, 唯一精选",
+  "favorite": false,
+  "version_artist": "李聖傑",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:10:54"
 }

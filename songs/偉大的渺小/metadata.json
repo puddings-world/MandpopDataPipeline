@@ -1,0 +1,35 @@
+{
+  "title": "偉大的渺小",
+  "youtube_url": "https://youtu.be/JwjBbWQs71k",
+  "youtube_title": "林俊傑 JJ Lin - 偉大的渺小 Little Big Us (華納 Official HD 官方MV)",
+  "duration_sec": 311,
+  "view_count": 31056184,
+  "uploader": "JJ Lin林俊傑",
+  "artist": "林俊傑",
+  "album": "伟大的渺小",
+  "lyricist": "小寒",
+  "composer": "林俊杰",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:37:12.567102",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林俊傑",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/JwjBbWQs71k",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:18:42"
+}

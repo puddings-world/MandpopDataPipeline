@@ -1,9 +1,9 @@
 {
   "title": "從前說",
-  "artist": "音樂品味頻道",
+  "artist": "小阿七",
   "category": "mandarin_pop",
   "duration_sec": 251.0,
-  "key_offset": 0,
+  "key_offset": -5,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=hEMRM6J7LlY",
   "youtube_title": "小阿七《从前说》【高音质 动态歌词Lyrics】",
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:21.879458"
+  "built_at": "2026-04-23T01:54:21.879458",
+  "lyricist": "刘通",
+  "composer": "刘通",
+  "album": "从前说",
+  "favorite": false,
+  "version_artist": "小阿七",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:36:44"
 }

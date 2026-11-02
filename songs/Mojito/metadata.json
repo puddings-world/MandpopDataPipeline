@@ -1,0 +1,33 @@
+{
+  "title": "Mojito",
+  "youtube_url": "https://youtu.be/-biOGdYiF-I",
+  "youtube_title": "周杰倫 Jay Chou【Mojito】Official MV ★ Check out \"J-Style Trip\" on Netflix -Travelogue, Magic and Fun!",
+  "duration_sec": 188,
+  "view_count": 45410880,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": null,
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": null,
+    "has_timestamps": false
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:48:02.575825",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/-biOGdYiF-I",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T10:50:42"
+}

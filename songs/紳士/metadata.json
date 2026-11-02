@@ -1,22 +1,36 @@
 {
   "title": "紳士",
-  "artist": "FamilyOyoung",
-  "category": "mandarin_pop",
-  "duration_sec": 325.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=HzL2hZYUIgA",
-  "youtube_title": "薛之謙 & 歐陽娜娜 《紳士》完整版",
-  "view_count": 2699454,
+  "youtube_url": "https://youtu.be/Ln_94OO-yDc",
+  "youtube_title": "薛之謙 Joker Xue《紳士》Official Music Video",
+  "duration_sec": 318,
+  "view_count": 2273817,
+  "uploader": "薛之謙 JokerXue",
+  "artist": "薛之謙",
+  "album": "绅士",
+  "lyricist": "薛之谦",
+  "composer": "薛之谦",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:43.647943"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:06:52.021464",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/Ln_94OO-yDc",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:34:21"
 }

@@ -1,0 +1,35 @@
+{
+  "title": "刻在我心底的名字",
+  "youtube_url": "https://youtu.be/m78lJuzftcc",
+  "youtube_title": "盧廣仲 Crowd Lu 【刻在我心底的名字 Your Name Engraved Herein】 Official Music Video  （刻在你心底的名字電影主題曲）",
+  "duration_sec": 343,
+  "view_count": 82170436,
+  "uploader": "添翼音樂 TEAM EAR MUSIC",
+  "artist": "卢广仲",
+  "album": "刻在我心底的名字",
+  "lyricist": "许媛婷",
+  "composer": "许媛婷",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T21:50:28.476474",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "盧廣仲",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/m78lJuzftcc",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T06:13:15"
+}

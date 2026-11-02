@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:01.224934"
+  "built_at": "2026-04-23T01:55:01.224934",
+  "lyricist": "周杰伦",
+  "composer": "周杰伦",
+  "album": "我是歌手第二季 第8期",
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:59:02"
 }

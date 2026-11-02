@@ -1,0 +1,34 @@
+{
+  "title": "日不落",
+  "youtube_url": "https://www.youtube.com/watch?v=Kp3bJvuPnIk",
+  "youtube_title": "日不落-蔡依林 Jolin Tsai-〔絕對高音質〕（動態歌詞Lyrics）",
+  "duration_sec": 226,
+  "view_count": 1020888,
+  "uploader": "絕對好音樂 Good Music",
+  "artist": "蔡依林",
+  "album": "特务J",
+  "lyricist": "崔惟楷",
+  "composer": "Alexander Bard",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:30:50.549241",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "蔡依林",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:30:30"
+}

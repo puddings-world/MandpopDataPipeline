@@ -1,0 +1,33 @@
+{
+  "title": "看著我的眼睛說",
+  "youtube_url": "https://youtu.be/VW0oYTYhefs",
+  "youtube_title": "張遠 - 看著我的眼睛說『來 你看著我的眼睛說 你從沒愛過我 再看著我的眼睛說 你一點都不難過』【動態歌詞MV】",
+  "duration_sec": 261,
+  "view_count": 3714203,
+  "uploader": "Lark Music",
+  "artist": "張遠",
+  "album": null,
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": null,
+    "has_timestamps": false
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:47:06.800369",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "張遠",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/VW0oYTYhefs",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:00:48"
+}

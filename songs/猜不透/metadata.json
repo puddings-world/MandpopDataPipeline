@@ -1,22 +1,36 @@
 {
   "title": "猜不透",
-  "artist": "ORT Music",
-  "category": "mandarin_pop",
-  "duration_sec": 209.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=O2qg33EnzeQ",
-  "youtube_title": "盧盧快閉嘴 / 劉思达LOFTHESTAR - 猜不透 (說唱版)「如果忽遠忽近的灑脫 是你要的自由 那我寧願回到一個人生活」【動態歌詞/PinyinLyrics】♪",
-  "view_count": 34553574,
+  "youtube_url": "https://youtu.be/5vjM5vT58-4",
+  "youtube_title": "丁当 猜不透",
+  "duration_sec": 228,
+  "view_count": 1157468,
+  "uploader": "heyhey1983",
+  "artist": "丁噹",
+  "album": "我爱上的",
+  "lyricist": "黄婷",
+  "composer": "林迈可",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:28.297483"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:54:08.254980",
+  "key_offset": 0,
+  "gender_variant": "male",
+  "favorite": true,
+  "version_artist": "丁噹",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/5vjM5vT58-4",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T15:27:34"
 }

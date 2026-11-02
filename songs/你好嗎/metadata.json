@@ -1,22 +1,35 @@
 {
   "title": "你好嗎",
-  "artist": "周興哲 Eric Chou",
-  "category": "mandarin_pop",
-  "duration_sec": 289.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=wSBXfzgqHtE",
-  "youtube_title": "Eric周興哲《你，好不好？ How Have You Been?》Official Music Video《遺憾拼圖》片尾曲",
-  "view_count": 273152041,
+  "youtube_url": "https://youtu.be/Wrbjahfg8RM",
+  "youtube_title": "周杰倫 Jay Chou【你好嗎 How Are You】Official MV",
+  "duration_sec": 221,
+  "view_count": 16045184,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": "惊叹号",
+  "lyricist": "罗宇轩",
+  "composer": "周杰伦",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
-    "source": "netease",
+    "source": "qq_music",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:23.168109"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T10:34:21.900368",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/Wrbjahfg8RM",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:10:57"
 }

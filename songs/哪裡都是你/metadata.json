@@ -1,0 +1,35 @@
+{
+  "title": "哪裡都是你",
+  "youtube_url": "https://youtu.be/yfn8sE9obWU",
+  "youtube_title": "周杰倫 Jay Chou【哪裡都是你 You are everywhere】Official MV",
+  "duration_sec": 279,
+  "view_count": 18862572,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": "First",
+  "lyricist": "周杰伦",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T19:21:35.183005",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/yfn8sE9obWU",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:21:14"
+}

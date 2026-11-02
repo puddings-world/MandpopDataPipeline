@@ -1,6 +1,6 @@
 {
   "title": "離人",
-  "artist": "camoranleodes",
+  "artist": "林志炫",
   "category": "mandarin_pop",
   "duration_sec": 299.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:17.157593"
+  "built_at": "2026-04-23T01:56:17.157593",
+  "lyricist": "厉曼婷",
+  "composer": "何家文",
+  "album": "擦声而过",
+  "favorite": false,
+  "version_artist": "林志炫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:41:00"
 }

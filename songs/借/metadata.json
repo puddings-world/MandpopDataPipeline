@@ -1,22 +1,36 @@
 {
   "title": "借",
-  "artist": "4K Music Make",
-  "category": "mandarin_pop",
-  "duration_sec": 240.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=0TvdMKPLjQc",
-  "youtube_title": "en - 借一場雨『我想藉一場雨落在你的屋簷 聽窗外滴答滴那是我的思念，等雨過晴天就消失不見。』【高音質|動態歌詞Lyrics】♫",
-  "view_count": 10564917,
+  "youtube_url": "https://youtu.be/QIPJBAYLbYg",
+  "youtube_title": "『MV』毛不易Mao Buyi - 借 官方高畫質 Official HD MV",
+  "duration_sec": 244,
+  "view_count": 1567544,
+  "uploader": "Dreamer Music",
+  "artist": "毛不易",
+  "album": "平凡的一天",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:23.558565"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:01:05.460250",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/QIPJBAYLbYg",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T03:35:54"
 }

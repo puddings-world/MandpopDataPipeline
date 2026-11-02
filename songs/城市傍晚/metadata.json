@@ -1,22 +1,35 @@
 {
   "title": "城市傍晚",
-  "artist": "JJY Music Channel",
-  "category": "mandarin_pop",
-  "duration_sec": 254.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=bv7bLVNfdbs",
-  "youtube_title": "毛不易 -《牧馬城市》(電視劇老男孩片尾曲)",
-  "view_count": 4383251,
+  "youtube_url": "https://youtu.be/V238oJZZ4E4",
+  "youtube_title": "城市傍晚-毛不易『城市的傍晚总使人伤感 当你一个人下班』动态歌词Lyrics 无损音质",
+  "duration_sec": 250,
+  "view_count": 21745,
+  "uploader": "J Music Channel",
+  "artist": "毛不易",
+  "album": "幼鸟指南",
+  "lyricist": "毛不易",
+  "composer": "毛不易",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:51.428167"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:52:27.193617",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/V238oJZZ4E4",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:53:17"
 }

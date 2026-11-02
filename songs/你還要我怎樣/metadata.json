@@ -1,22 +1,36 @@
 {
   "title": "你還要我怎樣",
-  "artist": "浙江卫视音乐频道 ZJSTV Music Channel - 欢迎订阅 -",
-  "category": "mandarin_pop",
-  "duration_sec": 299.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=nKQsYyd1pZ0",
-  "youtube_title": "【开场表演】薛之谦《你还要我怎样》《中国新歌声》中秋踢馆赛 SING!CHINA SP.1 20160915 [浙江卫视官方超清1080P]",
-  "view_count": 16363946,
+  "youtube_url": "https://youtu.be/jwkd9wh59us",
+  "youtube_title": "薛之謙 Joker Xue《你還要我怎樣》Official Music Video",
+  "duration_sec": 309,
+  "view_count": 2495634,
+  "uploader": "薛之謙 JokerXue",
+  "artist": "薛之謙",
+  "album": "意外",
+  "lyricist": "薛之谦",
+  "composer": "薛之谦",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:23.326207"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:04:26.745200",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/jwkd9wh59us",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T11:14:49"
 }

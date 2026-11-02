@@ -1,0 +1,34 @@
+{
+  "title": "逆光",
+  "youtube_url": "https://www.youtube.com/watch?v=H0rgSQXYd84",
+  "youtube_title": "孫燕姿 Sun Yan-Zi -  逆光 Against The Light 4K MV (Official 4K UltraHD Video)",
+  "duration_sec": 296,
+  "view_count": 272638,
+  "uploader": "Timeless Music",
+  "artist": "孙燕姿",
+  "album": "逆光",
+  "lyricist": "廖莹如",
+  "composer": "李伟菘",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:27:35.275060",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "孫燕姿",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:44:39"
+}

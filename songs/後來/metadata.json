@@ -1,10 +1,10 @@
 {
   "title": "後來",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "劉若英 René Liu",
   "category": "mandarin_pop",
   "duration_sec": 341.0,
   "key_offset": 0,
-  "gender_variant": null,
+  "gender_variant": "male",
   "youtube_url": "https://www.youtube.com/watch?v=t0igPuDjYUE",
   "youtube_title": "劉若英 René Liu【後來 Later】Official Music Video",
   "view_count": 104487515,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:21.314494"
+  "built_at": "2026-04-23T01:54:21.314494",
+  "lyricist": "施人诚",
+  "composer": "玉城千春",
+  "album": "我等你",
+  "favorite": true,
+  "version_artist": "劉若英",
+  "preset_note": "或女版-5",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T21:28:39"
 }

@@ -1,0 +1,34 @@
+{
+  "title": "終於",
+  "youtube_url": "https://www.youtube.com/watch?v=W5-i2xrqbTI",
+  "youtube_title": "張韶涵 Angela【終於】Official MV【HD】",
+  "duration_sec": 271,
+  "view_count": 1946275,
+  "uploader": "張韶涵Angela Zhang",
+  "artist": "张韶涵",
+  "album": "全面沦陷",
+  "lyricist": "吴易纬",
+  "composer": "生命树_小王子",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:26:35.638723",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "張韶涵",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:41:07"
+}

@@ -1,0 +1,35 @@
+{
+  "title": "勇氣",
+  "youtube_url": "https://youtu.be/nDchQNPuA0k",
+  "youtube_title": "梁靜茹 Fish Leong【勇氣 Courage】台視「俠女闖天關」主題曲 Official Music Video",
+  "duration_sec": 358,
+  "view_count": 9668079,
+  "uploader": "滾石唱片 ROCK RECORDS",
+  "artist": "梁静茹",
+  "album": "勇气",
+  "lyricist": "瑞业",
+  "composer": "光良",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:21:17.323371",
+  "key_offset": -4,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "梁靜茹",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/nDchQNPuA0k",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T06:40:57"
+}

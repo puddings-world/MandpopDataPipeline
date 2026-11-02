@@ -1,0 +1,34 @@
+{
+  "title": "我曾遇到一束光",
+  "youtube_url": "https://www.youtube.com/watch?v=Uglj8WmthX0",
+  "youtube_title": "叶斯淳《我曾遇到一束光》官方 Official MV【高清】1080P",
+  "duration_sec": 260,
+  "view_count": 16475,
+  "uploader": "ipopo",
+  "artist": "叶斯淳",
+  "album": "我曾遇到一束光",
+  "lyricist": "宋普照",
+  "composer": "陈抒妮",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:55:55.603475",
+  "key_offset": -4,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "葉斯淳",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/Uglj8WmthX0",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:50:44"
+}

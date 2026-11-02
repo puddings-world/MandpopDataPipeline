@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "computed_at": "2026-10-31T10:53:25.033914+00:00",
+  "source": {
+    "vocals": "vocals.flac",
+    "instrumental": "instrumental.flac"
+  },
+  "duration_sec": 333.86,
+  "bpm": 152.0,
+  "key": "A",
+  "mode": "major",
+  "key_confidence": 1.0,
+  "loudness_lufs": -12.0,
+  "energy": 0.51,
+  "dynamic_range_db": 18.6,
+  "vocal_ratio": 0.63,
+  "sections": [
+    {
+      "label": "intro",
+      "start_sec": 0.0
+    },
+    {
+      "label": "chorus",
+      "start_sec": 9.8
+    },
+    {
+      "label": "verse",
+      "start_sec": 20.87
+    },
+    {
+      "label": "chorus",
+      "start_sec": 48.99
+    },
+    {
+      "label": "verse",
+      "start_sec": 107.42
+    },
+    {
+      "label": "chorus",
+      "start_sec": 121.37
+    },
+    {
+      "label": "chorus",
+      "start_sec": 163.05
+    },
+    {
+      "label": "chorus",
+      "start_sec": 238.49
+    },
+    {
+      "label": "chorus",
+      "start_sec": 251.73
+    },
+    {
+      "label": "bridge",
+      "start_sec": 287.07
+    },
+    {
+      "label": "verse",
+      "start_sec": 291.22
+    },
+    {
+      "label": "outro",
+      "start_sec": 305.46
+    }
+  ]
+}

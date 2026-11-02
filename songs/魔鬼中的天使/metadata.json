@@ -1,0 +1,34 @@
+{
+  "title": "魔鬼中的天使",
+  "youtube_url": "https://www.youtube.com/watch?v=na_xv5iFt2Y",
+  "youtube_title": "田馥甄Hebe Tien [魔鬼中的天使 Angel Devil] Official MV",
+  "duration_sec": 254,
+  "view_count": 70669656,
+  "uploader": "華研國際",
+  "artist": "HZM",
+  "album": "魔鬼中的天使",
+  "lyricist": "HZM",
+  "composer": "HZM",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:01:00.624591",
+  "key_offset": -4,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "HZM",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T20:04:20"
+}

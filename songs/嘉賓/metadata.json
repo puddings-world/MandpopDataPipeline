@@ -1,6 +1,6 @@
 {
   "title": "嘉賓",
-  "artist": "EHPMusicChannel",
+  "artist": "張遠",
   "category": "mandarin_pop",
   "duration_sec": 334.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:48.368574"
+  "built_at": "2026-04-23T01:53:48.368574",
+  "lyricist": "王泽言",
+  "composer": "王泽言",
+  "album": "嘉宾",
+  "favorite": false,
+  "version_artist": "張遠",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:35:48"
 }

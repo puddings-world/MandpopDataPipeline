@@ -1,6 +1,6 @@
 {
   "title": "大海",
-  "artist": "Timeless Music",
+  "artist": "張雨生 Tom Chang",
   "category": "mandarin_pop",
   "duration_sec": 273.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:51.734054"
+  "built_at": "2026-04-23T01:53:51.734054",
+  "lyricist": "陈大力",
+  "composer": "陈秀男",
+  "album": "大海",
+  "favorite": false,
+  "version_artist": "張雨生",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:10:04"
 }

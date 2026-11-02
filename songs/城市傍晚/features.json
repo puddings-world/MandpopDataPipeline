@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "computed_at": "2026-10-31T10:54:07.149098+00:00",
+  "source": {
+    "vocals": "vocals.wav",
+    "instrumental": "instrumental.wav"
+  },
+  "duration_sec": 249.7,
+  "bpm": 136.0,
+  "key": "C#",
+  "mode": "major",
+  "key_confidence": 1.0,
+  "loudness_lufs": -12.8,
+  "energy": 0.54,
+  "dynamic_range_db": 14.8,
+  "vocal_ratio": 0.47,
+  "sections": [
+    {
+      "label": "intro",
+      "start_sec": 0.0
+    },
+    {
+      "label": "chorus",
+      "start_sec": 1.95
+    },
+    {
+      "label": "chorus",
+      "start_sec": 122.9
+    },
+    {
+      "label": "verse",
+      "start_sec": 151.79
+    },
+    {
+      "label": "chorus",
+      "start_sec": 155.16
+    },
+    {
+      "label": "verse",
+      "start_sec": 206.15
+    },
+    {
+      "label": "chorus",
+      "start_sec": 211.95
+    },
+    {
+      "label": "bridge",
+      "start_sec": 238.24
+    },
+    {
+      "label": "outro",
+      "start_sec": 244.53
+    }
+  ]
+}

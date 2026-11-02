@@ -1,0 +1,34 @@
+{
+  "title": "字字句句",
+  "youtube_url": "https://youtu.be/caeHhGB9Mp4",
+  "youtube_title": "张碧晨&王赫野 - 字字句句【動態歌詞 / Pinyin Lyrics】『他字字未提喜歡你 你句句都是我願意。』 #天赐的声音4",
+  "duration_sec": 285,
+  "view_count": 678639,
+  "uploader": "Kkbox Music Official",
+  "artist": "張碧晨",
+  "album": null,
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": null,
+    "has_timestamps": false
+  },
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:59:06.646806",
+  "key_offset": -8,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "張碧晨",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/caeHhGB9Mp4",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T09:05:01"
+}

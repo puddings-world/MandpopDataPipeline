@@ -1,9 +1,9 @@
 {
   "title": "匿名的好友",
-  "artist": "Rainie Yang's Official Channel楊丞琳官方專屬頻道",
+  "artist": "楊丞琳 Rainie Yang",
   "category": "mandarin_pop",
   "duration_sec": 259.0,
-  "key_offset": -5,
+  "key_offset": -7,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=s9hGDIpwfXw",
   "youtube_title": "楊丞琳 Rainie Yang - 匿名的好友",
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:37.757602"
+  "built_at": "2026-04-23T01:53:37.757602",
+  "lyricist": "李焯雄",
+  "composer": "陈颖见",
+  "album": "雨爱",
+  "favorite": true,
+  "version_artist": "楊丞琳",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T06:52:47"
 }

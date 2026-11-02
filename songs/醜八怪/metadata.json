@@ -1,0 +1,34 @@
+{
+  "title": "醜八怪",
+  "youtube_url": "https://www.youtube.com/watch?v=mCdi-W2R_AY",
+  "youtube_title": "薛之謙 Joker Xue《醜八怪》Official Music Video",
+  "duration_sec": 243,
+  "view_count": 1522115,
+  "uploader": "薛之謙 JokerXue",
+  "artist": "薛之谦",
+  "album": "意外",
+  "lyricist": "甘世佳",
+  "composer": "李荣浩",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:10:08.349808",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:22:46"
+}

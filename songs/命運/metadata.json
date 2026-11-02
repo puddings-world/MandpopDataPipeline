@@ -1,6 +1,6 @@
 {
   "title": "命運",
-  "artist": "相信音樂BinMusic",
+  "artist": "JiaJia家家",
   "category": "mandarin_pop",
   "duration_sec": 231.0,
   "key_offset": -3,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:38.326814"
+  "built_at": "2026-04-23T01:53:38.326814",
+  "lyricist": "陈没",
+  "composer": "五月天",
+  "album": "为你的寂寞唱歌",
+  "favorite": false,
+  "version_artist": "家家",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:14:56"
 }

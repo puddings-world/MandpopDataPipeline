@@ -1,0 +1,35 @@
+{
+  "title": "給我一個理由忘記",
+  "youtube_url": "https://youtu.be/GouhAIhV1cI",
+  "youtube_title": "Give me a reason to forget (You love me as deeply as so much)",
+  "duration_sec": 221,
+  "view_count": 3056637,
+  "uploader": "en - Topic",
+  "artist": "en",
+  "album": "寂寞不痛",
+  "lyricist": "邬裕康",
+  "composer": "游政豪",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:19:23.507379",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "en",
+  "preset_note": "或女版 -4",
+  "pinned_youtube_url": "https://youtu.be/GouhAIhV1cI",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:50:37"
+}

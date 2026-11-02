@@ -1,0 +1,33 @@
+{
+  "title": "多遠都要在一起",
+  "youtube_url": "https://www.youtube.com/watch?v=D9ksLn6hZ7Q",
+  "youtube_title": "G.E.M.【多遠都要在一起 LONG DISTANCE】Official MV [HD] 鄧紫棋",
+  "duration_sec": 324,
+  "view_count": 71877308,
+  "uploader": "GEM鄧紫棋",
+  "artist": "G.E.M.邓紫棋",
+  "album": "新的心跳",
+  "lyricist": "G.E.M.邓紫棋",
+  "composer": "G.E.M.邓紫棋",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:36:07.555978",
+  "key_offset": -6,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "鄧紫棋",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:04:03"
+}

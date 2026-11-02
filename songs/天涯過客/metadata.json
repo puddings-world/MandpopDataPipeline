@@ -1,6 +1,6 @@
 {
   "title": "天涯過客",
-  "artist": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
   "category": "mandarin_pop",
   "duration_sec": 253.0,
   "key_offset": 0,
@@ -15,5 +15,14 @@
     "original": "original.mp3"
   },
   "lyrics": {},
-  "built_at": "2026-04-23T01:54:01.307609"
+  "built_at": "2026-04-23T01:54:01.307609",
+  "lyricist": "方文山",
+  "composer": "周杰伦",
+  "album": "天涯过客",
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:26:43"
 }

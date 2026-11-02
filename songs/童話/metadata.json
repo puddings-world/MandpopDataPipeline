@@ -1,6 +1,6 @@
 {
   "title": "童話",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "光良Michael Wong",
   "category": "mandarin_pop",
   "duration_sec": 457.0,
   "key_offset": 0,
@@ -18,5 +18,11 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:42.892302"
+  "built_at": "2026-04-23T01:55:42.892302",
+  "lyricist": "光良",
+  "composer": "光良",
+  "album": "童话",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:22:49"
 }

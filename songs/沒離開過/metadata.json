@@ -1,22 +1,35 @@
 {
   "title": "沒離開過",
-  "artist": "芒果TV音乐 MangoTV Music",
-  "category": "mandarin_pop",
-  "duration_sec": 288.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=TTfeMfHxZzc",
-  "youtube_title": "【纯享】#林志炫 《#没离开过 》惊艳全场  教科书级唱功震撼发声，用歌声编织永不褪色的深情告白 ！| 我是歌手 | I AM A SINGER | MangoTV",
-  "view_count": 9291598,
+  "youtube_url": "https://youtu.be/7G8SeUL6O4c",
+  "youtube_title": "【歌詞 字幕】林志炫 - 沒離開過",
+  "duration_sec": 320,
+  "view_count": 5189745,
+  "uploader": "MeinaCyriio",
+  "artist": "林志炫",
+  "album": "擦声而过 2",
+  "lyricist": "楼南蔚",
+  "composer": "Samuel J Waters",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:13.858747"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:24:26.071961",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林志炫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/7G8SeUL6O4c",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T14:38:54"
 }

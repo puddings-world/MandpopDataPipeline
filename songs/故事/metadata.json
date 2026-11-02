@@ -1,22 +1,35 @@
 {
   "title": "故事",
+  "youtube_url": "https://youtu.be/ivm6BkDmxRg",
+  "youtube_title": "蘇打綠 sodagreen -【故事】Official Music Video",
+  "duration_sec": 291,
+  "view_count": 3198903,
+  "uploader": "蘇打綠 sodagreen",
   "artist": "蘇打綠",
-  "category": "mandarin_pop",
-  "duration_sec": 293.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=_k3wjHT5m2E",
-  "youtube_title": "蘇打綠 sodagreen - 【故事 (Endless Story Live) 】 Official Music Video",
-  "view_count": 4890978,
+  "album": "爸爸讲的睡前十分钟故事",
+  "lyricist": null,
+  "composer": null,
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:46.927718"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T17:57:43.702664",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "蘇打綠",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/ivm6BkDmxRg",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:24:23"
 }

@@ -1,0 +1,33 @@
+{
+  "title": "大魚",
+  "youtube_url": "https://www.youtube.com/watch?v=AMskvxEWf0k",
+  "youtube_title": "Big Fish (大魚) - Zhou Shen (周深) lyrics [Eng/Chinese/Pinyin]",
+  "duration_sec": 312,
+  "view_count": 3565454,
+  "uploader": "pengwoo",
+  "artist": "周深",
+  "album": "深的深",
+  "lyricist": "尹约",
+  "composer": "钱雷",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:14:14.166193",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周深",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T08:17:40"
+}

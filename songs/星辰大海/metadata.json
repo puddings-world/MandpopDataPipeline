@@ -1,0 +1,33 @@
+{
+  "title": "星辰大海",
+  "youtube_url": "https://www.youtube.com/watch?v=6tk9jlKo8y4",
+  "youtube_title": "黃霄雲 - 星辰大海「穿過人海 別停下來 趁現在還有期待」【動態歌詞Lyrics】",
+  "duration_sec": 208,
+  "view_count": 29223384,
+  "uploader": "HEAT MUSIC",
+  "artist": "黄霄雲",
+  "album": "星辰大海",
+  "lyricist": "瞿子千",
+  "composer": "瞿子千",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:06:10.700906",
+  "key_offset": -9,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "黃霄雲",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T13:39:17"
+}

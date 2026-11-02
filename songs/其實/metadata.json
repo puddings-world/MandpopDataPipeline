@@ -1,0 +1,36 @@
+{
+  "title": "其實",
+  "youtube_url": "https://youtu.be/YT3HI5hyMi4",
+  "youtube_title": "薛之謙 Joker Xue《其實》Official Music Video",
+  "duration_sec": 242,
+  "view_count": 8102984,
+  "uploader": "薛之謙 JokerXue",
+  "artist": "薛之謙",
+  "album": "意外",
+  "lyricist": "薛之谦",
+  "composer": "薛之谦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:05:30.877023",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "薛之謙",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/YT3HI5hyMi4",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T04:53:53"
+}

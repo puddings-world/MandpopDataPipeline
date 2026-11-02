@@ -1,6 +1,6 @@
 {
   "title": "遠走高飛",
-  "artist": "滾石唱片 ROCK RECORDS",
+  "artist": "李聖傑 Sam Lee",
   "category": "mandarin_pop",
   "duration_sec": 274.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:07.790114"
+  "built_at": "2026-04-23T01:56:07.790114",
+  "lyricist": "王耀光",
+  "composer": "金志文",
+  "album": "中国新声代 第五季 第二期",
+  "favorite": false,
+  "version_artist": "李聖傑",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T19:00:43"
 }

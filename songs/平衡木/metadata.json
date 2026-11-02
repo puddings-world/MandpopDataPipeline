@@ -18,5 +18,13 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:54:19.203478"
+  "built_at": "2026-04-23T01:54:19.203478",
+  "lyricist": "关浩德Walter",
+  "album": "平衡木",
+  "favorite": false,
+  "version_artist": "理想混蛋",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T10:10:18"
 }

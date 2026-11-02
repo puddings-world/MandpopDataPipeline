@@ -1,0 +1,35 @@
+{
+  "title": "真的傻",
+  "youtube_url": "https://youtu.be/7MzAwtQkVco",
+  "youtube_title": "真的傻 (電影《一吻定情》追愛版主題曲)",
+  "duration_sec": 256,
+  "view_count": 2806018,
+  "uploader": "LaLa 徐佳瑩",
+  "artist": "徐佳瑩",
+  "album": "真的傻",
+  "lyricist": "吴易纬",
+  "composer": "JerryC",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:43:44.082556",
+  "key_offset": -6,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "徐佳瑩",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/7MzAwtQkVco",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:07:28"
+}

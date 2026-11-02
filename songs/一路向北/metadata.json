@@ -1,6 +1,6 @@
 {
   "title": "一路向北",
-  "artist": "周杰倫 Jay Chou",
+  "artist": "周杰伦",
   "category": "mandarin_pop",
   "duration_sec": 302.0,
   "key_offset": 0,
@@ -15,5 +15,14 @@
     "original": "original.mp3"
   },
   "lyrics": {},
-  "built_at": "2026-04-23T01:53:05.543549"
+  "built_at": "2026-04-23T01:53:05.543549",
+  "album": "J III MP3 Player",
+  "lyricist": "方文山",
+  "composer": "周杰伦",
+  "favorite": true,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T22:00:57"
 }

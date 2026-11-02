@@ -1,6 +1,6 @@
 {
   "title": "魚",
-  "artist": "怕胖團PAPUN BAND Youtube 官方頻道",
+  "artist": "怕胖團PAPUN BAND",
   "category": "mandarin_pop",
   "duration_sec": 286.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:56:27.313948"
+  "built_at": "2026-04-23T01:56:27.313948",
+  "lyricist": "李铭辰",
+  "composer": "冯政FireDrippin",
+  "album": "鱼",
+  "favorite": true,
+  "version_artist": "怕胖團",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T20:07:48"
 }

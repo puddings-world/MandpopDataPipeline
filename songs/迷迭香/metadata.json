@@ -1,0 +1,33 @@
+{
+  "title": "迷迭香",
+  "youtube_url": "https://www.youtube.com/watch?v=K0Myfz5phlY",
+  "youtube_title": "周杰倫 Jay Chou【迷迭香 Rosemary】-Official Music Video",
+  "duration_sec": 261,
+  "view_count": 6260191,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": "我是歌手第二季 第5期",
+  "lyricist": "方文山",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-05-26T02:13:37.492459",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:34:10"
+}

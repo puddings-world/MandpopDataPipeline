@@ -1,22 +1,36 @@
 {
   "title": "全世界失眠",
-  "artist": "evantile",
-  "category": "mandarin_pop",
-  "duration_sec": 266.0,
-  "key_offset": 0,
-  "gender_variant": null,
-  "youtube_url": "https://www.youtube.com/watch?v=kwFU6m1aTtU",
-  "youtube_title": "棉花糖．全世界失眠",
-  "view_count": 1633948,
+  "youtube_url": "https://youtu.be/oSOuR1B6FN8",
+  "youtube_title": "陳奕迅Eason Chan《全世界失眠》[Lyrics MV]",
+  "duration_sec": 249,
+  "view_count": 661340,
+  "uploader": "英皇娛樂 eeg music",
+  "artist": "陳奕迅",
+  "album": "反正是我",
+  "lyricist": "林夕",
+  "composer": "陈伟",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:27.114244"
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:51:28.203618",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "陳奕迅",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/oSOuR1B6FN8",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T04:42:28"
 }

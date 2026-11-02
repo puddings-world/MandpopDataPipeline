@@ -1,0 +1,33 @@
+{
+  "title": "與浪之間",
+  "youtube_url": "https://www.youtube.com/watch?v=10DHUqSVu6I",
+  "youtube_title": "VH (Vast & Hazy) 【與浪之間 Waves】 Official Music Video",
+  "duration_sec": 323,
+  "view_count": 3821676,
+  "uploader": "添翼音樂 TEAM EAR MUSIC",
+  "artist": "VH",
+  "album": "次等秘密",
+  "lyricist": "林易祺",
+  "composer": "林易祺",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T16:15:47.751620",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "VH",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T17:14:47"
+}

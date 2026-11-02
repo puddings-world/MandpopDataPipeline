@@ -1,6 +1,6 @@
 {
   "title": "突然好想你",
-  "artist": "相信音樂BinMusic",
+  "artist": "MAYDAY 五月天",
   "category": "mandarin_pop",
   "duration_sec": 287.0,
   "key_offset": 0,
@@ -18,5 +18,11 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:40.775208"
+  "built_at": "2026-04-23T01:55:40.775208",
+  "lyricist": "五月天 阿信",
+  "composer": "五月天 阿信",
+  "album": "后青春期的诗",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T16:16:06"
 }

@@ -1,6 +1,6 @@
 {
   "title": "不染",
-  "artist": "YOYOROCK 滾石移動",
+  "artist": "毛不易 Mao Buyi",
   "category": "mandarin_pop",
   "duration_sec": 326.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:06.326863"
+  "built_at": "2026-04-23T01:53:06.326863",
+  "lyricist": "海雷",
+  "composer": "简弘亦",
+  "album": "香蜜沉沉烬如霜 电视原声音乐专辑",
+  "favorite": false,
+  "version_artist": "毛不易",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T23:00:48"
 }

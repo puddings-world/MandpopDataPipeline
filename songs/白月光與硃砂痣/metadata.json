@@ -1,9 +1,9 @@
 {
   "title": "白月光與硃砂痣",
-  "artist": "Angelic Music World",
+  "artist": "大籽",
   "category": "mandarin_pop",
   "duration_sec": 205.0,
-  "key_offset": 0,
+  "key_offset": -4,
   "gender_variant": null,
   "youtube_url": "https://www.youtube.com/watch?v=yFzQRMXEuqU",
   "youtube_title": "大籽 - 白月光與硃砂痣【動態歌詞】「白月光在照耀 你才想起她的好」♪",
@@ -18,5 +18,12 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:55:29.460162"
+  "built_at": "2026-04-23T01:55:29.460162",
+  "album": "白月光与朱砂痣",
+  "favorite": false,
+  "version_artist": "大籽",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T15:50:32"
 }

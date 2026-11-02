@@ -1,6 +1,6 @@
 {
   "title": "囂張",
-  "artist": "EHPMusicChannel",
+  "artist": "en",
   "category": "mandarin_pop",
   "duration_sec": 255.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:48.731939"
+  "built_at": "2026-04-23T01:53:48.731939",
+  "lyricist": "李艺皓",
+  "composer": "李艺皓",
+  "album": "嚣张",
+  "favorite": true,
+  "version_artist": "en",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:38:51"
 }

@@ -1,0 +1,36 @@
+{
+  "title": "愛如潮水",
+  "youtube_url": "https://youtu.be/-xHd_ZByNps",
+  "youtube_title": "張信哲 - 愛如潮水",
+  "duration_sec": 260,
+  "view_count": 8924847,
+  "uploader": "ho8888888",
+  "artist": "張信哲",
+  "album": "心事",
+  "lyricist": "李宗盛",
+  "composer": "黎沸挥",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T03:11:18.941267",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "張信哲",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/-xHd_ZByNps",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:06:45"
+}

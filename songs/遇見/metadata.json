@@ -1,20 +1,36 @@
 {
   "title": "遇見",
-  "youtube_url": "https://www.youtube.com/watch?v=aVmZpcrQBU4",
-  "youtube_title": "Ann白安【是什麼讓我遇見這樣的你What brings me to you】 MV官方完整版",
-  "duration_sec": 272,
-  "view_count": 126531324,
-  "uploader": "相信音樂BinMusic",
+  "youtube_url": "https://youtu.be/m4nu_F_9dWU",
+  "youtube_title": "孫燕姿 Sun Yan-Zi - 遇見 Encounter (official 官方完整版MV)",
+  "duration_sec": 207,
+  "view_count": 10001286,
+  "uploader": "Timeless Music",
+  "artist": "孫燕姿",
+  "album": "白羽毛之恋 华语典藏情歌 Vol.2",
+  "lyricist": "易家扬",
+  "composer": "林一峰",
   "separation_model": "htdemucs_ft",
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
   "files": {
+    "features": "features.json",
     "instrumental": "instrumental.wav",
     "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
     "original": "original.mp3",
     "vocals": "vocals.wav"
   },
-  "processed_at": "2026-04-26T18:36:52.359667"
+  "processed_at": "2026-11-01T03:02:00.834602",
+  "key_offset": -3,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "孫燕姿",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/m4nu_F_9dWU",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T18:56:51"
 }

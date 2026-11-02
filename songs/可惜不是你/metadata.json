@@ -1,0 +1,35 @@
+{
+  "title": "可惜不是你",
+  "youtube_url": "https://youtu.be/k_l7FVsqUyM",
+  "youtube_title": "梁靜茹 Fish Leong【可惜不是你 Unfortunately Not You】Official Music Video",
+  "duration_sec": 288,
+  "view_count": 56025724,
+  "uploader": "滾石唱片 ROCK RECORDS",
+  "artist": "梁静茹",
+  "album": "丝路",
+  "lyricist": "李焯雄",
+  "composer": "曹轩宾",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:22:50.875248",
+  "key_offset": -5,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "梁靜茹",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/k_l7FVsqUyM",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T07:12:10"
+}

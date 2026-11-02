@@ -1,6 +1,6 @@
 {
   "title": "K歌之王",
-  "artist": "英皇娛樂 eeg music",
+  "artist": "陳奕迅 Eason Chan",
   "category": "mandarin_pop",
   "duration_sec": 232.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:05.054807"
+  "built_at": "2026-04-23T01:53:05.054807",
+  "lyricist": "林夕",
+  "composer": "陈辉阳",
+  "album": "打得火热",
+  "favorite": false,
+  "version_artist": "陳奕迅",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T21:33:53"
 }

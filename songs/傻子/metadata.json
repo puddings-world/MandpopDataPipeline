@@ -1,6 +1,6 @@
 {
   "title": "傻子",
-  "artist": "華研國際",
+  "artist": "林宥嘉 Yoga Lin",
   "category": "mandarin_pop",
   "duration_sec": 215.0,
   "key_offset": 0,
@@ -18,5 +18,14 @@
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:23.928551"
+  "built_at": "2026-04-23T01:53:23.928551",
+  "lyricist": "郑楠",
+  "composer": "郑楠",
+  "album": "理智一点",
+  "favorite": false,
+  "version_artist": "林宥嘉",
+  "preset_note": null,
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T03:59:32"
 }

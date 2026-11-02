@@ -1,22 +1,35 @@
 {
   "title": "不痛",
-  "artist": "芒果TV音乐 MangoTV Music",
-  "category": "mandarin_pop",
-  "duration_sec": 297.0,
-  "key_offset": -5,
-  "gender_variant": "female",
-  "youtube_url": "https://www.youtube.com/watch?v=Che-TaPS5OY",
-  "youtube_title": "【纯享】#徐佳莹 《不痛》细腻声线诉说爱之殇，将爱情里的释怀唱成治愈人心的温柔力量 | 我是歌手4 第7期 | I AM A SINGER 4 | Mango TV",
-  "view_count": 14205442,
+  "youtube_url": "https://youtu.be/zXHqzoroAj4",
+  "youtube_title": "張韶涵 Angela Zhang - 不痛 (官方版MV)",
+  "duration_sec": 246,
+  "view_count": 2915736,
+  "uploader": "福茂唱片",
+  "artist": "張韶涵",
+  "album": "1st EP",
+  "lyricist": "崔惟楷",
+  "composer": "杨韵禾",
   "separation_model": "htdemucs_ft",
-  "files": {
-    "instrumental": "instrumental.wav",
-    "vocals": "vocals.wav",
-    "original": "original.mp3"
-  },
   "lyrics": {
     "source": "netease",
     "has_timestamps": true
   },
-  "built_at": "2026-04-23T01:53:06.684055"
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-10-31T18:11:23.859794",
+  "key_offset": -5,
+  "gender_variant": "female",
+  "favorite": false,
+  "version_artist": "張韶涵",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/zXHqzoroAj4",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-10-31T23:22:17"
 }

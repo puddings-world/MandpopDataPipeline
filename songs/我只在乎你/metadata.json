@@ -1,0 +1,36 @@
+{
+  "title": "我只在乎你",
+  "youtube_url": "https://youtu.be/LE6vRCpcbb8",
+  "youtube_title": "鄧麗君  我只在乎你",
+  "duration_sec": 252,
+  "view_count": 6576776,
+  "uploader": "Eva Yang",
+  "artist": "鄧麗君",
+  "album": "温情如水国语集",
+  "lyricist": "慎芝",
+  "composer": "三木たかし",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "features": "features.json",
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-01T02:52:59.813371",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": true,
+  "version_artist": "鄧麗君",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/LE6vRCpcbb8",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-01T12:32:19"
+}
