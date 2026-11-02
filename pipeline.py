@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -337,7 +338,7 @@ def add_song(title: str, youtube_url: str | None = None,
             print(f"  {title}: lyrics already exist, skipping")
             return
         print(f"  {title}...", end=" ", flush=True)
-        lrc, txt, source, info = fetch_lyrics(title)
+        lrc, txt, source, info = fetch_lyrics(title, artist=artist)
         if lrc:
             (song_dir / "lyrics.lrc").write_text(lrc, encoding="utf-8")
         if txt:
@@ -393,7 +394,8 @@ def add_song(title: str, youtube_url: str | None = None,
 
     # Step 4: Lyrics.
     print("  [4/6] Lyrics...", end=" ", flush=True)
-    lrc_text, plain_text, source, song_info = fetch_lyrics(title)
+    lrc_text, plain_text, source, song_info = fetch_lyrics(
+        title, artist=artist or load_raw().get(title, {}).get("artist"))
     lyrics_info = {"source": source, "has_timestamps": False}
     if lrc_text:
         (song_dir / "lyrics.lrc").write_text(lrc_text, encoding="utf-8")
@@ -449,7 +451,9 @@ def add_song(title: str, youtube_url: str | None = None,
         "duration_sec": (yt_info or {}).get("duration"),
         "view_count": (yt_info or {}).get("view_count"),
         "uploader": (yt_info or {}).get("uploader", ""),
-        "artist": song_info.get("artist"),
+        # The singer we asked for wins over whoever the lyrics site credits:
+        # its top hit is often a cover (說了再見 came back as 阿杰).
+        "artist": artist or song_info.get("artist"),
         "album": song_info.get("album"),
         "lyricist": song_info.get("lyricist"),
         "composer": song_info.get("composer"),
@@ -468,6 +472,8 @@ def add_song(title: str, youtube_url: str | None = None,
     # from status + alignment) is the gate for export.
     lyrics_status = "lrc" if lyrics_info.get("has_timestamps") else (
         "txt" if plain_text else "none")
+    if artist:
+        song_info = {**song_info, "artist": artist}
     upsert_raw(title, status="done", youtube_url=youtube_url,
                lyrics=lyrics_status, alignment=alignment_status,
                **{k: v for k, v in song_info.items() if k != "title"})
@@ -477,6 +483,22 @@ def add_song(title: str, youtube_url: str | None = None,
 # ─────────────────────────────────────────────
 # refetch: rebuild a song after wrong YT version or wrong LRC source
 # ─────────────────────────────────────────────
+
+_SONG_AUDIO_FILES = ("original.mp3", "vocals.wav", "vocals.flac", "vocals.m4a",
+                     "instrumental.wav", "instrumental.flac", "instrumental.m4a",
+                     "lyrics.lrc", "lyrics.lrc.orig", "lyrics.txt")
+
+
+def wipe_song_audio(song_dir: Path) -> None:
+    """Delete everything derived from the old video before a new one is used.
+
+    Includes `separations/`: the karaoke batch reuses stems it finds there,
+    so stale ones would put the old recording's backing under the new
+    video's lyrics.
+    """
+    for fname in _SONG_AUDIO_FILES:
+        (song_dir / fname).unlink(missing_ok=True)
+    shutil.rmtree(song_dir / "separations", ignore_errors=True)
 
 def refetch_song(title: str,
                  youtube_url: str | None = None,
@@ -527,7 +549,9 @@ def refetch_song(title: str,
         for fname in ("lyrics.lrc", "lyrics.lrc.orig", "lyrics.txt"):
             (song_dir / fname).unlink(missing_ok=True)
         yt_url = load_raw().get(title, {}).get("youtube_url")
-        lrc, txt, src, info = fetch_lyrics_from(title, lyrics_source, yt_url)
+        lrc, txt, src, info = fetch_lyrics_from(
+            title, lyrics_source, yt_url,
+            artist=artist_override or load_raw().get(title, {}).get("artist"))
         if not lrc:
             print(f"✗ {lyrics_source} returned nothing")
             upsert_raw(title, lyrics="none", alignment="no_data")
@@ -602,17 +626,14 @@ def refetch_song(title: str,
 
     # 2. Wipe everything from the bad attempt so add_song's
     #    "already_processed" check doesn't short-circuit.
-    for fname in ("original.mp3", "vocals.wav", "vocals.flac",
-                  "instrumental.wav", "instrumental.flac",
-                  "instrumental.m4a",
-                  "lyrics.lrc", "lyrics.lrc.orig", "lyrics.txt"):
-        (song_dir / fname).unlink(missing_ok=True)
+    wipe_song_audio(song_dir)
     upsert_raw(title, youtube_url=youtube_url, status="pending",
-               alignment="unchecked", m4a=False, lyrics="none")
+               alignment="unchecked", m4a=False, lyrics="none",
+               instrumental_method=None)
 
     # 3. Hand off to the normal pipeline.
     add_song(title, youtube_url=youtube_url, device=device,
-             lyrics_only=False)
+             lyrics_only=False, artist=artist_override)
     # 4. Re-pin the artist override — add_song's enrich would have
     # overwritten it with whatever the new YT title / NetEase search
     # returned, which for songs with pulled catalogs is often a cover.
@@ -675,7 +696,7 @@ def crawl_all_lyrics():
             continue
 
         print(f"  [{i}/{total}] {title}...", end=" ", flush=True)
-        lrc, txt, source, info = fetch_lyrics(title)
+        lrc, txt, source, info = fetch_lyrics(title, artist=load_raw().get(title, {}).get("artist"))
         if lrc:
             (d / "lyrics.lrc").write_text(lrc, encoding="utf-8")
             found += 1
@@ -890,7 +911,9 @@ def separate_candidates(
 
     ok = skipped = failed = no_source = 0
 
+    from processors.resources import wait_if_paused
     for i, title in enumerate(chosen, 1):
+        wait_if_paused(DATASET_PATH)
         song_dir = sd / title
         if not song_dir.exists():
             print(f"  [{i}/{len(chosen)}] {title}: song dir missing")
@@ -929,6 +952,96 @@ def separate_candidates(
 
     print(f"\nDone: ok={ok} skipped={skipped} failed={failed} "
           f"no_source={no_source}")
+
+
+KARAOKE_BACKUP = "htdemucs_ft"     # separations/{this}/ keeps the pre-karaoke app files
+
+
+def promote_karaoke(titles: list[str] | None = None, method: str = "karaoke_becruily",
+                    revert: bool = False) -> dict[str, int]:
+    """Make the app's backing track remove only the lead vocal.
+
+    Per song: run `method` into separations/{method}/ if not there yet, back
+    up the current instrumental.m4a / vocals.m4a once into
+    separations/htdemucs_ft/, then encode the karaoke instrumental as
+    instrumental.m4a and its lead-vocal stem as the guide vocals.m4a.
+    The lossless research stems at the song root (htdemucs_ft, used by the
+    alignment gate) are left alone. `revert=True` restores the backup.
+    Checks `queue pause` between songs; metadata.json and raw record which
+    method each song uses.
+    """
+    import shutil
+    from processors.encode import encode_m4a, find_stem
+    from processors.resources import wait_if_paused
+    from processors.separate import list_methods, separate_to_dir
+
+    if not revert and method not in list_methods():
+        print(f"Unknown method '{method}'")
+        return {}
+    records = load_raw()
+    sd = songs_dir()
+    chosen = titles or sorted(t for t, r in records.items() if r.get("processed"))
+    counts = {"promoted": 0, "reverted": 0, "skipped": 0, "failed": 0}
+    print(f"{'Reverting' if revert else 'Karaoke backing (' + method + ')'}: {len(chosen)} songs")
+
+    for i, title in enumerate(chosen, 1):
+        wait_if_paused(DATASET_PATH)
+        d = sd / title
+        backup = d / "separations" / KARAOKE_BACKUP
+        meta_path = d / "metadata.json"
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+        except json.JSONDecodeError:
+            meta = {}
+        tag = f"  [{i}/{len(chosen)}] {title}"
+
+        if revert:
+            if not (backup / "instrumental.m4a").exists():
+                print(f"{tag}: nothing to revert"); counts["skipped"] += 1
+                continue
+            for name in ("instrumental.m4a", "vocals.m4a"):
+                if (backup / name).exists():
+                    shutil.copy2(backup / name, d / name)
+            meta.update(instrumental_method=KARAOKE_BACKUP, guide_vocal_method=KARAOKE_BACKUP)
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+            upsert_raw(title, instrumental_method=KARAOKE_BACKUP)
+            print(f"{tag}: reverted"); counts["reverted"] += 1
+            continue
+
+        if meta.get("instrumental_method") == method and not titles:
+            counts["skipped"] += 1
+            continue
+        out = d / "separations" / method
+        try:
+            if find_stem(out, "instrumental") is None:
+                src = _resolve_source_mix(d, title, records)
+                if src is None:
+                    print(f"{tag}: no source audio, skipped"); counts["skipped"] += 1
+                    continue
+                try:
+                    separate_to_dir(src["path"], out, method=method, output_format="flac")
+                finally:
+                    if src.get("cleanup"):
+                        Path(src["path"]).unlink(missing_ok=True)
+            backup.mkdir(parents=True, exist_ok=True)
+            for name in ("instrumental.m4a", "vocals.m4a"):
+                if (d / name).exists() and not (backup / name).exists():
+                    shutil.copy2(d / name, backup / name)
+            encode_m4a(find_stem(out, "instrumental"), d / "instrumental.m4a", overwrite=True)
+            lead = find_stem(out, "vocals")
+            if lead is not None:
+                encode_m4a(lead, d / "vocals.m4a", overwrite=True)
+            meta.update(instrumental_method=method,
+                        guide_vocal_method=method if lead is not None else meta.get("guide_vocal_method"),
+                        karaoke_promoted_at=datetime.now().isoformat(timespec="seconds"))
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+            upsert_raw(title, instrumental_method=method)
+            print(f"{tag}: ✓", flush=True); counts["promoted"] += 1
+        except Exception as e:                    # one song must not stop the batch
+            print(f"{tag}: ✗ {e}", flush=True); counts["failed"] += 1
+
+    print("Done: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
+    return counts
 
 
 def _resolve_source_mix(song_dir: Path, title: str,
@@ -1561,6 +1674,12 @@ def _write_presets(song_dir: Path, entry) -> None:
     meta["key_offset"] = entry.key_offset
     meta["gender_variant"] = entry.gender_variant
     meta["favorite"] = entry.favorite
+    # Which singer's version this is ("en版" / ／歌手 / a pinned video's
+    # singer) and the Doc's backup-version note ("或女版-5").
+    meta["version_artist"] = entry.artist_hint
+    meta["preset_note"] = entry.comment
+    if entry.youtube_url:
+        meta["pinned_youtube_url"] = entry.youtube_url
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2),
                          encoding="utf-8")
 
@@ -1634,6 +1753,11 @@ def write_setlist(entries, records: dict[str, dict]) -> tuple[int, list]:
     return len(rows), blocked
 
 
+def needs_add(record: dict | None) -> bool:
+    """True when a noted song still has to be downloaded and processed."""
+    return record is None or record.get("status") in (None, "pending")
+
+
 def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
                  no_add: bool = False, dry_run: bool = False):
     """Digest the pasted Google Doc notes (see README grammar).
@@ -1670,8 +1794,10 @@ def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
     records = load_raw()
     # Discovered-but-unprocessed titles sit in raw as `pending`; a song the
     # maintainer actually wrote down must not wait behind the review queue.
-    missing = [e for e in entries
-               if e.title not in records or records[e.title].get("status") == "pending"]
+    # A record without any status was only ever given presets (written for
+    # every Doc line before its audio exists); 16 Doc songs sat like that
+    # and were never downloaded.
+    missing = [e for e in entries if needs_add(records.get(e.title))]
     # A pinned URL that differs from the downloaded video = "use THIS version".
     repinned = [e for e in entries
                 if e.youtube_url and e.title in records
@@ -1699,7 +1825,9 @@ def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
             print(f"  · {e.title}")
     elif missing:
         print(f"\nAdding {len(missing)} new songs to the research corpus...")
+        from processors.resources import wait_if_paused
         for i, e in enumerate(missing, 1):
+            wait_if_paused(DATASET_PATH)
             print(f"\n[{i}/{len(missing)}]", flush=True)
             if e.artist_hint:               # survives downstream enrich
                 upsert_raw(e.title, artist=e.artist_hint)
@@ -1710,9 +1838,12 @@ def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
         records = load_raw()
     if repinned and not no_add:
         print(f"\nRefetching {len(repinned)} songs pinned to a different video...")
+        from processors.resources import wait_if_paused
         for i, e in enumerate(repinned, 1):
+            wait_if_paused(DATASET_PATH)
             print(f"\n[{i}/{len(repinned)}] {e.title} → {e.youtube_url}", flush=True)
-            refetch_song(e.title, youtube_url=e.youtube_url, device=device)
+            refetch_song(e.title, youtube_url=e.youtube_url, device=device,
+                         artist_override=e.artist_hint)
         records = load_raw()
 
     # 2. Setlist presets → metadata.json (+ mirror into raw record so
@@ -1761,6 +1892,35 @@ def ingest_notes(notes_path: Path | None = None, device: str = "cuda",
             print(f"  ? line {e.lineno}: {e.title}")
             for s in seen:
                 print(f"      top hit: {s}")
+
+
+def check_lyrics(titles: list[str] | None = None) -> dict[str, list[str]]:
+    """Flag songs whose lyrics still don't fit the audio (processors/lyrics_check.py).
+
+    Only songs whose lyrics or vocals changed since the last check are
+    re-read. Suspects show up in the inbox editor (④ 歌詞可疑).
+    """
+    from processors.lyrics_check import check_song, is_current, load, save
+    path = DATASET_PATH / "lyrics_audit.jsonl"
+    rows = load(path)
+    sd = songs_dir()
+    records = load_raw()
+    todo = titles or sorted(t for t, r in records.items() if r.get("status") == "done")
+    for title in todo:
+        d = sd / title
+        if not titles and title in rows and is_current(rows[title], d):
+            continue
+        row = check_song(d)
+        if row:
+            rows[title] = row
+            if row["verdict"] != "ok":
+                print(f"  ? {title}: {'; '.join(row['reasons'])}")
+    save(path, rows)
+    by: dict[str, list[str]] = {}
+    for r in rows.values():
+        by.setdefault(r["verdict"], []).append(r["title"])
+    print(f"{path.name}: " + ", ".join(f"{k} {len(v)}" for k, v in sorted(by.items())))
+    return by
 
 
 def refresh_setlist() -> int:
@@ -2007,6 +2167,11 @@ def features_dataset(only_titles: list[str] | None = None,
 # ─────────────────────────────────────────────
 
 def main():
+    # Below-normal priority + capped thread pools (processors/resources.py);
+    # numpy / torch are imported lazily, so this lands before they start.
+    from processors.resources import apply_low_impact
+    apply_low_impact()
+
     parser = argparse.ArgumentParser(
         description="MandpopDataPipeline — Mandarin pop song dataset builder",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -2252,6 +2417,29 @@ def main():
                             "inbox_config.json; a URL given here becomes the tracked doc")
     p_ing.add_argument("--no-then", action="store_true",
                        help="With --from-doc: skip INBOX_POST_INGEST_CMD")
+
+    # lyrics-check
+    p_lc = sub.add_parser(
+        "lyrics-check",
+        help="Flag songs whose lyrics still don't fit the audio (→ inbox ④ 歌詞可疑)")
+    p_lc.add_argument("titles", nargs="*", help="Only these songs (always re-checked)")
+
+    # queue
+    p_q = sub.add_parser(
+        "queue",
+        help="Pause / resume long batches between songs (frees the GPU), or show status")
+    p_q.add_argument("action", choices=["pause", "resume", "status"])
+
+    # karaoke
+    p_k = sub.add_parser(
+        "karaoke",
+        help="Switch instrumental.m4a (and the guide vocal) to a karaoke separation "
+             "that removes the lead but keeps backing vocals")
+    p_k.add_argument("titles", nargs="*", help="Only these songs (default: every processed song)")
+    p_k.add_argument("--method", default="karaoke_becruily",
+                     help="Karaoke separator (default karaoke_becruily)")
+    p_k.add_argument("--revert", action="store_true",
+                     help="Go back to the htdemucs_ft instrumental / guide vocal")
 
     # setlist
     sub.add_parser(
@@ -2516,6 +2704,19 @@ def main():
                               run_then=not args.no_then))
         ingest_notes(notes_path=args.file, device=args.device,
                      no_add=args.no_add, dry_run=args.dry_run)
+    elif args.command == "lyrics-check":
+        check_lyrics(args.titles or None)
+    elif args.command == "queue":
+        from processors.resources import is_paused, pause_flag, set_paused
+        if args.action != "status":
+            set_paused(DATASET_PATH, args.action == "pause")
+        if is_paused(DATASET_PATH):
+            print(f"paused since {pause_flag(DATASET_PATH).read_text(encoding='utf-8')} — "
+                  "batches stop after the song in progress; `pipeline.py queue resume` to continue")
+        else:
+            print("running — batches proceed (`pipeline.py queue pause` to stop between songs)")
+    elif args.command == "karaoke":
+        promote_karaoke(args.titles or None, method=args.method, revert=args.revert)
     elif args.command == "setlist":
         sys.exit(refresh_setlist())
     elif args.command == "videos":

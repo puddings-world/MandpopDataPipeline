@@ -56,9 +56,13 @@ def _brief(v: dict | None) -> dict | None:
             "duration": int(v.get("duration") or 0)}
 
 
-def _problems(title: str, v: dict) -> list[str]:
+def _problems(title: str, v: dict, lyrics_end: float | None = None) -> list[str]:
     """Why an upload is not a good source recording ([] = looks fine)."""
     out = []
+    # A cut / special edit can't carry the full lyrics (錯位時空: a 2:08
+    # Olympics edit for a 3-minute LRC).
+    if lyrics_end and v["duration"] and v["duration"] < lyrics_end * 0.9:
+        out.append("shorter than the lyrics (edited version)")
     if _LIVE.search(v["title"]):
         out.append("live / talent show / fan video")
     if _NOISE.search(v["title"]):
@@ -95,7 +99,8 @@ def rank_candidates(title: str, candidates: list[dict]) -> list[dict]:
 
 
 def classify(title: str, artist: str | None, current: dict | None,
-             candidates: list[dict], pinned: bool = False) -> dict:
+             candidates: list[dict], pinned: bool = False,
+             lyrics_end: float | None = None) -> dict:
     """Verdict for one song. `current`/`candidates` are yt-dlp info dicts."""
     cur = _brief(current)
     ranked = rank_candidates(title, candidates)
@@ -111,7 +116,7 @@ def classify(title: str, artist: str | None, current: dict | None,
     if cur is not None and cur["id"] == best["id"]:
         return row
 
-    problems = ["video unavailable"] if cur is None else _problems(title, cur)
+    problems = ["video unavailable"] if cur is None else _problems(title, cur, lyrics_end)
     cur_views = cur["views"] if cur else 0
     ratio = best["views"] / max(cur_views, 1)
     best_clean = not _LIVE.search(best["title"]) and _official(best)
@@ -143,7 +148,8 @@ def audit_song(title: str, rec: dict, pinned: bool) -> dict:
     current = get_video_info(rec["youtube_url"]) if rec.get("youtube_url") else None
     cands = search_song(f"{title} {group}".strip(), max_results=12)
     cands += search_song(title, max_results=12)
-    row = classify(title, artist, current, cands, pinned=pinned)
+    row = classify(title, artist, current, cands, pinned=pinned,
+                   lyrics_end=_last_sung_line(title))
     row.update(title=title, artist=group or artist or "",
                checked_at=datetime.now(timezone.utc).isoformat(timespec="seconds"))
     return row
@@ -154,6 +160,17 @@ def reclassify(row: dict, pinned: bool) -> dict:
     cands = row.get("candidates") or []
     new = classify(row["title"], row.get("artist"), row.get("current"), cands, pinned=pinned)
     return {**row, **new}
+
+
+def _last_sung_line(title: str) -> float | None:
+    """Start of the last sung LRC line (credits excluded), in seconds."""
+    import pipeline
+    from processors.lrc_align import parse_starts
+    lrc = pipeline.songs_dir() / title / "lyrics.lrc"
+    if not lrc.exists():
+        return None
+    starts = parse_starts(lrc.read_text(encoding="utf-8", errors="replace"))
+    return float(starts[-1]) if len(starts) else None
 
 
 def load_audit(path) -> dict[str, dict]:

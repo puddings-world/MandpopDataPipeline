@@ -51,6 +51,10 @@ class NoteEntry:
 
 # Lines that are structure, not songs: comments, headings, dividers.
 _SKIP_LINE = re.compile(r"^\s*(#|＃|【|=|─|—{2,}|-{3,}|\*{3,}|_{3,})")
+# "【周杰倫】" on its own line groups the songs below it by (original) singer;
+# they take it as their artist unless a line says ／歌手 or "X版" itself.
+_ARTIST_HEADING = re.compile(r"^【([^】]+)】$")
+_NON_ARTIST_HEADINGS = {"未分類", "其他", "置頂", "待整理"}
 # Leading bullet / list markers from rich-text paste.
 _BULLET = re.compile(r"^\s*[•·◦‣▪–*]\s*|^\s*-\s+")
 _KEY = re.compile(r"^(?:[+\-−]|降|升)(\d{1,2})$")
@@ -87,7 +91,13 @@ def parse_notes(text: str, listed: bool = False) -> tuple[list[NoteEntry], list[
     entries: dict[str, NoteEntry] = {}
     global_warnings: list[str] = []
 
+    section_artist = None              # 【歌手】 heading: default artist below it
     for lineno, raw in enumerate(text.splitlines(), 1):
+        heading = _ARTIST_HEADING.match(_normalize(raw))
+        if heading:
+            name = heading.group(1).strip()
+            section_artist = None if name in _NON_ARTIST_HEADINGS else name
+            continue
         if not raw.strip() or _SKIP_LINE.match(raw):
             continue
         line = _normalize(raw)
@@ -136,6 +146,10 @@ def parse_notes(text: str, listed: bool = False) -> tuple[list[NoteEntry], list[
             elif tok in _GENDER:
                 entry.gender_variant = _GENDER[tok]
                 marker_seen = True
+            elif len(tok) > 1 and tok.endswith("版") and not entry.artist_hint:
+                # "en版" = the version sung by en → artist hint, like ／en.
+                entry.artist_hint = tok[:-1]
+                marker_seen = True
             elif tok in ("!", "！"):
                 entry.favorite = True
                 marker_seen = True
@@ -161,6 +175,8 @@ def parse_notes(text: str, listed: bool = False) -> tuple[list[NoteEntry], list[
         if not entry.title:
             global_warnings.append(f"line {lineno}: no title after parsing: {raw.strip()!r}")
             continue
+        if not entry.artist_hint and section_artist:
+            entry.artist_hint = section_artist
 
         if entry.title in entries:
             global_warnings.append(

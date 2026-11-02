@@ -65,7 +65,8 @@ def _cjk(s: str) -> str:
 # Live / talent-show / fan-video uploads: right song, wrong recording.
 _LIVE = re.compile(r"live|現場|现场|演唱會|演唱会|純享|纯享|好聲音|好声音|我們的歌|我们的歌|"
                    r"天賜的聲音|天赐的声音|夢想的聲音|梦想的声音|聲林之王|公演|獻唱|献唱|"
-                   r"花絮|精華|精华|vietsub|fmv|\bep\.?\s?\d|episode|singer\s?20\d\d|歌手\s?20\d\d", re.I)
+                   r"花絮|精華|精华|vietsub|fmv|\bep\.?\s?\d|episode|singer\s?20\d\d|歌手\s?20\d\d|"
+                   r"特別版|特别版|剪輯版|剪辑版|片段|預告|预告", re.I)
 _OFFICIAL = re.compile(r"official|官方|\bmv\b", re.I)
 
 
@@ -114,12 +115,16 @@ def download_audio(url: str, output_path: Path) -> Path:
     """Download best audio from a YouTube URL as mp3."""
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    # A partial file left by an interrupted run makes yt-dlp resume a range
+    # YouTube then refuses (HTTP 416) — start clean instead.
+    for stale in output_path.parent.glob(output_path.stem + ".*.part"):
+        stale.unlink(missing_ok=True)
 
     cmd = [
         "yt-dlp", "-f", "bestaudio",
         "-x", "--audio-format", "mp3", "--audio-quality", "0",
         "-o", str(output_path),
-        "--no-playlist",
+        "--no-playlist", "--no-continue",
         url,
     ]
     result = subprocess.run(

@@ -134,3 +134,19 @@ def test_only_other_singer_and_much_less_popular_original_is_suggested():
     ours = vid("lin", "林志炫 - 離人", 10_000_000, "林志炫")
     theirs = vid("jacky", "張學友 - 離人 (Official Video)", 2_000_000, "張學友")
     assert classify("離人", "張學友", ours, [ours, theirs])["verdict"] == "suggest"
+
+
+def test_edited_version_shorter_than_lyrics_is_replaced():
+    # 錯位時空: a 2:08 "特別版" Olympics edit for a 3-minute LRC.
+    edit = vid("edit", "2020東京奧運特別版《錯位時空》MV", 5_000_000, "olympics fan")
+    edit["duration"] = 128
+    full = vid("full", "艾辰《錯位時空》官方MV", 200_000_000, "艾辰")
+    r = classify("錯位時空", "艾辰", edit, [edit, full], lyrics_end=175.0)
+    assert "shorter than the lyrics (edited version)" in r["reasons"]
+    assert r["verdict"] == "auto" and r["best"]["id"] == full["id"]
+
+
+def test_pin_records_the_version_singer(dataset):
+    inbox_http.pin_video("哪裡都是你", "https://youtu.be/yfn8sE9obWU", artist="周杰倫")
+    [e] = parse_notes((dataset / "notes_inbox.txt").read_text(encoding="utf-8"))[0]
+    assert (e.title, e.artist_hint, e.youtube_url) == ("哪裡都是你", "周杰倫", "https://youtu.be/yfn8sE9obWU")

@@ -133,6 +133,8 @@ python pipeline.py add --accepted                    # 批次處理快篩接受�
 python pipeline.py ingest                            # notes.txt（Google Doc 鏡像）→ corpus + setlist
 python pipeline.py ingest --dry-run                  # 只解析報告，不寫任何東西
 python pipeline.py ingest --from-doc                 # 抓追蹤中的 Google Doc → ingest → 手機同步 hook
+python pipeline.py karaoke                           # 伴奏換成只去主唱、保留和聲的 karaoke 版（--revert 還原）
+python pipeline.py queue pause|resume|status        # 暫停 / 恢復長批次（讓出 GPU）
 python pipeline.py videos                            # 稽核每首歌的來源 YouTube 影片；明顯錯的（現場/翻唱/別人唱的）自動指定，其餘在 inbox ④ 歌庫影片 手動換
 python pipeline.py serve                             # 唯讀 LAN server（Mac 瀏覽器按需拉歌，零安裝）
 python pipeline.py metrics                           # 全 corpus 各 append 一筆 YT 熱度快照（每週跑）
@@ -228,7 +230,7 @@ audio-separator 需要 numpy 2.x（會打壞主環境的 transformers/WhisperX�
 
 Karaoke 方法（`karaoke_aufr33` / `karaoke_gabox_v2` / `karaoke_becruily`）只去主唱、**保留和聲**在 instrumental 裡；`inst_becruily` 是全部人聲去除的對照組。
 
-**目前還沒有**:promotion / revert / 自動更新到消費者的機制。要等聽完 A/B 確認哪個 method 真的贏才建。
+**Promotion**：盲測贏家 `karaoke_becruily`。`pipeline.py karaoke` 把 instrumental.m4a / 導唱 vocals.m4a 換成 karaoke 版（舊檔備份在 `separations/htdemucs_ft/`，`--revert` 還原）；根目錄 lossless stems 仍是 htdemucs_ft（對齊用）。長批次可 `pipeline.py queue pause|resume`（每首之間檢查）；所有指令預設低優先權＋執行緒上限（`processors/resources.py`）。
 
 ## 與消費者專案的介面
 

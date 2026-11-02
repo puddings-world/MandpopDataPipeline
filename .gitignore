@@ -35,3 +35,7 @@ notes.txt.bak
 
 # Local package build metadata
 *.egg-info/
+
+# Per-song local run info (separator runtime, A/B candidate stems)
+songs/*/meta.json
+songs/*/separations/

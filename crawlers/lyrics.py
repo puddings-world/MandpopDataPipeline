@@ -15,10 +15,12 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import time
 from pathlib import Path
 
 
 def fetch_lyrics_from(title: str, source: str, youtube_url: str | None = None,
+                      artist: str | None = None,
                       ) -> tuple[str | None, str | None, str | None, dict]:
     """Fetch lyrics from a SPECIFIC source — used by refetch when the
     default fallback chain picked a wrong-version LRC.
@@ -27,9 +29,9 @@ def fetch_lyrics_from(title: str, source: str, youtube_url: str | None = None,
     """
     info: dict[str, str] = {}
     if source == "netease":
-        lrc, txt, api_info = _fetch_netease(title)
+        lrc, txt, api_info = _fetch_netease(title, artist)
     elif source == "qq":
-        lrc, txt, api_info = _fetch_qq_music(title)
+        lrc, txt, api_info = _fetch_qq_music(title, artist)
     elif source == "youtube":
         if not youtube_url:
             return None, None, None, {}
@@ -49,11 +51,25 @@ def fetch_lyrics_from(title: str, source: str, youtube_url: str | None = None,
         info.update(api_info)
         info.update({k: v for k, v in extract_lrc_metadata(lrc).items()
                      if k not in info})
-        return lrc, txt, source, info
+        return fill_backdated_blanks(lrc), txt, source, info
     return None, None, None, {}
 
 
-def fetch_lyrics(title: str, youtube_url: str | None = None,
+def by_artist(artist: str | None, credits: str) -> bool:
+    """True when `credits` names the wanted singer (or none was asked for)."""
+    from processors.setlist_order import artist_group
+    return (not artist) or _norm_name(artist_group(artist)) in _norm_name(credits or "")
+
+
+def lyrics_rank(info: dict, artist: str | None) -> tuple[bool, bool]:
+    """Sort key for a source's hit: (not by the wanted artist, not exact name)."""
+    from processors.setlist_order import artist_group
+    by_artist = (not artist) or (
+        _norm_name(artist_group(artist)) in _norm_name(info.get("artist") or ""))
+    return (not by_artist, info.get("match") == "variant")
+
+
+def fetch_lyrics(title: str, youtube_url: str | None = None, artist: str | None = None,
                  ) -> tuple[str | None, str | None, str | None, dict]:
     """Try all sources to get lyrics + song metadata for a title.
 
@@ -65,23 +81,26 @@ def fetch_lyrics(title: str, youtube_url: str | None = None,
     (header tags + the credit lines that appear in the first ~30 s of
     most Mandarin LRCs).
     """
-    info: dict[str, str] = {}
-
-    # 1. NetEase Cloud Music.
-    lrc, txt, api_info = _fetch_netease(title)
-    if lrc and len(lrc) > 30:
-        info.update(api_info)
-        info.update({k: v for k, v in extract_lrc_metadata(lrc).items()
-                     if k not in info})
-        return lrc, txt, "netease", info
-
-    # 2. QQ Music (especially for Jay Chou).
-    lrc, txt, api_info = _fetch_qq_music(title)
-    if lrc and len(lrc) > 30:
-        info.update(api_info)
-        info.update({k: v for k, v in extract_lrc_metadata(lrc).items()
-                     if k not in info})
-        return lrc, txt, "qq_music", info
+    # 1. NetEase, 2. QQ Music (especially for Jay Chou). Each returns only a
+    # result whose name (and artist, when known) matches; an exact name
+    # from either source beats a bracketed variant from the other.
+    # With an artist, a hit by that artist beats one by somebody else even
+    # if the other source answered first: NetEase lacks most of Jay Chou's
+    # catalogue and returns a cover (說了再見 → 阿杰, 迷迭香 → 張宇's song).
+    best, best_rank = None, None
+    for i, (name, fetch) in enumerate((("netease", _fetch_netease), ("qq_music", _fetch_qq_music))):
+        lrc, txt, api_info = fetch(title, artist)
+        if not (lrc and len(lrc) > 30):
+            continue
+        info = dict(api_info)
+        info.update({k: v for k, v in extract_lrc_metadata(lrc).items() if k not in info})
+        rank = lyrics_rank(info, artist) + (i,)
+        if best_rank is None or rank < best_rank:
+            best, best_rank = (lrc, txt, name, info), rank
+        if rank[:2] == (False, False):        # by the artist, exact name: done
+            break
+    if best:
+        return (fill_backdated_blanks(best[0]),) + best[1:]
 
     # 3. YouTube auto-subs.
     if youtube_url:
@@ -94,6 +113,32 @@ def fetch_lyrics(title: str, youtube_url: str | None = None,
             return yt_lrc, txt, "youtube_subs", {}
 
     return None, None, None, {}
+
+
+_LRC_TS = re.compile(r"\[(\d+):(\d+(?:\.\d+)?)\]")
+BACKDATE_MIN_SEC = 5.0
+
+
+def fill_backdated_blanks(lrc: str) -> str:
+    """Give the text back to a repeated line that some LRCs leave blank.
+
+    QQ sometimes splits `[01:30.92][02:41.52]就这么样` into the text line at
+    02:41 followed by a bare `[01:30.92]`: the first chorus then shows
+    nothing (最近好嗎, 有形的翅膀). A timestamp-only line that is earlier than
+    the text line just before it is that text's earlier occurrence.
+    """
+    out, prev_t, prev_body = [], None, None
+    for line in lrc.splitlines():
+        stamps = list(_LRC_TS.finditer(line))
+        body = _LRC_TS.sub("", line).strip()
+        if stamps:
+            t = int(stamps[0].group(1)) * 60 + float(stamps[0].group(2))
+            if body:
+                prev_t, prev_body = t, body
+            elif prev_body and t < prev_t - BACKDATE_MIN_SEC:
+                line = line.rstrip() + prev_body
+        out.append(line)
+    return "\n".join(out) + ("\n" if lrc.endswith("\n") else "")
 
 
 def _lrc_to_plain(lrc: str) -> str:
@@ -226,7 +271,71 @@ def extract_lrc_metadata(lrc_text: str) -> dict:
 # Source 1: NetEase Cloud Music
 # ─────────────────────────────────────────────
 
-def _fetch_netease(title: str) -> tuple[str | None, str | None, dict]:
+# Versions whose lyrics/timing are not the studio recording's.
+_BAD_VERSION = re.compile(r"live|伴奏|伴唱|\bdj\b|remix|cover|翻唱|純音樂|纯音乐|instrumental|karaoke|"
+                          r"鋼琴|钢琴|吉他|片段|铃声|鈴聲", re.I)
+
+
+def _norm_name(s: str) -> str:
+    try:
+        from zhconv import convert
+        # Simplified is the canonical form: variant traditional characters
+        # (艷/豔, 裡/裏) all collapse to one simplified character.
+        s = convert(s or "", "zh-cn")
+    except ImportError:
+        pass
+    return "".join(ch for ch in (s or "").lower() if ch.isalnum())
+
+
+def search_queries(title: str, artist: str | None = None) -> list[str]:
+    """Queries to try in order: with the singer, then the title alone, then
+    the simplified-Chinese title (both sites index simplified names, and a
+    variant character such as 艷/豔 or 沒/没 can hide the song).
+    """
+    qs = ([f"{title} {artist}"] if artist else []) + [title]
+    try:
+        from zhconv import convert
+        simp = convert(title, "zh-cn")
+        if artist:
+            qs.append(f"{simp} {convert(artist, 'zh-cn')}")
+        qs.append(simp)
+    except ImportError:
+        pass
+    return list(dict.fromkeys(qs))
+
+
+def pick_song(cands: list[tuple[str, str]], title: str,
+              artist: str | None = None) -> tuple[int, str] | None:
+    """Choose the search result that is this song: (index, "exact"|"variant").
+
+    `cands` = [(song name, artists)] in the source's order. The name must be
+    the title (a bracketed suffix like "(電影版)" makes it a "variant";
+    live / 伴奏 / DJ / cover versions never count). With an artist, a result
+    by that artist wins; without one, the first exact name does. Returns
+    None rather than guessing: a missing LRC beats another song's lyrics
+    (少年 by 梦然 got nothing because results[0] was someone else's).
+    """
+    from processors.setlist_order import artist_group
+    t = _norm_name(title)
+    a = _norm_name(artist_group(artist)) if artist else ""
+    best = None
+    for i, (name, arts) in enumerate(cands):
+        if _BAD_VERSION.search(name):
+            continue
+        base = _norm_name(re.sub(r"[（(\[【].*?[)）\]】]", "", name))
+        exact = _norm_name(name) == t
+        if not exact and base != t:
+            continue
+        by_artist = bool(a) and a in _norm_name(arts)
+        rank = (not by_artist, not exact, i)
+        if best is None or rank < best[0]:
+            best = (rank, i, "exact" if exact else "variant")
+    if best is None:
+        return None
+    return best[1], best[2]
+
+
+def _fetch_netease(title: str, artist: str | None = None) -> tuple[str | None, str | None, dict]:
     """Fetch LRC + plain text + song metadata (artist/album) from NetEase."""
     import requests
 
@@ -236,19 +345,30 @@ def _fetch_netease(title: str) -> tuple[str | None, str | None, dict]:
     }
 
     try:
-        resp = requests.post(
-            "https://music.163.com/api/search/get",
-            data={"s": title, "type": 1, "limit": 5, "offset": 0},
-            headers=headers, timeout=15,
-        )
-        if resp.status_code != 200:
+        top, match = None, None
+        for query in search_queries(title, artist):
+            resp = requests.post(
+                "https://music.163.com/api/search/get",
+                data={"s": query, "type": 1, "limit": 10, "offset": 0},
+                headers=headers, timeout=15,
+            )
+            if resp.status_code != 200:
+                continue
+            songs = resp.json().get("result", {}).get("songs", []) or []
+            hit = pick_song([(x.get("name", ""),
+                              "/".join(a.get("name", "") for a in x.get("artists") or []))
+                             for x in songs], title, artist)
+            if hit and top is None:
+                top, match = songs[hit[0]], hit[1]
+            # Keep looking while the hit is someone else's song: a throttled
+            # or thin "title artist" query must not hand back the title-only
+            # result (魚 by 怕胖團 came back as 陳綺貞's).
+            if hit and by_artist(artist, "/".join(a.get("name", "") for a in songs[hit[0]].get("artists") or [])):
+                top, match = songs[hit[0]], hit[1]
+                break
+        if top is None:
             return None, None, {}
-        songs = resp.json().get("result", {}).get("songs", [])
-        if not songs:
-            return None, None, {}
-
-        top = songs[0]
-        info: dict[str, str] = {}
+        info: dict[str, str] = {"match": match}
         artists = top.get("artists") or []
         if artists:
             info["artist"] = "/".join(
@@ -275,7 +395,11 @@ def _fetch_netease(title: str) -> tuple[str | None, str | None, dict]:
 # Source 2: QQ Music
 # ─────────────────────────────────────────────
 
-def _fetch_qq_music(title: str) -> tuple[str | None, str | None, dict]:
+QQ_RETRIES = 3
+QQ_BACKOFF_SEC = 3.0
+
+
+def _fetch_qq_music(title: str, artist: str | None = None) -> tuple[str | None, str | None, dict]:
     """Fetch LRC + plain text + song metadata (artist/album) from QQ Music."""
     import requests
 
@@ -285,40 +409,57 @@ def _fetch_qq_music(title: str) -> tuple[str | None, str | None, dict]:
     }
 
     try:
-        search_data = json.dumps({
-            "search": {
-                "method": "DoSearchForQQMusicDesktop",
-                "module": "music.search.SearchCgiService",
-                "param": {
-                    "search_type": 0,
-                    "query": title,
-                    "page_num": 1,
-                    "num_per_page": 5,
-                },
-            }
-        })
-        resp = requests.get(
-            "https://u.y.qq.com/cgi-bin/musicu.fcg",
-            params={"data": search_data},
-            headers=headers, timeout=15,
-        )
-        if resp.status_code != 200:
+        top, match = None, None
+        for query in search_queries(title, artist):
+            search_data = json.dumps({
+                "search": {
+                    "method": "DoSearchForQQMusicDesktop",
+                    "module": "music.search.SearchCgiService",
+                    "param": {
+                        "search_type": 0,
+                        "query": query,
+                        "page_num": 1,
+                        "num_per_page": 10,
+                    },
+                }
+            })
+            # QQ throttles bursts with search code 2001 and an empty list;
+            # back off instead of concluding the song does not exist.
+            for attempt in range(QQ_RETRIES + 1):
+                resp = requests.get(
+                    "https://u.y.qq.com/cgi-bin/musicu.fcg",
+                    params={"data": search_data},
+                    headers=headers, timeout=15,
+                )
+                if resp.status_code != 200 or resp.json().get("search", {}).get("code") != 2001:
+                    break
+                time.sleep(QQ_BACKOFF_SEC * (attempt + 1))
+            if resp.status_code != 200:
+                continue
+            songs = (resp.json()
+                     .get("search", {})
+                     .get("data", {})
+                     .get("body", {})
+                     .get("song", {})
+                     .get("list", [])) or []
+            hit = pick_song([(x.get("name") or x.get("title", ""),
+                              "/".join(sg.get("name", "") for sg in x.get("singer") or []))
+                             for x in songs], title, artist)
+            if hit and top is None:
+                top, match = songs[hit[0]], hit[1]
+            # Keep looking while the hit is someone else's song: a throttled
+            # or thin "title artist" query must not hand back the title-only
+            # result (魚 by 怕胖團 came back as 陳綺貞's).
+            if hit and by_artist(artist, "/".join(sg.get("name", "") for sg in songs[hit[0]].get("singer") or [])):
+                top, match = songs[hit[0]], hit[1]
+                break
+        if top is None:
             return None, None, {}
-        songs = (resp.json()
-                 .get("search", {})
-                 .get("data", {})
-                 .get("body", {})
-                 .get("song", {})
-                 .get("list", []))
-        if not songs:
-            return None, None, {}
-
-        top = songs[0]
         songmid = top.get("mid", "")
         if not songmid:
             return None, None, {}
 
-        info: dict[str, str] = {}
+        info: dict[str, str] = {"match": match}
         singers = top.get("singer") or []
         if singers:
             info["artist"] = "/".join(

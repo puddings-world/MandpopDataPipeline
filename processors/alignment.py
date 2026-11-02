@@ -21,7 +21,7 @@ The module exposes pure functions; pipeline.py wires them into the
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Iterable
 
@@ -126,8 +126,15 @@ _CREDIT_FMT_RE = re.compile(
 _TITLE_LINE_RE = re.compile(r"^[^\s].*?\s+-\s+\S")
 
 
+# Pattern D — short Latin labels that only count WITH a colon ("OP：腾煌星象",
+# "SP：…", "ISRC：…"); without the colon they'd swallow lyrics like "spring".
+_LATIN_LABEL_RE = re.compile(r"^\s*(?:OP|SP|ISRC|BPM)\s*[:：]", re.IGNORECASE)
+
+
 def _is_meta_line(text: str) -> bool:
     if not text:
+        return True
+    if _LATIN_LABEL_RE.match(text):
         return True
     if _KW_RE.match(text):
         return True
@@ -748,6 +755,13 @@ def audit_song(song_dir: Path, run_layer2: bool = False,
         fixed = l1.offset_sec
         l1 = layer1_check(vocals, lrc)
 
+    # Layer 1 only sees the FIRST onset; MV intros with spoken dialogue make
+    # it report a huge offset (小時候 / 我們的愛: speech at 6 s, first sung
+    # line at 87 s). If every line already lands on singing, the LRC is fine.
+    if l1.verdict == "misaligned" and vocals.exists() and lines_fit(vocals, lrc):
+        l1 = replace(l1, verdict="ok",
+                     note="Layer 1 onset was intro speech; every line lands on singing")
+
     # Layer 1.5: per-line re-timing for tempo / structure drift that a
     # single shift can't fix (lyrics falling further behind as the song goes).
     retimed = None
@@ -787,6 +801,24 @@ def audit_song(song_dir: Path, run_layer2: bool = False,
     return AuditReport(title=title, layer1=l1, layer2=l2,
                        auto_fixed_offset_sec=fixed, overall=overall,
                        retime_max_shift_sec=retimed)
+
+
+LINES_FIT_VOICED = 0.8     # share of line starts followed by singing
+LINES_FIT_STRONG = 0.6     # share of line starts on a strong vocal onset
+
+
+def lines_fit(vocals: Path, lrc: Path) -> bool:
+    """Do the LRC's sung lines already land where the singing starts?"""
+    from processors.lrc_align import (envelope_from_samples, parse_starts, strength_at,
+                                      voiced_after, voiced_mask)
+    starts = parse_starts(lrc.read_text(encoding="utf-8"))
+    if len(starts) < 8:
+        return False
+    y, sr = sf.read(str(vocals), always_2d=True, dtype="float32")
+    y = y.mean(axis=1)
+    strong = float((strength_at(envelope_from_samples(y, sr), starts) > 0.3).mean())
+    return (voiced_after(voiced_mask(y, sr), starts) >= LINES_FIT_VOICED
+            and strong >= LINES_FIT_STRONG)
 
 
 def apply_line_retime(vocals: Path, lrc: Path) -> float | None:

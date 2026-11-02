@@ -26,6 +26,10 @@ table{border-collapse:collapse;width:100%;font-size:14px}
 td,th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left}
 .reveal{color:var(--ok);font-weight:600}
 .small{font-size:13px;color:var(--mut)}
+.transport{display:flex;align-items:center;gap:10px;margin-top:12px}
+.transport button{min-width:84px}
+.transport input[type=range]{flex:1;accent-color:var(--acc)}
+.transport .t{font:13px ui-monospace,monospace;color:var(--mut);min-width:92px;text-align:right}
 label{cursor:pointer}
 </style></head><body><main>
 
@@ -37,7 +41,8 @@ label{cursor:pointer}
   <div class="bar"><div id="pbar"></div></div>
   <p class="small" style="margin:10px 0 0">
     <kbd>1</kbd>–<kbd>9</kbd> 切換選項（同步播放、無縫切換）·
-    <kbd>0</kbd> 原曲 · <kbd>V</kbd> 伴奏 ⇄ 人聲軌 · <kbd>Space</kbd> 播放/暫停 ·
+    原曲＝選項後面的下一個數字（三個選項時是 <kbd>4</kbd>）· <kbd>V</kbd> 伴奏 ⇄ 人聲軌 · <kbd>Space</kbd> 播放/暫停 ·
+    <kbd>R</kbd> 從段落開頭 · <kbd>,</kbd><kbd>.</kbd> 倒退/前進 1 秒 · 拖進度條跳到任一秒 ·
     <kbd>A</kbd>/<kbd>B</kbd>/<kbd>C</kbd>… 投票「這個最好」· <kbd>S</kbd> 差不多 ·
     <kbd>←</kbd><kbd>→</kbd> 上/下一段。片段自動循環。
   </p>
@@ -48,6 +53,11 @@ label{cursor:pointer}
   <h1 id="title"></h1>
   <div class="meta" id="time"></div>
   <div class="hint" id="hint"></div>
+  <div class="transport">
+    <button id="play">▶ 播放</button>
+    <input type="range" id="seek" step="0.05">
+    <span class="t" id="clock"></span>
+  </div>
   <div class="row" id="opts"></div>
   <div class="row" id="votes"></div>
   <div class="row small" id="status"></div>
@@ -122,7 +132,7 @@ function load(i) {
     vb.onclick = () => vote(m); voteBox.appendChild(vb);
   });
   if (s.orig) {
-    const b = document.createElement('button'); b.textContent = '0 · 原曲'; b.dataset.m = '__orig';
+    const b = document.createElement('button'); b.textContent = (order.length + 1) + ' · 原曲'; b.dataset.m = '__orig';
     b.onclick = () => select('__orig'); optBox.appendChild(b);
   }
   const tb = document.createElement('button');
@@ -139,6 +149,7 @@ function load(i) {
   Object.entries(s.opts).forEach(([m, o]) => { make(m + ':inst', o.inst, o.iv); make(m + ':voc', o.voc, o.vv); });
   make('__orig:inst', s.orig, 1);
   select(current && (current === '__orig' || s.opts[current]) ? current : order[0], true);
+  seekEl.min = s.start; seekEl.max = s.end; seekEl.value = s.start; showTime(s.start);
   render();
   loopTimer = setInterval(tick, 40);
 }
@@ -151,9 +162,27 @@ function select(m, silent) {
   document.querySelectorAll('#opts button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
   document.getElementById('status').textContent = '正在聽：' + (useVoc && m !== '__orig' ? '人聲軌' : '伴奏軌');
 }
+const seekEl = document.getElementById('seek'), playBtn = document.getElementById('play');
+let scrubbing = false;
+function seekTo(t) {
+  const s = SEGS[idx];
+  t = Math.min(Math.max(t, s.start), s.end - 0.05);
+  Object.values(players).forEach(a => { a.currentTime = t; });
+  showTime(t);
+}
+function showTime(t) {
+  const s = SEGS[idx];
+  if (!scrubbing) seekEl.value = t;
+  document.getElementById('clock').textContent = (t - s.start).toFixed(1) + ' / ' + (s.end - s.start).toFixed(0) + ' s';
+}
+seekEl.addEventListener('input', () => { scrubbing = true; seekTo(+seekEl.value); });
+seekEl.addEventListener('change', () => { scrubbing = false; seekTo(+seekEl.value); });
+playBtn.onclick = () => togglePlay();
 function tick() {
   const s = SEGS[idx], master = players[activeKey()];
+  playBtn.textContent = playing() ? '❚❚ 暫停' : '▶ 播放';
   if (!master || master.readyState < 1) return;
+  showTime(master.currentTime);
   if (master.currentTime >= s.end || master.currentTime < s.start - 0.3) {
     Object.values(players).forEach(a => { a.currentTime = s.start; });
     return;
@@ -206,13 +235,18 @@ document.getElementById('reset').onclick = () => { votes = {}; save(); load(0); 
 blindEl.onchange = () => load(idx);
 
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey) return;
+  if ((e.target.tagName === 'INPUT' && e.target.type !== 'range') || e.metaKey || e.ctrlKey) return;
+  if (e.target.type === 'range' && e.key.startsWith('Arrow')) return;   // slider nudges itself
   const k = e.key.toLowerCase(), order = orderFor(idx);
+  const cur = () => (players[activeKey()] || {}).currentTime || SEGS[idx].start;
   if (k === ' ') { e.preventDefault(); togglePlay(); }
+  else if (k === 'r') seekTo(SEGS[idx].start);
+  else if (k === ',') seekTo(cur() - 1);
+  else if (k === '.') seekTo(cur() + 1);
   else if (k === 'arrowright') { const p = playing(); load(idx + 1); if (p) togglePlay(); }
   else if (k === 'arrowleft') { const p = playing(); load(idx - 1); if (p) togglePlay(); }
   else if (k === 'v') { useVoc = !useVoc; select(current); }
-  else if (k === '0' && SEGS[idx].orig) select('__orig');
+  else if ((k === '0' || k === String(order.length + 1)) && SEGS[idx].orig) select('__orig');
   else if (/^[1-9]$/.test(k) && order[+k - 1]) select(order[+k - 1]);
   else if (k === 's') vote('tie');
   else if (/^[a-i]$/.test(k) && order[k.charCodeAt(0) - 97]) vote(order[k.charCodeAt(0) - 97]);

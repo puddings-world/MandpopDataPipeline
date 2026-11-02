@@ -208,3 +208,21 @@ def test_refresh_setlist_only_rewrites_setlist_files(dataset, monkeypatch):
               (dataset / "setlist.jsonl").read_text(encoding="utf-8").splitlines()]
     assert titles == ["稻香", "晴天"]                       # favorite first; inbox pick with a marker
     assert "夜曲" in (dataset / "setlist_blocked.jsonl").read_text(encoding="utf-8")
+
+
+def test_singer_version_token_is_an_artist_hint_not_part_of_the_title():
+    entries, _ = parse_notes("給我一個理由忘記 en版 # 或女版 -4\n聽海 女版 -6\n", listed=True)
+    by = {e.title: e for e in entries}
+    assert by["給我一個理由忘記"].artist_hint == "en"
+    assert by["給我一個理由忘記"].key_offset == 0
+    assert by["聽海"].gender_variant == "female" and by["聽海"].artist_hint is None
+
+
+def test_artist_headings_group_songs_and_lines_can_override():
+    text = "錄音歌序：\n【周杰倫】\n晴天 !\n哪裡都是你\n【黃鶯鶯】\n哭砂 張惠妹版 -2\n【未分類】\n大魚\n"
+    by = {e.title: e for e in parse_notes(text, listed=True)[0]}
+    assert set(by) == {"晴天", "哪裡都是你", "哭砂", "大魚"}       # headings are not songs
+    assert by["晴天"].artist_hint == "周杰倫" and by["晴天"].favorite
+    assert by["哪裡都是你"].artist_hint == "周杰倫"
+    assert (by["哭砂"].artist_hint, by["哭砂"].key_offset) == ("張惠妹", -2)  # version singer wins
+    assert by["大魚"].artist_hint is None                         # 未分類 is not an artist

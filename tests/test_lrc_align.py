@@ -94,3 +94,33 @@ def test_voiced_after_measures_singing_right_after_line_starts():
     assert voiced_after(mask, np.array([5.0])) == 1.0
     assert voiced_after(mask, np.array([8.0])) == 0.0
     assert abs(voiced_after(mask, np.array([4.5])) - 0.5) < 0.05
+
+
+def test_op_sp_labels_are_credits_but_lyrics_starting_with_sp_are_not():
+    from processors.alignment import _is_meta_line
+    assert _is_meta_line("OP：腾煌星象")
+    assert _is_meta_line("SP: 某某")
+    assert not _is_meta_line("spring is coming")
+    assert not _is_meta_line("填不满半排观众的电影")
+
+
+def test_intro_speech_does_not_fail_an_aligned_song(tmp_path):
+    # 小時候: MV dialogue at 6 s, first sung line at 87 s, LRC already right.
+    import soundfile as sf
+    from processors.alignment import audit_song
+    sr = 16000
+    t = lrc_times() + 77                            # lines start ≈ 87 s
+    rng = np.random.default_rng(5)
+    y = np.zeros(int((t[-1] + 10) * sr), dtype=np.float32)
+    y[6 * sr:9 * sr] = 0.2 * rng.standard_normal(3 * sr).astype(np.float32)   # intro speech
+    for s in t:
+        i = int(s * sr)
+        y[i:i + int(1.5 * sr)] = 0.3 * rng.standard_normal(int(1.5 * sr)).astype(np.float32)
+    d = tmp_path / "小時候"
+    d.mkdir()
+    sf.write(d / "vocals.wav", y, sr)
+    lrc = "".join(f"[{int(x // 60):02d}:{x % 60:05.2f}]第{i}句\n" for i, x in enumerate(t))
+    (d / "lyrics.lrc").write_text(lrc, encoding="utf-8")
+    report = audit_song(d, run_layer2=False, auto_fix=True)
+    assert report.overall == "ok"
+    assert (d / "lyrics.lrc").read_text(encoding="utf-8") == lrc   # untouched

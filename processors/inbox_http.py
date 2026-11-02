@@ -230,12 +230,14 @@ def upsert_inbox(body: dict) -> dict:
     return {"line": format_line(entry), "doc_conflict": note}
 
 
-def pin_video(title: str, url: str) -> str:
+def pin_video(title: str, url: str, artist: str | None = None) -> str:
     """Pin the source video of a library song via notes_inbox.txt.
 
     Keeps any markers an existing inbox line has; a new line carries none,
-    so pinning never adds the song to the setlist. A Doc line without a URL
-    takes this pin; a Doc line with its own URL still wins.
+    so pinning never adds the song to the setlist. `artist` (the singer of
+    this version) is stored with the pin and used for the lyrics search and
+    the menu. A Doc line without a URL takes this pin; a Doc line with its
+    own URL still wins.
     """
     vid = video_id(url)
     if not title.strip():
@@ -246,6 +248,8 @@ def pin_video(title: str, url: str) -> str:
     old = next((e for e in entries if e.title == title), None)
     entry = old or NoteEntry(title=title)
     entry.youtube_url = f"https://youtu.be/{vid}"
+    if artist:
+        entry.artist_hint = artist.strip().replace("/", " ")
     back = parse_notes(format_line(entry))[0]
     if len(back) != 1 or back[0].title != title:
         raise ValueError(f"歌名含有會被當成標記的字：{format_line(entry)}")
@@ -264,14 +268,19 @@ def library_rows() -> list[dict]:
     """Every done song with its current video and the latest audit row."""
     import pipeline
     from processors.video_audit import load_audit
+    from processors import lyrics_check
     audit = load_audit(pipeline.DATASET_PATH / "video_audit.jsonl")
+    lyr = lyrics_check.load(pipeline.DATASET_PATH / "lyrics_audit.jsonl")
     pins = pinned_titles()
     rows = []
     for title, rec in sorted(pipeline.load_raw().items()):
         if rec.get("status") != "done":
             continue
         a = audit.get(title) or {}
+        lc = lyr.get(title) or {}
         rows.append({
+            "lyrics_suspect": lc.get("verdict") == "suspect",
+            "lyrics_reasons": lc.get("reasons", []),
             "title": title, "artist": a.get("artist") or rec.get("artist") or "",
             "youtube_url": rec.get("youtube_url"), "pinned": title in pins,
             "verdict": a.get("verdict"), "reasons": a.get("reasons", []),
@@ -601,7 +610,7 @@ ul{margin:4px 0;padding-left:20px}#inbox li{display:flex;justify-content:space-b
 目前這支沒問題就按「保留這支」（記成已確認，不會重新下載，以後也不再列出）。清單來自 <code>pipeline.py videos</code> 的稽核；單首可按「重新搜尋」。</p>
 <div class="row" id="libfilter">
 <button data-f="suggest" class="pri">待確認</button><button data-f="auto">已自動換</button>
-<button data-f="pinned">已指定</button><button data-f="ok">沒問題</button><button data-f="">全部</button>
+<button data-f="pinned">已指定</button><button data-f="lyrics">歌詞可疑</button><button data-f="ok">沒問題</button><button data-f="">全部</button>
 <input type="text" id="libq" placeholder="搜尋歌名 / 歌手"></div>
 <div id="lib"></div></section>
 
@@ -650,7 +659,7 @@ function card(v,title,isCur){const id=v.id||vidOf(v.url);
  <span class="msg" style="margin:0">${esc(v.channel||'')} · ${views(v.views)} 次</span>
  ${isCur?`<b>目前使用</b><button data-keep="${esc(title)}">保留這支</button>`:`<button data-pin="${esc(title)}" data-url="https://youtu.be/${id}">用這支</button>`}</div>`}
 function renderLib(){const q=$('#libq').value.trim();
- const rows=lib.filter(s=>(!libF||(libF==='pinned'?s.pinned:(s.verdict===libF&&!s.pinned)))&&(!q||(s.title+s.artist).includes(q)));
+ const rows=lib.filter(s=>(!libF||(libF==='lyrics'?s.lyrics_suspect:libF==='pinned'?s.pinned:(s.verdict===libF&&!s.pinned)))&&(!q||(s.title+s.artist).includes(q)));
  $('#libcount').textContent=`${rows.length} / ${lib.length} 首`;
  $('#lib').innerHTML=rows.map(s=>{const curId=(s.current&&s.current.id)||vidOf(s.youtube_url);
   const cur=s.current||{id:curId,title:'（還沒稽核）',channel:'',views:0};
@@ -658,6 +667,7 @@ function renderLib(){const q=$('#libq').value.trim();
   const v=s.pinned?'pinned':s.verdict;
   return `<div class="song"><h3>${esc(s.title)} <span class="msg">${esc(s.artist)}</span>${v?`<span class="verdict v-${v}">${VERDICT[v]||v}</span>`:''}</h3>
   ${s.reasons&&s.reasons.length?`<div class="msg" style="margin:0 0 6px">${esc(s.reasons.join('；'))}</div>`:''}
+  ${s.lyrics_suspect?`<div class="msg err" style="margin:0 0 6px">歌詞可疑：${esc(s.lyrics_reasons.join('；'))}（多半是音源版本不對，換一支完整的錄音室版）</div>`:''}
   <div class="vids">${curId?card(cur,s.title,true):''}${others.map(c=>card(c,s.title,false)).join('')}</div>
   <div class="row" style="margin-top:8px"><input type="text" placeholder="或貼上 YouTube 網址" data-urlfor="${esc(s.title)}">
   <button data-pinurl="${esc(s.title)}">用這支</button><button data-recheck="${esc(s.title)}">重新搜尋</button></div></div>`}).join('')||'<p class="msg">（沒有符合的歌）</p>'}

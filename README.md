@@ -34,7 +34,7 @@ flowchart LR
 
   subgraph SPM["Consumer — StreetPerformerMaster"]
     SYNC["sync_to_android.py<br/>reconcile sublist.json with the Doc<br/>push changed files (USB preferred)"]
-    APP["Android app<br/>歌單 (★ pinned → by artist, search)<br/>KTV (lyrics, lead-in dots, queue)"]
+    APP["Android app<br/>歌單 (★ pinned → by artist, search)<br/>KTV (aligned lyrics, queue)"]
     WEB["audience web<br/>(server catalog)"]
   end
 
@@ -395,6 +395,43 @@ to make it permanent.
 refreshed without the producer importing it — e.g. StreetPerformerMaster's
 phone sync. The child process gets an absolute `DATASET_PATH`.
 
+#### Karaoke backing tracks, queue control and machine load
+
+```bash
+python pipeline.py karaoke                      # every processed song → lead removed, backing vocals kept
+python pipeline.py karaoke 小幸運 演員          # only these songs
+python pipeline.py karaoke --method karaoke_aufr33 小幸運   # another karaoke separator
+python pipeline.py karaoke --revert 小幸運      # back to the htdemucs_ft backing
+python pipeline.py queue pause                  # stop long batches after the song in progress (frees the GPU)
+python pipeline.py queue resume                 # carry on where they stopped
+python pipeline.py queue status
+```
+
+`karaoke` runs the karaoke separator (default `karaoke_becruily`, the blind-test
+winner) into `separations/{method}/`, backs up the current `instrumental.m4a` /
+`vocals.m4a` once into `separations/htdemucs_ft/`, then encodes the karaoke
+instrumental as `instrumental.m4a` and its lead-vocal stem as the guide
+`vocals.m4a`. The lossless htdemucs_ft stems at the song root stay as they are:
+the alignment gate and research consumers keep using them. `metadata.json`
+(`instrumental_method`, `guide_vocal_method`, `karaoke_promoted_at`) and raw
+(`instrumental_method`) record which separator each song uses; songs already
+on the method are skipped. The phone picks the new files up on the next sync
+(audio is compared by size).
+
+Pausing is a flag file (`$DATASET_PATH/.queue_paused`) checked between songs by
+`karaoke`, `separate`, and the add / refetch loops of `ingest`; the song in
+progress finishes first (a few minutes on an RTX 3070). Set
+`MANDPOP_IGNORE_PAUSE=1` on one command to run it while the others are held.
+
+Every pipeline command runs at below-normal CPU priority with math-library
+thread pools capped at a quarter of the logical cores (`processors/resources.py`),
+inherited by the separator / Demucs / ffmpeg children, so the desktop stays
+responsive. `MANDPOP_THREADS=N` changes the cap; `MANDPOP_PRIORITY=normal`
+turns both off. Measured on a karaoke run: the pipeline process tree averaged
+5 % of the machine's CPU (peak 8 %) and 2.4 GB RAM. Antivirus scanning and
+search indexing of the freshly written audio files can cost more than that; add
+`$DATASET_PATH` to their exclusions if the PC feels slow during a batch.
+
 #### Fix source videos (audit + library editor)
 
 ```bash
@@ -519,6 +556,37 @@ python pipeline.py export --request req.json --output ./export
 | **YouTube auto-subs** | LRC (ASR-quality) | 100% but unreliable | Last resort, low quality. |
 
 After download both `lyrics.lrc` (timestamped) and `lyrics.txt` (plain) are stored.
+
+The search uses the song's singer (the Doc's `【歌手】` heading, or `X版`). A hit
+by that singer wins over an earlier source's hit by someone else: NetEase's
+exact-title match is often a cover or a different song with the same title
+(迷迭香 came back as 張宇's song, 說了再見 as a cover), while QQ has the
+original. The singer is also what `metadata.json` / raw record `artist`
+stores; the lyrics site's credit no longer overrides it.
+
+Re-fetching a song onto another video (`refetch`, or a changed pin picked up
+by `ingest`) deletes the old audio **and** `separations/`, so the karaoke
+batch separates the new recording instead of reusing stale stems.
+
+Search details that keep the right version:
+
+- **Several queries per source.** Each source is tried with `title artist`,
+  `title`, then the simplified-Chinese title with and without the artist.
+  The first hit is kept as a fallback, but the search keeps going until a hit
+  credits the singer (a throttled first query no longer settles for another
+  artist's same-title song).
+- **Variant characters match.** Titles and artist names are compared after
+  conversion to simplified Chinese, so 艷/豔 or 演員/演员 count as the same.
+- **QQ throttling is retried.** QQ answers `code 2001` with an empty list when
+  it rate-limits; the search waits and retries up to 3 times (`QQ_RETRIES`,
+  `QQ_BACKOFF_SEC` in `crawlers/lyrics.py`).
+- **Repeated choruses keep their text.** Some QQ LRCs list a repeated line as
+  a bare timestamp dated earlier than the previous line; those blanks get the
+  previous line's text back (`fill_backdated_blanks`), so the karaoke screen
+  doesn't go empty in the second chorus.
+- **Doc songs that were never downloaded are added.** `ingest` adds every Doc
+  song whose record has no `status` or is `pending` (`needs_add`), including
+  records that only held setlist presets.
 
 ### Part 1 status
 
@@ -807,6 +875,11 @@ and the whole doc can be pasted into `notes.txt` verbatim — no reformatting:
 ```
 
 Rules of thumb 口訣:
+- **Group songs under `【歌手】` headings** (Heading 2 in the Doc, so each singer
+  collapses in Google Docs). A song under a heading takes that singer as its
+  artist; `歌名 X版` (or `歌名／歌手`) on the line names a different singer's
+  version, e.g. `哭砂 張惠妹版` under `【黃鶯鶯】`. `【未分類】` sets no artist.
+  `【歌手】` 標題下的歌預設是該歌手唱的；那一行寫 `X版` 表示唱 X 的版本。
 - **Every line of the Doc is in the setlist** (and the research corpus).
   Markers are only presets: `±N` key, `女版`/`男版`, `!` = pin to the top.
   **Doc 每一行都進 setlist**（也進研究資料集）；標記只是預設值，`!`＝置頂。
