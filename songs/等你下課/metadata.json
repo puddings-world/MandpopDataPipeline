@@ -1,0 +1,35 @@
+{
+  "title": "等你下課",
+  "youtube_url": "https://youtu.be/kfXdP7nZIiE",
+  "youtube_title": "周杰倫 Jay Chou【等你下課 Waiting For You  (with 楊瑞代 Gary)】歌詞版Lyrics MV",
+  "duration_sec": 275,
+  "view_count": 154312582,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": null,
+  "lyricist": "周杰伦",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:33:24.491688",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/kfXdP7nZIiE",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T02:55:10"
+}

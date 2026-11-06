@@ -110,7 +110,12 @@ def parse_notes(text: str, listed: bool = False) -> tuple[list[NoteEntry], list[
         for marker in ("#", "＃"):
             if marker in line:
                 line, comment = line.split(marker, 1)
-                comment = comment.strip() or None
+                comment = comment.strip()
+                # A pin typed at the very end ("男版 # 或-2 ！") still pins.
+                if comment.endswith(("!", "！")):
+                    comment = comment.rstrip("!！ ")
+                    line += " !"
+                comment = comment or None
                 line = line.strip()
                 break
         if not line:

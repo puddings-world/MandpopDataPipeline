@@ -1,0 +1,29 @@
+{
+  "title": "你不屬於我",
+  "youtube_url": "https://youtu.be/6O_Zx9St9ik",
+  "youtube_title": "周興哲Eric Chou《你不屬於我 You Don't Belong to Me》Official Music Video - Netflix「比悲傷更悲傷的故事」影集版片尾曲",
+  "duration_sec": 321,
+  "view_count": 85133691,
+  "uploader": "周興哲 Eric Chou",
+  "artist": "周興哲",
+  "album": "你不属于我",
+  "lyricist": "林孝谦",
+  "composer": "周兴哲",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-06T04:31:40.480031",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T04:49:39"
+}

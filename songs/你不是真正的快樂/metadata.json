@@ -1,0 +1,35 @@
+{
+  "title": "你不是真正的快樂",
+  "youtube_url": "https://youtu.be/hr8jWDyb1jg",
+  "youtube_title": "Mayday五月天【你不是真正的快樂You Are Not Truly Happy】MV官方完整版",
+  "duration_sec": 304,
+  "view_count": 21488311,
+  "uploader": "相信音樂BinMusic",
+  "artist": "五月天",
+  "album": "后青春期的诗",
+  "lyricist": "五月天 阿信",
+  "composer": "五月天 阿信",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:14:44.969950",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "五月天",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/hr8jWDyb1jg",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T18:47:54"
+}

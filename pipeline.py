@@ -1952,12 +1952,14 @@ def refresh_setlist() -> int:
 
 
 def sync_doc(url: str | None = None, device: str = "cuda", no_add: bool = False,
-             dry_run: bool = False, run_then: bool = True) -> int:
+             dry_run: bool = False, run_then: bool = True,
+             if_changed: bool = False) -> int:
     """Fetch the tracked Google Doc → notes.txt → ingest → post-ingest hook.
 
     The non-interactive twin of the inbox page's 「抓最新」+「套用」, for
     schedulers. Returns a process exit code; on a fetch error notes.txt is
-    left untouched.
+    left untouched. `if_changed=True` stops right after the fetch when the
+    Doc's songs match notes.txt (a cheap poll for a periodic task).
     """
     from processors.inbox_http import (diff_notes, fetch_doc_text,
                                        resolve_doc_url, write_notes)
@@ -1981,7 +1983,11 @@ def sync_doc(url: str | None = None, device: str = "cuda", no_add: bool = False,
     if dry_run:
         print(f"[dry-run] {NOTES_TXT.name} not written")
         return 0
-    if d["added"] or d["removed"] or d["changed"]:
+    changed = bool(d["added"] or d["removed"] or d["changed"])
+    if if_changed and not changed:
+        print("Doc unchanged — nothing to do")
+        return 0
+    if changed:
         write_notes(text)
         print(f"Wrote {NOTES_TXT.name} (previous copy → {NOTES_TXT.name}.bak)")
 
@@ -2417,6 +2423,9 @@ def main():
                             "inbox_config.json; a URL given here becomes the tracked doc")
     p_ing.add_argument("--no-then", action="store_true",
                        help="With --from-doc: skip INBOX_POST_INGEST_CMD")
+    p_ing.add_argument("--if-changed", action="store_true",
+                       help="With --from-doc: do nothing when the Doc's songs match "
+                            "notes.txt (for a periodic task)")
 
     # lyrics-check
     p_lc = sub.add_parser(
@@ -2701,7 +2710,8 @@ def main():
         if args.from_doc is not None:
             sys.exit(sync_doc(args.from_doc or None, device=args.device,
                               no_add=args.no_add, dry_run=args.dry_run,
-                              run_then=not args.no_then))
+                              run_then=not args.no_then,
+                              if_changed=args.if_changed))
         ingest_notes(notes_path=args.file, device=args.device,
                      no_add=args.no_add, dry_run=args.dry_run)
     elif args.command == "lyrics-check":

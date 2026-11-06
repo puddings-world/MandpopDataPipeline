@@ -1,0 +1,35 @@
+{
+  "title": "十年一刻",
+  "youtube_url": "https://youtu.be/V4hBde4pQ6c",
+  "youtube_title": "蘇打綠 sodagreen -【十年一刻】Official Music Video",
+  "duration_sec": 261,
+  "view_count": 9546005,
+  "uploader": "蘇打綠 sodagreen",
+  "artist": "蘇打綠",
+  "album": "十年一刻（苏打绿版）",
+  "lyricist": "吴青峰",
+  "composer": "吴青峰",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:08:18.866123",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "蘇打綠",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/V4hBde4pQ6c",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T21:29:35"
+}

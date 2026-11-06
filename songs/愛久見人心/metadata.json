@@ -1,0 +1,35 @@
+{
+  "title": "愛久見人心",
+  "youtube_url": "https://youtu.be/RkQy3NlG1eo",
+  "youtube_title": "梁靜茹 Fish Leong – 愛久見人心 (Official Music Video)",
+  "duration_sec": 312,
+  "view_count": 43774015,
+  "uploader": "UNIVERSAL MUSIC TAIWAN 環球音樂",
+  "artist": "梁靜茹",
+  "album": "爱久见人心",
+  "lyricist": "彭学斌",
+  "composer": "彭学斌",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T15:51:38.022352",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "梁靜茹",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/RkQy3NlG1eo",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T01:22:10"
+}

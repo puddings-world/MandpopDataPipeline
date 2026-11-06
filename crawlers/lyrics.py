@@ -47,7 +47,7 @@ def fetch_lyrics_from(title: str, source: str, youtube_url: str | None = None,
         raise ValueError(f"unknown source {source!r}; "
                          f"use 'netease', 'qq', or 'youtube'")
 
-    if lrc and len(lrc) > 30:
+    if has_timestamps(lrc):
         info.update(api_info)
         info.update({k: v for k, v in extract_lrc_metadata(lrc).items()
                      if k not in info})
@@ -61,12 +61,27 @@ def by_artist(artist: str | None, credits: str) -> bool:
     return (not artist) or _norm_name(artist_group(artist)) in _norm_name(credits or "")
 
 
-def lyrics_rank(info: dict, artist: str | None) -> tuple[bool, bool]:
-    """Sort key for a source's hit: (not by the wanted artist, not exact name)."""
+def has_timestamps(lrc: str | None) -> bool:
+    """True for a real LRC; some sources return untimed text under `lrc`."""
+    return bool(lrc and len(lrc) > 30 and _LRC_TS.search(lrc))
+
+
+def lyrics_rank(info: dict, artist: str | None) -> tuple[bool, bool, bool]:
+    """Sort key for a source's hit:
+    (not by the wanted artist, artist only inside a longer name, not exact name).
+
+    A credit that merely contains the singer ("林宥嘉的小迷弟", a fan upload)
+    counts as by the artist but loses to a credit naming the singer outright.
+    """
     from processors.setlist_order import artist_group
-    by_artist = (not artist) or (
-        _norm_name(artist_group(artist)) in _norm_name(info.get("artist") or ""))
-    return (not by_artist, info.get("match") == "variant")
+    if not artist:
+        return (False, False, info.get("match") == "variant")
+    want = _norm_name(artist_group(artist))
+    credits = info.get("artist") or ""
+    names = {_norm_name(n) for n in re.split(r"[\s/,&、;()（）]+|feat\.?", credits)}
+    exact = want in names or want == _norm_name(credits)
+    loose = not exact and want in _norm_name(credits)
+    return (not (exact or loose), loose, info.get("match") == "variant")
 
 
 def fetch_lyrics(title: str, youtube_url: str | None = None, artist: str | None = None,
@@ -90,14 +105,14 @@ def fetch_lyrics(title: str, youtube_url: str | None = None, artist: str | None 
     best, best_rank = None, None
     for i, (name, fetch) in enumerate((("netease", _fetch_netease), ("qq_music", _fetch_qq_music))):
         lrc, txt, api_info = fetch(title, artist)
-        if not (lrc and len(lrc) > 30):
+        if not has_timestamps(lrc):
             continue
         info = dict(api_info)
         info.update({k: v for k, v in extract_lrc_metadata(lrc).items() if k not in info})
         rank = lyrics_rank(info, artist) + (i,)
         if best_rank is None or rank < best_rank:
             best, best_rank = (lrc, txt, name, info), rank
-        if rank[:2] == (False, False):        # by the artist, exact name: done
+        if rank[:3] == (False, False, False):  # by the artist, exact name: done
             break
     if best:
         return (fill_backdated_blanks(best[0]),) + best[1:]

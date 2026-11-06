@@ -1,0 +1,35 @@
+{
+  "title": "星空",
+  "youtube_url": "https://youtu.be/RTUwaCImChM",
+  "youtube_title": "Mayday五月天【星空】MV官方完整版-電影「星空」主題曲",
+  "duration_sec": 342,
+  "view_count": 46145334,
+  "uploader": "相信音樂BinMusic",
+  "artist": "五月天",
+  "album": "第二人生 (末日版)",
+  "lyricist": "五月天 阿信",
+  "composer": "石头",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-03T16:45:25.808954",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "五月天",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/RTUwaCImChM",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-03T17:55:17"
+}

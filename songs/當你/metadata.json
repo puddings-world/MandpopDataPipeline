@@ -1,0 +1,35 @@
+{
+  "title": "當你",
+  "youtube_url": "https://youtu.be/aFd8EluIJV8",
+  "youtube_title": "林俊傑 JJ Lin【當你】官方歌詞版 MV",
+  "duration_sec": 249,
+  "view_count": 1383691,
+  "uploader": "Melo Mango",
+  "artist": "林俊傑",
+  "album": "她说 概念自选辑",
+  "lyricist": "张思尔",
+  "composer": "林俊杰",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T15:57:33.943504",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林俊傑",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/aFd8EluIJV8",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T02:41:49"
+}

@@ -1,0 +1,35 @@
+{
+  "title": "喜歡寂寞",
+  "youtube_url": "https://youtu.be/AUv4_lsYb6U",
+  "youtube_title": "蘇打綠 sodagreen -【喜歡寂寞】",
+  "duration_sec": 266,
+  "view_count": 33858183,
+  "uploader": "蘇打綠 sodagreen",
+  "artist": "蘇打綠",
+  "album": "2011 Hit Fm 年度百首单曲",
+  "lyricist": "吴青峰",
+  "composer": "吴青峰",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:06:41.943219",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "蘇打綠",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/AUv4_lsYb6U",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T22:00:26"
+}

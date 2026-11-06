@@ -316,6 +316,7 @@ python pipeline.py ingest --from-doc            # fetch the tracked Google Doc �
 python pipeline.py ingest --from-doc URL        # same, and make URL the tracked doc
 python pipeline.py ingest --from-doc --dry-run  # show the Doc diff only
 python pipeline.py ingest --from-doc --no-then  # skip INBOX_POST_INGEST_CMD (no phone sync)
+python pipeline.py ingest --from-doc --if-changed  # poll: stop right away when the Doc's songs match notes.txt
 python pipeline.py setlist                      # rewrite setlist.jsonl from notes + current raw only
 ```
 
@@ -332,10 +333,19 @@ writes `notes.txt` (previous copy → `notes.txt.bak`), runs `ingest`, then runs
 fetch fails it exits 1 and leaves `notes.txt` untouched. The tracked doc is
 `NOTES_DOC_URL` from `.env`, else the link saved in `inbox_config.json`
 (by the inbox page or a previous `--from-doc URL`). The Doc must be shared as
-*anyone with the link can view*. To sync nightly on Windows:
+*anyone with the link can view*.
+
+`--if-changed` compares the Doc's songs with `notes.txt` (headers, blank lines
+and `!`/`！` spelling don't count) and prints `Doc unchanged — nothing to do`
+without ingesting or syncing when they match, so a frequent poll costs one
+HTTP fetch. To keep the phone menu in step with the Doc, poll every 15 minutes
+on Windows (`conhost --headless` keeps the console and the tools it spawns
+from flashing windows; a run still in progress makes the next tick skip):
 
 ```powershell
-schtasks /Create /TN "MandpopDocSync" /SC DAILY /ST 04:00 /TR "cmd /c cd /d D:\MandpopDataset && python pipeline.py ingest --from-doc >> doc_sync.log 2>&1"
+schtasks /Create /TN "MandpopDocSync" /SC MINUTE /MO 15 /F /TR "conhost.exe --headless cmd /c \"cd /d D:\MandpopDataset && python -X utf8 pipeline.py ingest --from-doc --if-changed >> doc_sync.log 2>&1\""
+schtasks /Run /TN "MandpopDocSync"      # try it now; doc_sync.log shows the result
+schtasks /Delete /TN "MandpopDocSync" /F  # stop polling
 ```
 
 Paste your Google Doc into `notes.txt` (grammar in the **Daily note-taking
@@ -644,7 +654,7 @@ spec for all data flows in and out.
 | # | Interface 介面 | Consumer 消費端 | Transport 傳輸 | Files 檔案 | Subset 可見範圍 |
 |---|---|---|---|---|---|
 | ① | **Same-disk 同磁碟** | StreetPerformerMaster（iOS 街唱 app 開發環境） | Both repos point at `$DATASET_PATH` via `.env`; no cloning 兩專案 `.env` 指同一資料夾，不 clone | `instrumental.m4a`, `lyrics.lrc`, `setlist.jsonl` | setlist（karaoke-ready only） |
-| ② | **HTTP on-demand 按需拉取** | Mac 錄音（未來 VocalStudio） | `pipeline.py serve` on LAN, browser web UI + JSON API — fetch **one song at a time**, never mirror 一次拉一首，絕不整包鏡像 | `instrumental.flac`, `vocals.flac`, `lyrics.lrc`（+ m4a 可選） | processed |
+| ② | **HTTP on-demand 按需拉取** | Mac 錄音（reprise-studio） | `pipeline.py serve` on LAN, browser web UI + JSON API — fetch **one song at a time**, never mirror 一次拉一首，絕不整包鏡像 | `karaoke.flac`（留和聲伴唱）, `instrumental.flac`, `vocals.flac`, `original.mp3`, `lyrics.lrc`（+ m4a 可選） | processed |
 | ③ | **Python reader** | research code, Phase 2 training 研究/訓練程式 | `pip install -e .` → `from mandpop_dataset import Dataset` | everything processed + `features.json` + `metrics.jsonl` | processed |
 | ④ | **Export bundle 匯出包** | offline handoff, debugging 離線交付/除錯 | `pipeline.py export --request req.json --output dir` | per request JSON 依請求檔 | processed（`include_raw` 僅除錯） |
 
@@ -655,9 +665,22 @@ GET /                          single-page web UI 網頁選歌介面
                                (search 搜尋 / setlist key 標記 / per-file download links)
 GET /api/songs                 JSON list: all processed songs + setlist annotations
 GET /api/songs/{title}         one song: metadata + which files exist on disk
-GET /files/{title}/{kind}      kind ∈ instrumental.flac | vocals.flac |
-                               instrumental.m4a | vocals.m4a | lyrics.lrc
+GET /files/{title}/{kind}      kind ∈ instrumental.{flac,wav,m4a} | vocals.{flac,wav,m4a} |
+                               karaoke.flac | original.mp3 | lyrics.lrc | lyrics.txt
 ```
+
+Which backing to fetch:
+
+| kind | What it is | Use |
+|---|---|---|
+| `karaoke.flac` | Lossless karaoke backing: lead vocal removed, **backing vocals kept** (becruily, the blind-test winner). Served from `separations/karaoke_becruily/instrumental.flac`. | Recording a cover (Logic etc.) |
+| `instrumental.m4a` | Same karaoke backing as AAC 192k (what the phone app plays). | Quick listening |
+| `instrumental.flac` / `.wav` | htdemucs_ft stem with **all** vocals removed; kept for alignment. | Pure instrumental |
+| `vocals.m4a` | Guide vocal (lead only). | Learning the melody |
+| `original.mp3` | Full original mix as downloaded from the pinned video. Gone after `compact`. | Reference / MV soundtrack |
+
+`files_on_disk` in `/api/songs/{title}` lists only the kinds present for
+that song, so a client should check it before downloading.
 
 - **The consumer machine needs NOTHING installed** — no repo clone, no
   Python, no git. A browser (or `curl`) is the entire client. On the Mac:
@@ -896,6 +919,9 @@ Rules of thumb 口訣:
   Words starting with `或` / `可以` (`或男版`, `可以降2`) are alternatives: they
   go into the comment and still put the song in the setlist.
   標記黏在一起也可以；「或…」「可以…」是備案，會存成註解，這首歌照樣進 setlist。
+- Half-width `!` and full-width `！` both pin, even typed after a comment
+  (`靜悄悄 男版 # 或-2 ！`).
+  半形 `!`、全形 `！` 都算置頂，寫在 `#` 註解後面的行尾也算。
 
 #### `notes.txt` (input, the Google Doc mirror 輸入檔＝Google Doc 鏡像)
 

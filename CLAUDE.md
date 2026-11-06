@@ -55,7 +55,7 @@ Phase 2 啟動條件：Phase 1 至少累到 ≥ 1000 首已驗證的乾淨 stems
 | 介面 | 消費端 | 需要什麼 | 傳輸 |
 |------|--------|---------|------|
 | ① 同磁碟 | **StreetPerformerMaster**（iOS 街唱，`../StreetPerformerMaster/`） | instrumental.m4a + lyrics.lrc + setlist.jsonl（key 預設） | 兩 repo `.env` 指同一 `$DATASET_PATH` |
-| ② HTTP 按需 | **Mac 錄音**（未來 VocalStudio） | vocals.flac + instrumental.flac + lyrics.lrc，單首拉取 | `pipeline.py serve`（LAN、唯讀、網頁 UI + JSON API，spec 在 README） |
+| ② HTTP 按需 | **Mac 錄音**（reprise-studio） | karaoke.flac（留和聲伴唱）/ instrumental.flac / vocals.flac / original.mp3 + lyrics.lrc，單首拉取 | `pipeline.py serve`（LAN、唯讀、網頁 UI + JSON API，spec 在 README） |
 | ③ Python reader | 研究 / Phase 2 訓練 | processed 全部 + features.json + metrics.jsonl | `mandpop_dataset` module |
 | ④ export bundle | 離線交付 / 除錯 | 依 request JSON | `pipeline.py export` |
 

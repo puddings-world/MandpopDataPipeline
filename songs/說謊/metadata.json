@@ -1,0 +1,35 @@
+{
+  "title": "說謊",
+  "youtube_url": "https://youtu.be/ftfJRzW0MPo",
+  "youtube_title": "林宥嘉 Yoga Lin [說謊 Fairy Tale] Official MV",
+  "duration_sec": 284,
+  "view_count": 46474684,
+  "uploader": "華研國際",
+  "artist": "林宥嘉",
+  "album": "感官/世界",
+  "lyricist": "施人诚",
+  "composer": "李双飞",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:00:37.284385",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林宥嘉",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/ftfJRzW0MPo",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T03:09:13"
+}

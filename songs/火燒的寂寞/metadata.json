@@ -1,0 +1,29 @@
+{
+  "title": "火燒的寂寞",
+  "youtube_url": "https://www.youtube.com/watch?v=pdYe5eH5QLM",
+  "youtube_title": "Shin信与粉丝合唱《火烧的寂寞》，尽显高音王子范儿，震撼全场！",
+  "duration_sec": 192,
+  "view_count": 66396,
+  "uploader": "湖南国际频道 Hunan TV International  Official Channel",
+  "artist": "信",
+  "album": "趁我",
+  "lyricist": "姚若龙",
+  "composer": "李荣浩",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-06T04:25:41.874147",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T06:13:09"
+}

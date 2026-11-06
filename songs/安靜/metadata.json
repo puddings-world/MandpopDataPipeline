@@ -1,0 +1,35 @@
+{
+  "title": "安靜",
+  "youtube_url": "https://youtu.be/1hI-7vj2FhE",
+  "youtube_title": "周杰倫 Jay Chou【安靜 Silence】Official MV",
+  "duration_sec": 331,
+  "view_count": 65375891,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": "范特西",
+  "lyricist": "周杰伦",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:25:47.604631",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/1hI-7vj2FhE",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T22:58:43"
+}

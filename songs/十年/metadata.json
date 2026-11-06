@@ -1,0 +1,35 @@
+{
+  "title": "十年",
+  "youtube_url": "https://youtu.be/JM9rx_hN1Ko",
+  "youtube_title": "陳奕迅 Eason Chan《十年(國) [OT : 明年今日]》[Official MV]",
+  "duration_sec": 204,
+  "view_count": 11220528,
+  "uploader": "英皇娛樂 eeg music",
+  "artist": "陳奕迅",
+  "album": "黑白灰",
+  "lyricist": null,
+  "composer": "陈小霞",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T15:47:23.749649",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "陳奕迅",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/JM9rx_hN1Ko",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T21:15:20"
+}

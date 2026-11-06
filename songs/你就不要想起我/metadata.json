@@ -1,0 +1,35 @@
+{
+  "title": "你就不要想起我",
+  "youtube_url": "https://youtu.be/GsKbnsUN2RE",
+  "youtube_title": "HEBE TIEN 田馥甄 [你就不要想起我 You Better Not Think About Me] Official MV HD",
+  "duration_sec": 317,
+  "view_count": 104568925,
+  "uploader": "華研國際",
+  "artist": "田馥甄",
+  "album": "渺小",
+  "lyricist": "施人诚",
+  "composer": "杨子朴",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:10:22.934115",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "田馥甄",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/GsKbnsUN2RE",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T19:12:25"
+}

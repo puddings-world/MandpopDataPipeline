@@ -1,0 +1,35 @@
+{
+  "title": "洋蔥",
+  "youtube_url": "https://youtu.be/jGqpz3stgzY",
+  "youtube_title": "Mayday五月天【洋蔥Onion】MV官方完整版",
+  "duration_sec": 275,
+  "view_count": 36941747,
+  "uploader": "相信音樂BinMusic",
+  "artist": "五月天",
+  "album": "步步 自选作品辑 the Best of 1999-2013",
+  "lyricist": "阿信",
+  "composer": "阿信",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-03T16:48:21.347712",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "五月天",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/jGqpz3stgzY",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-03T18:09:12"
+}

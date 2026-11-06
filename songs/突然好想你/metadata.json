@@ -24,5 +24,8 @@
   "album": "后青春期的诗",
   "instrumental_method": "karaoke_becruily",
   "guide_vocal_method": "karaoke_becruily",
-  "karaoke_promoted_at": "2026-11-01T16:16:06"
+  "karaoke_promoted_at": "2026-11-01T16:16:06",
+  "favorite": false,
+  "version_artist": "五月天",
+  "preset_note": null
 }

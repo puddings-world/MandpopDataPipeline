@@ -1,0 +1,35 @@
+{
+  "title": "我最親愛的",
+  "youtube_url": "https://youtu.be/TVjsnSJlULg",
+  "youtube_title": "張惠妹 A-Mei - 我最親愛的 My Dearest (official官方完整版MV)",
+  "duration_sec": 308,
+  "view_count": 13068498,
+  "uploader": "Timeless Music",
+  "artist": "張惠妹",
+  "album": "你在看我吗",
+  "lyricist": "林夕",
+  "composer": "Rusell Harris",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:19:23.310904",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "張惠妹",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/TVjsnSJlULg",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T01:54:28"
+}

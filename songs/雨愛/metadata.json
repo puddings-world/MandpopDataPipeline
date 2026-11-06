@@ -1,0 +1,35 @@
+{
+  "title": "雨愛",
+  "youtube_url": "https://youtu.be/oec9R5ypf-o",
+  "youtube_title": "楊丞琳 Rainie Yang - 雨愛",
+  "duration_sec": 283,
+  "view_count": 41153237,
+  "uploader": "Rainie Yang's Official Channel楊丞琳官方專屬頻道",
+  "artist": "楊丞琳",
+  "album": "雨爱",
+  "lyricist": "Wonderful",
+  "composer": "金大洲",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:16:06.108053",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "楊丞琳",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/oec9R5ypf-o",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T04:07:52"
+}

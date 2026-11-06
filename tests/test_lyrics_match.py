@@ -86,3 +86,32 @@ def test_search_keeps_looking_for_the_artist_across_queries(monkeypatch):
     monkeypatch.setattr(requests, "get", fake_get)
     lrc, _, info = lyrics._fetch_netease("魚", "怕胖團")
     assert info["artist"] == "怕胖团" and "怕胖团" in lrc
+
+
+def test_untimed_text_is_not_an_lrc_and_falls_through(monkeypatch):
+    """天真有邪: NetEase returned plain text under `lrc`, so alignment had nothing to check."""
+    from crawlers import lyrics
+    plain = "我已經 不能用單純 的語氣 再唱情歌\n" * 5
+    timed = "[00:29.97]我已經不能用單純的語氣\n[00:36.57]再唱情歌\n" * 3
+    monkeypatch.setattr(lyrics, "_fetch_netease",
+                        lambda t, a=None: (plain, plain, {"artist": "林宥嘉", "match": "exact"}))
+    monkeypatch.setattr(lyrics, "_fetch_qq_music",
+                        lambda t, a=None: (timed, "x", {"artist": "林宥嘉", "match": "exact"}))
+    got, _, source, _ = lyrics.fetch_lyrics("天真有邪", artist="林宥嘉")
+    assert source == "qq_music" and got.startswith("[00:29.97]")
+    assert lyrics.fetch_lyrics_from("天真有邪", "netease", artist="林宥嘉")[0] is None
+
+
+def test_fan_upload_credit_loses_to_the_singer_himself(monkeypatch):
+    from crawlers import lyrics
+    lrc = "[00:01.00]" + "歌詞" * 20
+    monkeypatch.setattr(lyrics, "_fetch_netease",
+                        lambda t, a=None: (lrc + "粉絲", "x", {"artist": "林宥嘉的小迷弟", "match": "exact"}))
+    monkeypatch.setattr(lyrics, "_fetch_qq_music",
+                        lambda t, a=None: (lrc + "本人", "y", {"artist": "林宥嘉 (Yoga Lin)", "match": "exact"}))
+    got, _, source, _ = lyrics.fetch_lyrics("想自由", artist="林宥嘉")
+    assert source == "qq_music" and got.endswith("本人")
+    # a fan upload is still better than nothing, and duet credits count as exact
+    assert lyrics.lyrics_rank({"artist": "林宥嘉的小迷弟"}, "林宥嘉")[:2] == (False, True)
+    assert lyrics.lyrics_rank({"artist": "周杰伦, 杨瑞代"}, "周杰倫")[:2] == (False, False)
+    assert lyrics.lyrics_rank({"artist": "田馥甄 Hebe Tien"}, "田馥甄")[:2] == (False, False)

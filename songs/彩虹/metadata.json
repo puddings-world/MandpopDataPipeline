@@ -1,0 +1,35 @@
+{
+  "title": "彩虹",
+  "youtube_url": "https://youtu.be/WxZvXPTBC0A",
+  "youtube_title": "周杰倫 Jay Chou【彩虹 Rainbow】-Official Music Video",
+  "duration_sec": 273,
+  "view_count": 33860522,
+  "uploader": "周杰倫 Jay Chou",
+  "artist": "周杰倫",
+  "album": "我很忙",
+  "lyricist": "周杰伦",
+  "composer": "周杰伦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "qq_music",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:30:22.705017",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "周杰倫",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/WxZvXPTBC0A",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T23:50:02"
+}

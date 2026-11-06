@@ -1,0 +1,35 @@
+{
+  "title": "如果我們不曾相遇",
+  "youtube_url": "https://youtu.be/eZMH6Mo0f9A",
+  "youtube_title": "Mayday五月天 [ 如果我們不曾相遇What If We Had Never Met ] Official Music Video",
+  "duration_sec": 230,
+  "view_count": 46797648,
+  "uploader": "相信音樂BinMusic",
+  "artist": "五月天",
+  "album": "自传",
+  "lyricist": "五月天 阿信",
+  "composer": "五月天 阿信",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:13:15.772837",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "五月天",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/eZMH6Mo0f9A",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-05T22:26:02"
+}

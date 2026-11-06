@@ -26,7 +26,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 # Whitelist of servable per-song files → content type. Anything not in
-# this dict (metadata.json, audit internals, separations/) is invisible.
+# this dict (metadata.json, audit internals, other separations/) is invisible.
 FILE_KINDS = {
     "instrumental.flac": "audio/flac",
     "vocals.flac": "audio/flac",
@@ -34,9 +34,23 @@ FILE_KINDS = {
     "vocals.wav": "audio/wav",
     "instrumental.m4a": "audio/mp4",
     "vocals.m4a": "audio/mp4",
+    "karaoke.flac": "audio/flac",
+    "original.mp3": "audio/mpeg",
     "lyrics.lrc": "text/plain; charset=utf-8",
     "lyrics.txt": "text/plain; charset=utf-8",
 }
+
+# Kinds whose file is not at songs/{title}/{kind}. karaoke.flac is the
+# lossless karaoke backing (lead vocal removed, backing vocals kept); the
+# root instrumental.{wav,flac} stays the htdemucs_ft full-removal stem.
+KIND_PATHS = {
+    "karaoke.flac": "separations/karaoke_becruily/instrumental.flac",
+}
+
+
+def kind_path(song_dir: Path, kind: str) -> Path:
+    """Where a whitelisted kind lives inside a song folder."""
+    return song_dir / KIND_PATHS.get(kind, kind)
 
 _TITLE_BAD = re.compile(r"[/\\]|\.\.")   # path traversal guard
 
@@ -60,7 +74,7 @@ def _song_files(song_dir: Path) -> dict[str, int]:
     """Which whitelisted files exist for a song, with sizes in bytes."""
     out = {}
     for kind in FILE_KINDS:
-        p = song_dir / kind
+        p = kind_path(song_dir, kind)
         if p.exists():
             out[kind] = p.stat().st_size
     return out
@@ -154,6 +168,8 @@ function render(filter) {
     if (fl['vocals.wav'])        links.push(fileLink(s.title,'vocals.wav','人聲 WAV',fl['vocals.wav']));
     if (fl['instrumental.m4a'])  links.push(fileLink(s.title,'instrumental.m4a','伴奏 m4a',fl['instrumental.m4a']));
     if (fl['vocals.m4a'])        links.push(fileLink(s.title,'vocals.m4a','導唱 m4a',fl['vocals.m4a']));
+    if (fl['karaoke.flac'])      links.push(fileLink(s.title,'karaoke.flac','伴唱 FLAC（留和聲）',fl['karaoke.flac']));
+    if (fl['original.mp3'])      links.push(fileLink(s.title,'original.mp3','原曲 MP3',fl['original.mp3']));
     if (fl['lyrics.lrc'])        links.push(fileLink(s.title,'lyrics.lrc','歌詞 LRC',fl['lyrics.lrc']));
     const previewSrc = fl['instrumental.m4a'] ? 'instrumental.m4a'
                      : fl['instrumental.flac'] ? 'instrumental.flac' : null;
@@ -269,7 +285,7 @@ class _Handler(BaseHTTPRequestHandler):
         if _TITLE_BAD.search(title) or kind not in FILE_KINDS:
             self._not_found("bad path")
             return
-        fpath = self.dataset_path / "songs" / title / kind
+        fpath = kind_path(self.dataset_path / "songs" / title, kind)
         if not fpath.exists():
             self._not_found(f"no {kind} for {title}")
             return

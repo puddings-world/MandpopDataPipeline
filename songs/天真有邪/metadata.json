@@ -1,0 +1,34 @@
+{
+  "title": "天真有邪",
+  "youtube_url": "https://youtu.be/hrdQ_6K6oXk",
+  "youtube_title": "林宥嘉 Yoga Lin [ 天真有邪 Spoiled Innocence ] Official Music Video",
+  "duration_sec": 341,
+  "view_count": 33387982,
+  "uploader": "華研國際",
+  "artist": "林宥嘉",
+  "album": "天真有邪",
+  "lyricist": null,
+  "composer": null,
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-05T16:02:14.241315",
+  "key_offset": 0,
+  "gender_variant": null,
+  "favorite": false,
+  "version_artist": "林宥嘉",
+  "preset_note": null,
+  "pinned_youtube_url": "https://youtu.be/hrdQ_6K6oXk",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T05:08:26"
+}

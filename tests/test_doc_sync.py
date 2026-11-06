@@ -226,3 +226,30 @@ def test_artist_headings_group_songs_and_lines_can_override():
     assert by["哪裡都是你"].artist_hint == "周杰倫"
     assert (by["哭砂"].artist_hint, by["哭砂"].key_offset) == ("張惠妹", -2)  # version singer wins
     assert by["大魚"].artist_hint is None                         # 未分類 is not an artist
+
+
+def test_pin_typed_after_a_comment_still_pins():
+    text = "靜悄悄 男版 # 或-2 ！\n追光者-3  !\n我要快樂 -3！\n後來 男版 # 或女版-5\n"
+    by = {e.title: e for e in parse_notes(text, listed=True)[0]}
+    assert by["靜悄悄"].favorite and by["靜悄悄"].gender_variant == "male"
+    assert by["靜悄悄"].comment == "或-2" and by["靜悄悄"].key_offset == 0
+    assert by["追光者"].favorite and by["追光者"].key_offset == -3
+    assert by["我要快樂"].favorite and by["我要快樂"].key_offset == -3
+    assert not by["後來"].favorite and by["後來"].comment == "或女版-5"
+
+
+def test_sync_doc_if_changed_skips_ingest_and_hook_when_doc_matches(dataset, monkeypatch):
+    (dataset / "notes.txt").write_text("# header\n夜曲\n稻香 !\n", encoding="utf-8")
+    monkeypatch.setattr(inbox_http, "fetch_doc_text", lambda url: "夜曲\n稻香 ！\n")
+    ran = []
+    monkeypatch.setattr(pipeline, "ingest_notes", lambda **kw: ran.append(kw))
+    marker = dataset / "hook_ran"
+    monkeypatch.setenv("INBOX_POST_INGEST_CMD",
+                       f'"{sys.executable}" -c "open(r\'{marker}\', \'w\').close()"')
+    assert pipeline.sync_doc(DOC, if_changed=True) == 0
+    assert ran == [] and not marker.exists()
+
+    monkeypatch.setattr(inbox_http, "fetch_doc_text", lambda url: "夜曲\n稻香 !\n晴天\n")
+    assert pipeline.sync_doc(DOC, if_changed=True) == 0
+    assert len(ran) == 1 and marker.exists()
+    assert "晴天" in (dataset / "notes.txt").read_text(encoding="utf-8")

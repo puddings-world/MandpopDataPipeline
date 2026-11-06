@@ -1,0 +1,29 @@
+{
+  "title": "我好像在哪見過你",
+  "youtube_url": "https://youtu.be/XK0-l7tML9s",
+  "youtube_title": "薛之謙 Joker Xue【我好像在哪見過你】Official Music Video",
+  "duration_sec": 299,
+  "view_count": 2978345,
+  "uploader": "薛之謙 JokerXue",
+  "artist": "薛之謙",
+  "album": "初学者",
+  "lyricist": "薛之谦",
+  "composer": "薛之谦",
+  "separation_model": "htdemucs_ft",
+  "lyrics": {
+    "source": "netease",
+    "has_timestamps": true
+  },
+  "files": {
+    "instrumental": "instrumental.wav",
+    "lyrics": "lyrics.txt",
+    "lyrics.lrc": "lyrics.lrc.orig",
+    "meta": "meta.json",
+    "original": "original.mp3",
+    "vocals": "vocals.wav"
+  },
+  "processed_at": "2026-11-06T04:27:04.153923",
+  "instrumental_method": "karaoke_becruily",
+  "guide_vocal_method": "karaoke_becruily",
+  "karaoke_promoted_at": "2026-11-06T05:25:01"
+}
