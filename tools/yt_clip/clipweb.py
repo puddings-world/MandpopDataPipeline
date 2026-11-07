@@ -146,6 +146,33 @@ HTML = r"""<!DOCTYPE html>
   .tl-handle-in  { transform: translateX(-100%); }
   .tl-handle-out { }
 
+  /* vocal-onset markers */
+  .tl-markers { position: absolute; top: 0; left: 0; right: 0; height: 14px;
+                pointer-events: none; }
+  .tl-marker  {
+    position: absolute; top: 0; width: 0; height: 0;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 8px solid #e0c060;
+    transform: translateX(-50%);
+    cursor: pointer; pointer-events: auto;
+    filter: drop-shadow(0 0 2px rgba(224, 192, 96, 0.7));
+  }
+  .tl-marker:hover { border-top-color: #ffe080; }
+  .tl-marker.hot   { border-top-color: #ff8080;
+                     filter: drop-shadow(0 0 3px rgba(255, 128, 128, 0.9)); }
+  .tl-chorus  {
+    position: absolute; top: 14px; bottom: 4px; display: none;
+    background: rgba(224, 192, 96, 0.16);
+    border-left: 1px solid rgba(224, 192, 96, 0.6);
+    border-right: 1px solid rgba(224, 192, 96, 0.6);
+    pointer-events: none;
+  }
+  .tl-chorus.active { display: block; }
+  .preset-row button { background: #3a3550; border-color: #6a5a8a; }
+  .preset-row button:hover { background: #4e4670; }
+  .preset-row button:disabled { background: #2a2a2e; border-color: #3a3a3e;
+                                color: #666; cursor: not-allowed; }
+
   .times-row { display: flex; gap: 20px; font-size: 13px;
                font-family: 'Consolas', monospace; color: #aaa; margin: 8px 0; }
   .times-row .k { color: #888; }
@@ -180,10 +207,32 @@ HTML = r"""<!DOCTYPE html>
 
 <div class="timeline" id="timeline">
   <div class="tl-track"></div>
+  <div class="tl-chorus" id="tlChorus"></div>
+  <div class="tl-markers" id="tlMarkers"></div>
   <div class="tl-selection" id="tlSel"></div>
   <div class="tl-playhead" id="tlPlay"></div>
   <div class="tl-handle tl-handle-in"  id="tlIn"></div>
   <div class="tl-handle tl-handle-out" id="tlOut"></div>
+</div>
+
+<div class="row" style="margin: 4px 0 6px;">
+  <button onclick="scanOnsets()" id="scanBtn" title="detect vocal entry points">🎤 scan vocal onsets</button>
+  <button onclick="jumpPrevOnset()" title="p">⇤ prev onset</button>
+  <button onclick="jumpNextOnset()" title="n">next onset ⇥</button>
+  <button onclick="clearOnsets()" title="hide markers">✕ clear</button>
+  <button onclick="cycleChorus()" id="chorusBtn" disabled
+          title="the first chorus is a guess — cycle if it picked the wrong section">⟳ chorus 0/0</button>
+  <span class="info" id="onsetInfo">no scan yet</span>
+</div>
+
+<div class="row preset-row" style="margin: 4px 0 6px;">
+  <label>Presets:</label>
+  <button onclick="preset('line1-end')"    id="pLineEnd"   disabled>1st line → end</button>
+  <button onclick="preset('line1-chorus')" id="pLineChor"  disabled>1st line → chorus 1 end</button>
+  <button onclick="preset('chorus')"       id="pChorus"    disabled>chorus 1 only</button>
+  <button onclick="preset('line1-60')"     id="pLine60"    disabled>1st line +60s</button>
+  <button onclick="preset('line1-90')"     id="pLine90"    disabled>1st line +90s</button>
+  <button onclick="preset('trim')"         id="pTrim"      disabled>trim head/tail silence</button>
 </div>
 
 <div class="times-row">
@@ -192,7 +241,7 @@ HTML = r"""<!DOCTYPE html>
   <span><span class="k">length</span> <span class="v" id="lenLbl">--:--</span></span>
   <span><span class="k">cur</span> <span class="v" id="curLbl">--:--</span></span>
   <span><span class="k">total</span> <span class="v" id="durLbl">--:--</span></span>
-  <span class="hotkey">[ ] set · ← → seek 5s · , . ±1 frame · k play · l loop</span>
+  <span class="hotkey">[ ] set · ← → seek 5s · , . ±1 frame · k play · l loop · n/p next/prev onset</span>
 </div>
 
 <div class="row">
@@ -302,12 +351,26 @@ let inSec = 0, outSec = 10;
 let looping = false;
 let cropBox = null;  // {x, y, w, h} in SOURCE video-pixel coords
 let cropAspect = 0;  // 0 = free, >0 = width/height ratio
+let onsets = [];     // [{t, score}, ...] vocal-entry candidates
+let analysis = null; // {vocal_start, audio_start, audio_end, chorus_candidates}
+let chorusIdx = -1;  // which chorus candidate is selected
+const tlMarkers = document.getElementById('tlMarkers');
+const tlChorus  = document.getElementById('tlChorus');
+const scanBtn   = document.getElementById('scanBtn');
+const chorusBtn = document.getElementById('chorusBtn');
+const onsetInfo = document.getElementById('onsetInfo');
+
+function chorusSel() {
+  if (!analysis || chorusIdx < 0) return null;
+  return analysis.chorus_candidates[chorusIdx] || null;
+}
 
 // ---------- load ----------
 function loadVideo() {
   const path = document.getElementById('path').value.trim();
   if (!path) return;
   v.src = '/video?path=' + encodeURIComponent(path);
+  clearOnsets();  // stale markers from previous file
   v.addEventListener('loadedmetadata', () => {
     inSec = 0;
     outSec = Math.min(10, v.duration);
@@ -322,6 +385,157 @@ function loadVideo() {
   v.addEventListener('error', () => {
     status_.innerHTML = '<span class="status-err">failed to load — check path exists</span>';
   }, { once: true });
+}
+
+// ---------- vocal-onset scan ----------
+async function scanOnsets() {
+  const path = document.getElementById('path').value.trim();
+  if (!path) { alert('load a video first'); return; }
+  scanBtn.disabled = true;
+  scanBtn.textContent = '🎤 scanning…';
+  onsetInfo.textContent = 'extracting audio & computing band-RMS…';
+  try {
+    const resp = await fetch('/scan?path=' + encodeURIComponent(path));
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'scan failed');
+    onsets = data.onsets || [];
+    analysis = data;
+    chorusIdx = (data.chorus_index === null || data.chorus_index === undefined)
+      ? -1 : data.chorus_index;
+    renderMarkers();
+    renderChorus();
+    refreshPresets();
+    describeScan();
+  } catch (e) {
+    onsetInfo.innerHTML = '<span class="status-err">' + e.message + '</span>';
+  } finally {
+    scanBtn.disabled = false;
+    scanBtn.textContent = '🎤 scan vocal onsets';
+  }
+}
+
+function clearOnsets() {
+  onsets = [];
+  analysis = null;
+  chorusIdx = -1;
+  tlMarkers.innerHTML = '';
+  tlChorus.classList.remove('active');
+  refreshPresets();
+  onsetInfo.textContent = 'no scan yet';
+}
+
+function describeScan() {
+  const bits = [`${onsets.length} onsets`];
+  if (analysis && analysis.vocal_start !== null) {
+    bits.push(`1st line ${fmtTime(analysis.vocal_start)}`);
+  }
+  const c = chorusSel();
+  bits.push(c ? `chorus ${fmtTime(c.start)}–${fmtTime(c.end)}`
+              : 'chorus not found — set it by hand');
+  onsetInfo.textContent = bits.join(' · ');
+  const n = analysis ? (analysis.chorus_candidates || []).length : 0;
+  chorusBtn.disabled = n < 2;
+  chorusBtn.textContent = `⟳ chorus ${n ? chorusIdx + 1 : 0}/${n}`;
+}
+
+function cycleChorus() {
+  const n = analysis ? (analysis.chorus_candidates || []).length : 0;
+  if (n < 2) return;
+  chorusIdx = (chorusIdx + 1) % n;
+  renderChorus();
+  refreshPresets();
+  describeScan();
+  const c = chorusSel();
+  if (c) v.currentTime = c.start;
+}
+
+function renderChorus() {
+  const dur = v.duration || 0;
+  const c = chorusSel();
+  if (!c || !dur) { tlChorus.classList.remove('active'); return; }
+  tlChorus.style.left  = ((c.start / dur) * 100) + '%';
+  tlChorus.style.width = (((c.end - c.start) / dur) * 100) + '%';
+  tlChorus.classList.add('active');
+}
+
+// ---------- presets ----------
+function refreshPresets() {
+  const haveLine = !!(analysis && analysis.vocal_start !== null);
+  const haveChor = !!chorusSel();
+  const haveSpan = !!(analysis && analysis.audio_end !== null);
+  document.getElementById('pLineEnd').disabled  = !haveLine;
+  document.getElementById('pLineChor').disabled = !(haveLine && haveChor);
+  document.getElementById('pChorus').disabled   = !haveChor;
+  document.getElementById('pLine60').disabled   = !haveLine;
+  document.getElementById('pLine90').disabled   = !haveLine;
+  document.getElementById('pTrim').disabled     = !haveSpan;
+}
+
+// Start a hair before the detected entry so the first syllable isn't clipped.
+const LEAD_IN = 0.4;
+
+function preset(kind) {
+  if (!analysis || !v.duration) return;
+  const line = analysis.vocal_start;
+  const c = chorusSel();
+  let i, o;
+  if (kind === 'line1-end')         { i = line - LEAD_IN; o = analysis.audio_end; }
+  else if (kind === 'line1-chorus') { i = line - LEAD_IN; o = c.end; }
+  else if (kind === 'chorus')       { i = c.start - LEAD_IN; o = c.end; }
+  else if (kind === 'line1-60')     { i = line - LEAD_IN; o = line - LEAD_IN + 60; }
+  else if (kind === 'line1-90')     { i = line - LEAD_IN; o = line - LEAD_IN + 90; }
+  else if (kind === 'trim')         { i = analysis.audio_start; o = analysis.audio_end; }
+  else return;
+  inSec  = clamp(i, 0, v.duration - 0.05);
+  outSec = clamp(o, inSec + 0.05, v.duration);
+  document.getElementById('inTime').value  = fmtTime(inSec);
+  document.getElementById('outTime').value = fmtTime(outSec);
+  v.currentTime = inSec;
+  updateTimeline();
+  status_.innerHTML = '<span class="status-ok">preset: ' + kind + ' → ' +
+    fmtTime(inSec) + ' – ' + fmtTime(outSec) +
+    ' (' + fmtTime(outSec - inSec) + ')</span>';
+}
+
+function renderMarkers() {
+  tlMarkers.innerHTML = '';
+  const dur = v.duration || 0;
+  if (!dur) return;
+  for (const o of onsets) {
+    const m = document.createElement('div');
+    m.className = 'tl-marker';
+    m.style.left = ((o.t / dur) * 100) + '%';
+    m.title = `${fmtTime(o.t)}  (score ${o.score})`;
+    m.addEventListener('click', (e) => {
+      e.stopPropagation();
+      v.currentTime = o.t;
+      highlightMarker(o.t);
+    });
+    tlMarkers.appendChild(m);
+  }
+}
+
+function highlightMarker(t) {
+  const dur = v.duration || 1;
+  const x = (t / dur) * 100;
+  for (const el of tlMarkers.children) {
+    const left = parseFloat(el.style.left);
+    el.classList.toggle('hot', Math.abs(left - x) < 0.1);
+  }
+}
+
+function jumpNextOnset() {
+  if (!onsets.length) return;
+  const t = v.currentTime + 0.05;
+  const next = onsets.find(o => o.t > t);
+  if (next) { v.currentTime = next.t; highlightMarker(next.t); }
+}
+function jumpPrevOnset() {
+  if (!onsets.length) return;
+  const t = v.currentTime - 0.05;
+  let prev = null;
+  for (const o of onsets) { if (o.t < t) prev = o; else break; }
+  if (prev) { v.currentTime = prev.t; highlightMarker(prev.t); }
 }
 
 // ---------- timeline (custom) ----------
@@ -576,6 +790,8 @@ document.addEventListener('keydown', (e) => {
     v.paused ? v.play() : v.pause();
   }
   else if (e.key === 'l') { toggleLoop(); e.preventDefault(); }
+  else if (e.key === 'n') { jumpNextOnset(); e.preventDefault(); }
+  else if (e.key === 'p') { jumpPrevOnset(); e.preventDefault(); }
 });
 
 // ---------- export ----------
@@ -637,6 +853,288 @@ def _run_ff(cmd):
     return r.returncode, r.stderr or ""
 
 
+FRAME_HOP_S = 0.05  # analysis frame step, seconds
+
+
+SR = 16000
+CHROMA_HOP_S = 0.5
+
+
+def _decode(src: Path):
+    """Decode src to a 16 kHz mono float32 array, or None if ffmpeg gave nothing."""
+    import numpy as np
+
+    cmd = [
+        "ffmpeg", "-nostdin", "-loglevel", "quiet",
+        "-i", str(src), "-vn",
+        "-ac", "1", "-ar", str(SR),
+        "-f", "s16le", "pipe:1",
+    ]
+    proc = subprocess.run(cmd, capture_output=True, check=False)
+    if not proc.stdout:
+        return None
+    x = np.frombuffer(proc.stdout, dtype="<i2").astype(np.float32) / 32768.0
+    return x if len(x) >= SR * 2 else None
+
+
+def _frames_of(x, win, hop):
+    import numpy as np
+    n = (len(x) - win) // hop + 1
+    return np.lib.stride_tricks.as_strided(
+        x, shape=(n, win), strides=(x.strides[0] * hop, x.strides[0]))
+
+
+def _envelopes(x):
+    """Return (vocal_band, full_band) energy envelopes at FRAME_HOP_S.
+
+    Vocal band is 200-3400 Hz (voice formant range), which tracks singing while
+    ignoring bass and cymbals; full band tracks overall loudness.
+    """
+    import numpy as np
+
+    win = 512
+    frames = _frames_of(x, win, int(SR * FRAME_HOP_S))
+    n_frames = frames.shape[0]
+    window = np.hanning(win).astype(np.float32)
+    freqs = np.fft.rfftfreq(win, 1.0 / SR)
+    band = (freqs >= 200) & (freqs <= 3400)
+    # Chunked so a 20-minute setlist video doesn't allocate a huge spectrogram
+    voc = np.empty(n_frames, dtype=np.float32)
+    full = np.empty(n_frames, dtype=np.float32)
+    for a in range(0, n_frames, 2048):
+        b = min(a + 2048, n_frames)
+        mag = np.abs(np.fft.rfft(frames[a:b] * window, axis=1))
+        voc[a:b] = mag[:, band].sum(axis=1)
+        full[a:b] = mag.sum(axis=1)
+    return voc, full
+
+
+def _chroma(x):
+    """Return L2-normalised 12-bin chroma frames at CHROMA_HOP_S.
+
+    Folding the spectrum onto pitch classes makes two passes of the same
+    chord progression look alike even when the arrangement differs, which is
+    what lets the self-similarity step find repeated sections.
+    """
+    import numpy as np
+
+    win = 4096
+    frames = _frames_of(x, win, int(SR * CHROMA_HOP_S))
+    n = frames.shape[0]
+    window = np.hanning(win).astype(np.float32)
+    freqs = np.fft.rfftfreq(win, 1.0 / SR)
+    keep = (freqs > 80) & (freqs < 5000)
+    midi = 69 + 12 * np.log2(np.maximum(freqs, 1e-6) / 440.0)
+    pc = np.round(midi).astype(int) % 12
+    masks = [keep & (pc == k) for k in range(12)]
+    C = np.zeros((n, 12), dtype=np.float32)
+    for a in range(0, n, 512):
+        b = min(a + 512, n)
+        mag = np.abs(np.fft.rfft(frames[a:b] * window, axis=1))
+        for k in range(12):
+            C[a:b, k] = mag[:, masks[k]].sum(axis=1)
+    C = np.log1p(C)
+    C -= C.mean(axis=1, keepdims=True)
+    return C / np.maximum(np.linalg.norm(C, axis=1, keepdims=True), 1e-6)
+
+
+def _repeated_sections(x, full_env, first_vocal_i, end_i):
+    """Find sustained repeated sections — the chorus candidate pool.
+
+    Builds a chroma self-similarity matrix, scores each lag by its strongest
+    sustained diagonal stripe (a stripe means "this span recurs `lag` later"),
+    and keeps spans that start once singing has begun. Overlapping spans
+    collapse to the louder one and near-adjacent spans merge, so a chorus split
+    across two stripes comes back as one section.
+
+    Returns [{"start_i", "end_i", "lag", "energy"}] in time order, at most 5.
+    Caller decides which one is "the" chorus; repetition alone cannot tell a
+    chorus from a verse, since both recur.
+    """
+    import numpy as np
+
+    C = _chroma(x)
+    n = C.shape[0]
+    if n < int(40 / CHROMA_HOP_S):
+        return []
+    S = C @ C.T
+    ratio = CHROMA_HOP_S / FRAME_HOP_S  # chroma frame -> envelope frame
+
+    lo = int(15.0 / CHROMA_HOP_S)
+    hi = min(int(150.0 / CHROMA_HOP_S), n - int(10 / CHROMA_HOP_S))
+    stripe_k = int(6 / CHROMA_HOP_S)
+    lag_scores = []
+    for L in range(lo, hi):
+        d = np.diagonal(S, offset=L)
+        if d.size < stripe_k:
+            continue
+        sm = np.convolve(d, np.ones(stripe_k) / stripe_k, mode="valid")
+        lag_scores.append((float(sm.max()), L))
+    if not lag_scores:
+        return []
+    lag_scores.sort(reverse=True)
+
+    min_len = int(10.0 / CHROMA_HOP_S)
+    max_len = int(60.0 / CHROMA_HOP_S)
+    first_c = max(0, int(first_vocal_i / ratio) - int(2 / CHROMA_HOP_S))
+    env_max = float(full_env.max()) or 1.0
+    spans = []
+    for _score, L in lag_scores[:6]:
+        d = np.diagonal(S, offset=L)
+        k = int(4 / CHROMA_HOP_S)
+        sm = np.convolve(d, np.ones(k) / k, mode="same")
+        for a, b in _runs_above(sm >= float(np.percentile(sm, 80)), min_len):
+            if a < first_c:
+                continue
+            b = min(b, a + max_len)
+            ea, eb = int(a * ratio), min(int(b * ratio), end_i)
+            if eb - ea < int(10 / FRAME_HOP_S):
+                continue
+            energy = float(full_env[ea:eb].mean()) / env_max
+            spans.append({"start_i": ea, "end_i": eb, "lag": round(L * CHROMA_HOP_S, 1),
+                          "energy": energy})
+    if not spans:
+        return []
+    # Collapse overlaps, keeping the louder span of each cluster
+    spans.sort(key=lambda s: -s["energy"])
+    picked = []
+    for s in spans:
+        if any(s["start_i"] < p["end_i"] and p["start_i"] < s["end_i"] for p in picked):
+            continue
+        picked.append(s)
+    picked.sort(key=lambda s: s["start_i"])
+    # Merge near-adjacent spans — one chorus often shows up as two stripes
+    gap = int(3.0 / FRAME_HOP_S)
+    merged = [picked[0]]
+    for s in picked[1:]:
+        prev = merged[-1]
+        if s["start_i"] - prev["end_i"] <= gap:
+            span_a = prev["end_i"] - prev["start_i"]
+            span_b = s["end_i"] - s["start_i"]
+            prev["energy"] = ((prev["energy"] * span_a + s["energy"] * span_b)
+                              / max(1, span_a + span_b))
+            prev["end_i"] = s["end_i"]
+        else:
+            merged.append(s)
+    return merged[:5]
+
+
+def _smooth(a, seconds):
+    import numpy as np
+    k = max(1, int(seconds / FRAME_HOP_S))
+    return np.convolve(a, np.ones(k, dtype=np.float32) / k, mode="same")
+
+
+def _runs_above(mask, min_frames):
+    """Yield (start, end) index pairs for contiguous True runs of mask."""
+    import numpy as np
+    edges = np.diff(mask.astype(np.int8))
+    starts = list(np.flatnonzero(edges == 1) + 1)
+    ends = list(np.flatnonzero(edges == -1) + 1)
+    if mask.size and mask[0]:
+        starts.insert(0, 0)
+    if mask.size and mask[-1]:
+        ends.append(mask.size)
+    return [(s, e) for s, e in zip(starts, ends) if e - s >= min_frames]
+
+
+def analyze_audio(src: Path, max_onsets: int = 30):
+    """Locate vocal phrase entries, the first chorus, and the audible span.
+
+    Returns a dict with:
+      onsets       [{"t", "score"}]  vocal phrase entry candidates
+      vocal_start  seconds, first sung line (None if nothing detected)
+      audio_start  seconds, first audible audio (leading silence trimmed)
+      audio_end    seconds, last audible audio (trailing silence trimmed)
+      chorus       {"start", "end"} of the first sustained loud section, or None
+    """
+    import numpy as np
+
+    x = _decode(src)
+    if x is None:
+        return {"onsets": [], "vocal_start": None, "audio_start": None,
+                "audio_end": None, "chorus": None, "chorus_candidates": [],
+                "chorus_index": None}
+    return analyze_samples(x, max_onsets=max_onsets)
+
+
+def analyze_samples(x, max_onsets: int = 30):
+    """Same as analyze_audio but on already-decoded 16 kHz mono samples."""
+    import numpy as np
+
+    voc_raw, full_raw = _envelopes(x)
+    voc = _smooth(voc_raw, 0.5)
+    full = _smooth(full_raw, 0.5)
+    n = len(voc)
+    voc_n = voc / (float(voc.max()) or 1.0)
+    full_n = full / (float(full.max()) or 1.0)
+
+    def t_of(i):
+        return round(i * FRAME_HOP_S, 2)
+
+    # --- audible span: trim leading/trailing silence ---
+    audible = np.flatnonzero(full_n > 0.02)
+    audio_start = t_of(int(audible[0])) if audible.size else 0.0
+    audio_end = t_of(int(audible[-1])) if audible.size else t_of(n - 1)
+
+    # --- vocal phrase entries: rising edges out of a quiet baseline ---
+    lookback = int(1.0 / FRAME_HOP_S)
+    min_gap = int(3.0 / FRAME_HOP_S)
+    cand = []
+    last_idx = -min_gap
+    for i in range(lookback + 4, n - 6):
+        if i - last_idx < min_gap:
+            continue
+        past = voc_n[i - lookback:i - 4]
+        fut = voc_n[i:i + 6]
+        if past.size == 0 or fut.size == 0:
+            continue
+        if past.max() < 0.18 and fut.mean() > 0.30:
+            cand.append((i, float(fut.mean() - past.max())))
+            last_idx = i
+    cand.sort(key=lambda c: -c[1])
+    cand = cand[:max_onsets]
+    cand.sort(key=lambda c: c[0])
+    onsets = [{"t": t_of(i), "score": round(min(1.0, s), 3)} for i, s in cand]
+    vocal_start = onsets[0]["t"] if onsets else None
+
+    # --- chorus candidates: loudest repeated sections once singing has begun ---
+    first_i = cand[0][0] if cand else int(audio_start / FRAME_HOP_S)
+    end_i = int(audio_end / FRAME_HOP_S)
+    cands = _repeated_sections(x, full, first_i, end_i)
+    snap_win = int(6 / FRAME_HOP_S)
+    chorus_candidates = []
+    for s in cands:
+        s_i = s["start_i"]
+        # snap the start back to a real phrase entry when one is close
+        near = [i for i, _ in cand if s_i - snap_win <= i <= s_i]
+        if near:
+            s_i = near[-1]
+        chorus_candidates.append({
+            "start": t_of(s_i), "end": t_of(s["end_i"]),
+            "lag": s["lag"], "energy": round(s["energy"], 3),
+        })
+
+    # Default pick = the FIRST chorus, not the loudest one (that is usually the
+    # final chorus). Drop quiet sections, and skip the span that opens right on
+    # the first sung line, since what a song opens with is essentially always a
+    # verse. Everything stays in the list so the UI can offer alternates.
+    chorus_index = None
+    if chorus_candidates:
+        bar = 0.55 * max(c["energy"] for c in chorus_candidates)
+        loud = [i for i, c in enumerate(chorus_candidates) if c["energy"] >= bar]
+        after_opening = [i for i in loud
+                         if vocal_start is None
+                         or chorus_candidates[i]["start"] - vocal_start >= 8.0]
+        chorus_index = (after_opening or loud or [0])[0]
+
+    return {"onsets": onsets, "vocal_start": vocal_start,
+            "audio_start": audio_start, "audio_end": audio_end,
+            "chorus": chorus_candidates[chorus_index] if chorus_index is not None else None,
+            "chorus_candidates": chorus_candidates,
+            "chorus_index": chorus_index}
+
+
 @app.route("/")
 def index():
     return HTML
@@ -676,6 +1174,18 @@ def video():
     resp.headers["Accept-Ranges"] = "bytes"
     resp.headers["Content-Length"] = str(length)
     return resp
+
+
+@app.route("/scan")
+def scan():
+    path = unquote(request.args.get("path", ""))
+    p = Path(path)
+    if not p.exists() or not p.is_file():
+        return jsonify({"error": "not found"}), 404
+    try:
+        return jsonify(analyze_audio(p))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/download")

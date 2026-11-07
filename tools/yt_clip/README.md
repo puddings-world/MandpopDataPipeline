@@ -166,6 +166,72 @@ left/centre/right, `5/6/7` = top left/centre/right. Labels are burnt in
 (not soft-subs), so the output is a standard mp4 with no external
 subtitle file needed.
 
+## Web UI (`clipweb.py`)
+
+A local page for picking clip boundaries by eye and ear instead of guessing
+timestamps on the command line. Bound to `127.0.0.1` only — never exposed to
+the network.
+
+```powershell
+python tools/yt_clip/clipweb.py              # opens a browser at http://127.0.0.1:8765
+python tools/yt_clip/clipweb.py --port 9000  # custom port
+python tools/yt_clip/clipweb.py --no-browser # don't auto-open
+```
+
+Paste a video path into **Source**, hit **Load**, then set in/out on the
+timeline and pick an export mode (audio `.m4a`, video `.mp4` stream-copy or
+re-encode, single frame `.jpg`, or an IG-Story 9:16 crop/blur-pad). An
+optional spatial crop box with aspect presets (9:16, 1:1, 4:5, 16:9) feeds the
+re-encoding modes. Exports land next to the source file.
+
+| key | does |
+|---|---|
+| `[` `]` | set in / out at the playhead |
+| `←` `→` | seek ∓5 s |
+| `,` `.` | step ∓1 frame |
+| `k` or space | play / pause |
+| `l` | loop the selection |
+| `n` `p` | jump to next / previous vocal onset |
+
+### Auto-locating the singing (`🎤 scan vocal onsets`)
+
+Scrubbing a four-minute cover to find where the singing starts is the slow
+part of clipping, so the page can find those points for you. **Scan vocal
+onsets** decodes the audio once and reports:
+
+- **Vocal phrase entries** — gold triangles on the timeline. Click one to jump
+  there, or walk them with `n` / `p`.
+- **The first sung line** — the earliest entry, used by the presets below.
+- **The first chorus** — shaded on the timeline.
+- **The audible span** — the song with leading/trailing silence trimmed off.
+
+Then the preset buttons set in/out in one click:
+
+| preset | in → out |
+|---|---|
+| `1st line → end` | first sung line → last audible audio |
+| `1st line → chorus 1 end` | first sung line → end of the first chorus |
+| `chorus 1 only` | just the hook |
+| `1st line +60s` / `+90s` | fixed length from the first line (IG Story / upload limits) |
+| `trim head/tail silence` | the audible span |
+
+Each preset starts 0.4 s early so the first syllable isn't clipped.
+
+**How it works, and how much to trust it.** The audio is decoded once to 16 kHz
+mono. Phrase entries come from a 200–3400 Hz band-energy envelope (the voice
+formant range, so bass and cymbals don't trigger it) — an entry is a rise out
+of a quiet baseline to a sustained higher level. That part is reliable.
+
+The chorus is a *heuristic*. Sections are found by folding the spectrum onto 12
+pitch classes and looking for repeats in the self-similarity matrix, which
+finds recurring sections — but a verse recurs too, and repetition alone cannot
+tell the two apart. The default pick is the **earliest** loud repeat that isn't
+the opening verse, since the loudest one is usually the *final* chorus. When it
+guesses wrong, **⟳ chorus** cycles through the other candidates and the shaded
+band and presets follow. Some songs yield no candidate at all; the
+chorus-dependent presets grey out and you set the point by hand — the onset
+markers still make that quick.
+
 ### Multiple channels (`--profile`)
 
 Each Google account / YouTube channel gets its own token file. The default
