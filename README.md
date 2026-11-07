@@ -1116,61 +1116,46 @@ metrics — deliberately don't leak into the consumer-facing API.
 
 ---
 
-## Standalone tools
+## Related repositories
 
-### `ytgrab.py` — ad-hoc YouTube downloader
+This repo is the hub of a few personal repos. They are connected by **data
+contracts and command-line tools, never by code imports**, so there are no git
+submodules or subtrees: the hub is a data folder, not a library.
 
-**Not part of the dataset pipeline.** A separate small CLI for when you just want an mp3 / m4a / wav / mp4 from a URL — no Demucs, no alignment, no audit, no master/processed list. Sometimes you just want a song.
+| Repo | What it is | How it uses this repo | Where that is written down |
+|---|---|---|---|
+| [StreetPerformerMaster](https://github.com/puddings-world/StreetPerformerMaster) | street-performance app (iOS / Android) | interface ① same disk: `$DATASET_PATH` | its README, data section |
+| [reprise-studio](https://github.com/GeniusPudding/reprise-studio) | cover-production studio: lyric MVs, anime MVs, recording | intake from `processed_dataset.jsonl` (`$DATASET_PATH`); recording kits over interface ② (`pipeline.py serve`) | its CLAUDE.md / README, "Dataset contract" |
+| [ytclip](https://github.com/GeniusPudding/ytclip) | general YouTube download / cut / re-upload tool | nothing — it knows no dataset | — |
 
-```bash
-python ytgrab.py URL                            # → ./<video title>.mp3 (best quality)
-python ytgrab.py URL --format m4a               # m4a / aac
-python ytgrab.py URL --format wav               # lossless wav
-python ytgrab.py URL --video                    # MP4 video instead of audio
-python ytgrab.py URL -o ./downloads/            # auto-named into a directory
-python ytgrab.py URL -o my_song.m4a             # exact output path
-python ytgrab.py URL --quality 192k             # specific audio bitrate
-python ytgrab.py URL --info                     # print metadata, don't download
-python ytgrab.py URL1 URL2 URL3                 # batch
+```
+   original songs (someone else's)                      your performances
+   ───────────────────────────────                      ─────────────────
+   MandpopDataset ──① same disk──────► StreetPerformerMaster
+         │
+         ├──── intake / ② LAN serve ──► reprise-studio ◄── performance video (a file) ── ytclip
+         │                                                                      (download, cut)
+         └─ the contract: "Architecture: producer–consumer" and
+            "Data model & format specifications" above
 ```
 
-Always quote the URL — bash treats `&` (used in YouTube URLs with `&list=`, `&index=`) as a control operator and will silently truncate it otherwise.
+How dependencies are recorded:
 
-Requires `yt-dlp` and `ffmpeg` on PATH (same as the main pipeline).
+- **The provider owns the contract.** The interface specs live in this README
+  (the two chapters above). A consumer states which interface it uses and links
+  here; it doesn't copy the spec.
+- **The consumer owns the dependency.** Each consumer lists what it needs from
+  here (interface, files, env var) in its own docs, so reading one repo tells
+  you everything it relies on.
+- **One variable name.** Every consumer finds the dataset through
+  `DATASET_PATH` (reprise-studio also accepts its older `MANDPOP_DATASET`).
+- **Tools are installed, not vendored.** A consumer that uses ytclip lists it
+  in its toolchain docs; ytclip itself records nothing about who uses it.
 
-### `tools/yt_clip/` — download, trim/speed-shift, re-upload as unlisted
-
-**Not part of the dataset pipeline.** A small one-shot CLI for re-publishing
-a YouTube video to your own channel — optionally trimmed or sped up — and
-getting back a shareable unlisted URL. Useful for personal use cases like
-"the original is too slow, share a 1.25× version with friends."
-
-```bash
-# One-shot: download → (optional) trim/speed → upload as unlisted → print URL
-python tools/yt_clip/ytclip.py auto "<URL>"                                 # as-is
-python tools/yt_clip/ytclip.py auto "<URL>" --speed 1.25                    # 1.25× faster (pitch preserved)
-python tools/yt_clip/ytclip.py auto "<URL>" --start 0:05 --end 3:42         # trim
-python tools/yt_clip/ytclip.py auto "<URL>" --start 0:05 --end 3:42 --speed 1.25
-python tools/yt_clip/ytclip.py auto "<URL>" --title "My title" --privacy private
-
-# Step-by-step (debugging)
-python tools/yt_clip/ytclip.py download "<URL>"
-python tools/yt_clip/ytclip.py clip <file> --speed 1.25 -o out.mp4
-python tools/yt_clip/ytclip.py upload out.mp4 --title "..." --privacy unlisted
-
-# Multiple channels — each gets its own token file
-python tools/yt_clip/ytclip.py auth --profile work
-python tools/yt_clip/ytclip.py auto "<URL>" --profile work
-```
-
-Uploading needs a one-time OAuth setup (Google Cloud Console → enable
-YouTube Data API v3 → create Desktop OAuth client → save the JSON as
-`tools/yt_clip/client_secret.json` → add yourself as a Test user). See
-`tools/yt_clip/README.md` for the full walkthrough and quota notes
-(YouTube allows ~6 uploads/day on the default API quota).
-
-Requires `yt-dlp`, `ffmpeg`, and the Google API libs in
-`tools/yt_clip/requirements.txt` (`pip install -r tools/yt_clip/requirements.txt`).
+`ytgrab.py` and `tools/yt_clip/` moved to ytclip in 2026-11 (history up to
+`cda4a29` here): `python ytgrab.py URL` → `ytclip get -a mp3 URL`,
+`python tools/yt_clip/ytclip.py auto URL` → `ytclip reupload URL`,
+`python tools/yt_clip/clipweb.py` → `ytclip web`.
 
 ---
 
@@ -1202,7 +1187,7 @@ This started as a personal project but the structure is deliberately set up so i
 
 | What | Shareable? | How |
 |------|-----------|-----|
-| **Pipeline code** (`pipeline.py`, `crawlers/`, `processors/`, `ytgrab.py`) | ✅ MIT — anyone can fork / publish | Local `pip install -e .` today; PyPI release of `mandpop-dataset` is the obvious next step. |
+| **Pipeline code** (`pipeline.py`, `crawlers/`, `processors/`) | ✅ MIT — anyone can fork / publish | Local `pip install -e .` today; PyPI release of `mandpop-dataset` is the obvious next step. |
 | **Reader module** (`mandpop_dataset.py`) | ✅ MIT | Same. Once on PyPI, downstream projects just do `pip install mandpop-dataset`. |
 | **Song-title lists / LRCs / `audit_report.jsonl`** | ✅ Text only — public-domain factual data | Could be checked into a community git repo as a starter set. |
 | **Audio files** (`*.mp3`, `*.wav`, `*.m4a`) | ❌ Copyrighted YouTube content, personal use only | Never redistributed — each user re-runs the pipeline on their own machine. |

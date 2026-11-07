@@ -39,3 +39,7 @@ notes.txt.bak
 # Per-song local run info (separator runtime, A/B candidate stems)
 songs/*/meta.json
 songs/*/separations/
+tools/research/
+
+# Moved to github.com/GeniusPudding/ytclip; leftover local credentials/downloads stay ignored
+tools/yt_clip/

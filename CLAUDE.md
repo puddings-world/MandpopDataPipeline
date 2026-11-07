@@ -59,6 +59,8 @@ Phase 2 啟動條件：Phase 1 至少累到 ≥ 1000 首已驗證的乾淨 stems
 | ③ Python reader | 研究 / Phase 2 訓練 | processed 全部 + features.json + metrics.jsonl | `mandpop_dataset` module |
 | ④ export bundle | 離線交付 / 除錯 | 依 request JSON | `pipeline.py export` |
 
+repo 之間只靠資料契約和 CLI 工具相連，不 import 彼此的 code，所以不用 submodule。契約寫在提供方（本 repo README），依賴寫在使用方的文件裡；consumer 一律用 `DATASET_PATH` 找資料集。完整關係圖在 README「Related repositories」。**本 repo 不放跟資料集無關的工具**：通用的 YouTube 下載／剪輯／上傳在獨立 repo [ytclip](https://github.com/GeniusPudding/ytclip)（原本的 `ytgrab.py`、`tools/yt_clip/` 已經搬過去）。
+
 ## 兩層資料模型（規範在 README「Data model & format specifications」章）
 
 **研究資料集是本專案的主體（華語流行經典歌研究）；表演 setlist 只是附加功能。**
